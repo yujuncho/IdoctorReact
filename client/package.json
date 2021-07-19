@@ -1,0 +1,78 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "14.15.4"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.8",
+    "@testing-library/react": "^11.2.3",
+    "@testing-library/user-event": "^12.6.0",
+    "@types/bootstrap": "^5.0.3",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^12.19.12",
+    "@types/react": "^16.14.2",
+    "@types/react-bootstrap-typeahead": "^5.1.1",
+    "@types/react-datepicker": "^3.1.2",
+    "@types/react-dom": "^16.9.10",
+    "@types/react-redux": "^7.1.15",
+    "@types/react-redux-toastr": "^7.6.0",
+    "@types/react-router": "^5.1.11",
+    "@types/react-router-dom": "^5.1.7",
+    "axios": "^0.21.1",
+    "bootstrap": "^4.5.3",
+    "react": "^17.0.1",
+    "react-bootstrap": "^1.4.3",
+    "react-bootstrap-typeahead": "^5.1.4",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
+    "react-redux-toastr": "^7.6.5",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "redux": "^4.0.5",
+    "serve": "^11.3.2",
+    "typescript": "^4.1.3",
+    "web-vitals": "^0.2.4",
+    "workbox-background-sync": "^5.1.4",
+    "workbox-broadcast-update": "^5.1.4",
+    "workbox-cacheable-response": "^5.1.4",
+    "workbox-core": "^5.1.4",
+    "workbox-expiration": "^5.1.4",
+    "workbox-google-analytics": "^5.1.4",
+    "workbox-navigation-preload": "^5.1.4",
+    "workbox-precaching": "^5.1.4",
+    "workbox-range-requests": "^5.1.4",
+    "workbox-routing": "^5.1.4",
+    "workbox-strategies": "^5.1.4",
+    "workbox-streams": "^5.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "prod:start": "serve -s build"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {},
+  "proxy": "http://localhost:5000"
+}
