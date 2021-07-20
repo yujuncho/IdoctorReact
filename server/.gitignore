@@ -19,6 +19,8 @@ package-lock.json
 *.log
 *.gz
 
+# production
+/dist
 
 # Coveralls
 coverage
