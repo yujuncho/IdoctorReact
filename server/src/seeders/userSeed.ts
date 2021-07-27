@@ -1,11 +1,7 @@
-import { connect } from "mongoose";
-import Users from "../models/UserModel";
+import mongoose from "mongoose";
+import UserModel, { User } from "../models/UserModel";
 
-connect("mongodb://localhost/user", {
-  useNewUrlParser: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true
-});
+const DB_LINK = process.env.DB_LINK || "mongodb://localhost/user";
 
 let userSeed = [
   {
@@ -18,13 +14,28 @@ let userSeed = [
   }
 ];
 
-Users.deleteMany({})
-  .then(() => Users.insertMany(userSeed))
-  .then(data => {
-    console.log(data + " records inserted!");
-    process.exit(0);
+function seedUsers(seed: User[]) {
+  UserModel.deleteMany({})
+    .then(() => UserModel.insertMany(seed))
+    .then(data => {
+      console.log(data.length + " records inserted!");
+      process.exit(0);
+    })
+    .catch(err => {
+      console.error(err);
+      process.exit(1);
+    });
+}
+
+mongoose
+  .connect(DB_LINK, {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
   })
-  .catch(err => {
-    console.error(err);
-    process.exit(1);
+  .then(() => {
+    seedUsers(userSeed);
+  })
+  .catch(error => {
+    console.log(error);
   });

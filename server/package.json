@@ -7,7 +7,8 @@
     "start": "node dist/server.js",
     "watch": "concurrently \"npx tsc -w\" \"nodemon dist/server.js\"",
     "build": "npx tsc",
-    "seed": "npx tsc && node dist/seeders/userSeed.js"
+    "seed-local": "npx tsc && node dist/seeders/userSeed.js",
+    "seed-dev": "npx tsc && nodemon dist/seeders/userSeed.js"
   },
   "keywords": [],
   "author": "",
