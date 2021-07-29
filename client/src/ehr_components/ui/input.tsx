@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 
 export interface Prop {
   value: string;
@@ -48,34 +48,34 @@ const Input = (props: Prop) => {
 
   function getInput() {
     return (
-      <div className="d-flex flex-column justify-content-center w-100">
-        <input
-          type={type}
-          className={`form-control ${showError ? "is-invalid" : ""}`}
-          id={name}
-          value={value}
-          placeholder={placeholder}
-          onChange={_onChange}
-          onInput={_onChange}
-          onBlur={_onBlur}
-        />
-        {showError && <small className="text-danger">{errorMessage}</small>}
-      </div>
+      <input
+        type={type}
+        className={`form-control ${showError ? "is-invalid" : ""}`}
+        id={name}
+        value={value}
+        placeholder={placeholder}
+        onChange={_onChange}
+        onInput={_onChange}
+        onBlur={_onBlur}
+      />
     );
   }
 
   return (
     <>
-      {Boolean(append) ? (
-        <div className="input-group">
-          {getInput()}
-          <div className="input-group-append">
-            <span className="input-group-text">{append}</span>
+      <div className="d-flex flex-column justify-content-center w-100">
+        {Boolean(append) ? (
+          <div className="input-group">
+            {getInput()}
+            <div className="input-group-append">
+              <span className="input-group-text">{append}</span>
+            </div>
           </div>
-        </div>
-      ) : (
-        getInput()
-      )}
+        ) : (
+          getInput()
+        )}
+        {showError && <small className="text-danger">{errorMessage}</small>}
+      </div>
     </>
   );
 };

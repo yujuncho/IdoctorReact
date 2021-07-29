@@ -13,7 +13,7 @@ const Field = (props: Prop) => {
       <label htmlFor={name} className="col-sm-4 col-form-label text-left">
         {label}
       </label>
-      <div className={`${gridSize ? gridSize : "col-sm-8"} text-left d-flex`}>
+      <div className={`${gridSize ? gridSize : "col-sm-8"} text-left`}>
         {children}
       </div>
     </div>
