@@ -9,7 +9,7 @@ const Field = (props: Prop) => {
   let { label, name, children, gridSize } = props;
 
   return (
-    <div className="mb-4 row">
+    <div className="form-row mb-4">
       <label htmlFor={name} className="col-sm-4 col-form-label text-left">
         {label}
       </label>

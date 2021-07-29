@@ -48,7 +48,7 @@ const Visit: React.FC<VisitProps> = () => {
       inputType: "date",
       placeholder: "Enter the date of visit",
       onChange: handleFieldChange,
-      value: medicalVisit.date,
+      value: medicalVisit.date
     },
     {
       label: "Chief Complaint",
@@ -56,7 +56,7 @@ const Visit: React.FC<VisitProps> = () => {
       placeholder: "Add details about the complaint",
       type: "Textarea",
       onChange: handleFieldChange,
-      value: medicalVisit.complaint,
+      value: medicalVisit.complaint
     },
 
     {
@@ -65,7 +65,7 @@ const Visit: React.FC<VisitProps> = () => {
       name: "present_illness_history",
       type: "Textarea",
       onChange: handleFieldChange,
-      value: medicalVisit.present_illness_history,
+      value: medicalVisit.present_illness_history
     },
     {
       label: "Review of other system",
@@ -73,10 +73,10 @@ const Visit: React.FC<VisitProps> = () => {
       type: "Radio",
       value: medicalVisit.other_system_review,
       options: reviewsOptions,
-      onChange: handleFieldChange,
+      onChange: handleFieldChange
     },
     {
-      name: "blood_pressure",
+      name: "blood_pressure"
     },
     {
       label: "Pulse Rate",
@@ -86,7 +86,7 @@ const Visit: React.FC<VisitProps> = () => {
       gridSize: "col-sm-4",
       value: medicalVisit.pulse_rate,
       append: "beats/minute",
-      onChange: handleFieldChange,
+      onChange: handleFieldChange
     },
     {
       label: "Body Temperature",
@@ -96,7 +96,7 @@ const Visit: React.FC<VisitProps> = () => {
       placeholder: "",
       value: medicalVisit.temperature,
       append: "°C",
-      onChange: handleFieldChange,
+      onChange: handleFieldChange
     },
     {
       label: "Respiratory Rate",
@@ -106,7 +106,7 @@ const Visit: React.FC<VisitProps> = () => {
       placeholder: "",
       value: medicalVisit.respiratory_rate,
       append: "breaths/minute",
-      onChange: handleFieldChange,
+      onChange: handleFieldChange
     },
     {
       label: "Spo2",
@@ -116,7 +116,7 @@ const Visit: React.FC<VisitProps> = () => {
       placeholder: "",
       value: medicalVisit.spo2,
       append: "%",
-      onChange: handleFieldChange,
+      onChange: handleFieldChange
     },
     {
       label: "Weight",
@@ -126,7 +126,7 @@ const Visit: React.FC<VisitProps> = () => {
       placeholder: "",
       append: "KG",
       value: medicalVisit.weight,
-      onChange: handleFieldChange,
+      onChange: handleFieldChange
     },
     {
       label: "Height",
@@ -136,7 +136,7 @@ const Visit: React.FC<VisitProps> = () => {
       placeholder: "",
       append: "Mts",
       value: medicalVisit.height,
-      onChange: handleFieldChange,
+      onChange: handleFieldChange
     },
     {
       label: "Body Mass Index",
@@ -146,7 +146,7 @@ const Visit: React.FC<VisitProps> = () => {
       placeholder: "",
       value: medicalVisit.bmi,
       append: "kg/m2",
-      onChange: handleFieldChange,
+      onChange: handleFieldChange
     },
     {
       label: "Imaging and laboratory Investigations",
@@ -154,7 +154,7 @@ const Visit: React.FC<VisitProps> = () => {
       type: "Radio",
       value: medicalVisit.lab_investigation,
       options: labInvOptions,
-      onChange: handleFieldChange,
+      onChange: handleFieldChange
     },
     {
       label: "Diagnosis",
@@ -162,7 +162,7 @@ const Visit: React.FC<VisitProps> = () => {
       type: "Textarea",
       placeholder: "Add details about the diagnosis",
       onChange: handleFieldChange,
-      value: medicalVisit.diagnosis,
+      value: medicalVisit.diagnosis
     },
     {
       label: "Treatment",
@@ -170,7 +170,7 @@ const Visit: React.FC<VisitProps> = () => {
       type: "Textarea",
       placeholder: "Add details about the treatments followed",
       onChange: handleFieldChange,
-      value: medicalVisit.treatment,
+      value: medicalVisit.treatment
     },
     {
       label: "Is the visit free",
@@ -178,7 +178,7 @@ const Visit: React.FC<VisitProps> = () => {
       type: "Radio",
       options: yesOrNoOptions,
       onChange: handleFieldChange,
-      value: medicalVisit.is_free,
+      value: medicalVisit.is_free
     },
     {
       label: "Is the visit review",
@@ -186,7 +186,7 @@ const Visit: React.FC<VisitProps> = () => {
       type: "Radio",
       options: yesOrNoOptions,
       onChange: handleFieldChange,
-      value: medicalVisit.is_review,
+      value: medicalVisit.is_review
     },
     {
       label: "Is referred from other doctor",
@@ -194,14 +194,14 @@ const Visit: React.FC<VisitProps> = () => {
       type: "Radio",
       options: yesOrNoOptions,
       onChange: handleFieldChange,
-      value: medicalVisit.is_referred,
+      value: medicalVisit.is_referred
     },
     {
       label: "Visit Cost",
       name: "cost",
       type: "Input",
       onChange: handleFieldChange,
-      value: medicalVisit.cost,
+      value: medicalVisit.cost
     },
     {
       label: "Notes",
@@ -210,8 +210,8 @@ const Visit: React.FC<VisitProps> = () => {
       placeholder:
         "Add any other notes about the visit here for future references",
       onChange: handleFieldChange,
-      value: medicalVisit.notes,
-    },
+      value: medicalVisit.notes
+    }
   ];
 
   return (
@@ -221,7 +221,7 @@ const Visit: React.FC<VisitProps> = () => {
       <div className="mx-auto" style={{ width: "90%" }}>
         <div className="row">
           <form className="col-9">
-            {fieldsMap.map((field) => {
+            {fieldsMap.map(field => {
               let { name } = field;
 
               // special handling for blood pressure as it has two different inputs

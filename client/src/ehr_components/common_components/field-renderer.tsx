@@ -21,7 +21,11 @@ const FieldRenderer = function (props: Props) {
     gridSize = "",
     type,
     append,
-    inputType
+    inputType,
+    validateValue,
+    formatValue,
+    errorMessage,
+    formSubmitted
   } = field;
 
   function onACChange(name: string) {
@@ -49,6 +53,10 @@ const FieldRenderer = function (props: Props) {
             value={value}
             append={append}
             onChange={onChange}
+            validateValue={validateValue}
+            formatValue={formatValue}
+            errorMessage={errorMessage}
+            formSubmitted={formSubmitted}
           />
         );
 

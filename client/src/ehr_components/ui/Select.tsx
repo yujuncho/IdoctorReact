@@ -27,8 +27,12 @@ const Select = (props: Prop) => {
       </option>
       {options.map((option: any) => {
         let { value: optionValue, label } = option;
-        // let uniqueId = `${name}_${optionValue}`;
-        return <option value={optionValue}>{label}</option>;
+        let uniqueId = `${name}_${optionValue}`;
+        return (
+          <option value={optionValue} key={uniqueId}>
+            {label}
+          </option>
+        );
       })}
     </select>
   );

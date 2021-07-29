@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Axios from "axios";
 
 import FieldRenderer from "./common_components/field-renderer";
-import Select from "./ui/Select";
+import { stringify } from "querystring";
 
 export interface NewPatientProps {
   added: Function;
@@ -12,6 +12,7 @@ export interface NewPatientProps {
 
 const NewPatient: React.FC<NewPatientProps> = props => {
   const history = useHistory();
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     dob: "",
@@ -36,18 +37,6 @@ const NewPatient: React.FC<NewPatientProps> = props => {
     });
   };
 
-  let handleClick = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    try {
-      let callResults = await Axios.post(firebaseURl, formData);
-      console.log(callResults);
-      history.push(`/main/search#success`);
-    } catch (error) {
-      toastr.error("New Patient", error.message);
-    }
-  };
-
   let fieldsMap = [
     {
       label: "Name",
@@ -56,7 +45,12 @@ const NewPatient: React.FC<NewPatientProps> = props => {
       inputType: "text",
       placeholder: "Full Name",
       onChange: updateFormData,
-      value: formData.fullName
+      validateValue: (value: string) => {
+        return value.length > 0;
+      },
+      value: formData.fullName,
+      errorMessage: "Please enter your name",
+      formSubmitted: formSubmitted
     },
     {
       label: "Date of Birth",
@@ -64,7 +58,13 @@ const NewPatient: React.FC<NewPatientProps> = props => {
       type: "Input",
       inputType: "date",
       onChange: updateFormData,
-      value: formData.dob
+      validateValue: (value: string) => {
+        let dateRegex = /\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])/;
+        return dateRegex.test(value);
+      },
+      value: formData.dob,
+      errorMessage: "Please select a date",
+      formSubmitted: formSubmitted
     },
     {
       label: "Gender",
@@ -102,7 +102,29 @@ const NewPatient: React.FC<NewPatientProps> = props => {
       inputType: "text",
       placeholder: "Phone Number",
       onChange: updateFormData,
-      value: formData.phoneNumber
+      validateValue: (value: string) => {
+        let countDigitsRegex = /\d/g;
+        let regexMatch = value.match(countDigitsRegex);
+        return regexMatch !== null ? regexMatch.length === 10 : false;
+      },
+      formatValue: (value: string) => {
+        if (!value) return value;
+
+        const phoneNumber = value.replace(/[^\d]/g, "");
+        const phoneNumberLength = phoneNumber.length;
+
+        if (phoneNumberLength < 4) return phoneNumber;
+        if (phoneNumberLength < 7) {
+          return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+        }
+        return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
+          3,
+          6
+        )}-${phoneNumber.slice(6)}`;
+      },
+      value: formData.phoneNumber,
+      errorMessage: "Please enter a 10 digit phone number",
+      formSubmitted: formSubmitted
     },
     {
       label: "Address",
@@ -111,7 +133,12 @@ const NewPatient: React.FC<NewPatientProps> = props => {
       inputType: "text",
       placeholder: "Address",
       onChange: updateFormData,
-      value: formData.address
+      validateValue: (value: string) => {
+        return value.length > 0;
+      },
+      value: formData.address,
+      errorMessage: "Please enter a address",
+      formSubmitted: formSubmitted
     },
     {
       label: "Zip Code",
@@ -120,7 +147,14 @@ const NewPatient: React.FC<NewPatientProps> = props => {
       inputType: "text",
       placeholder: "Zip Code",
       onChange: updateFormData,
-      value: formData.zipCode
+      validateValue: (value: string) => {
+        let countDigitsRegex = /\d/g;
+        let regexMatch = value.match(countDigitsRegex);
+        return regexMatch !== null ? regexMatch.length === 5 : false;
+      },
+      value: formData.zipCode,
+      errorMessage: "Please enter a 5 digit zip code",
+      formSubmitted: formSubmitted
     },
     {
       label: "Job",
@@ -129,7 +163,12 @@ const NewPatient: React.FC<NewPatientProps> = props => {
       inputType: "text",
       placeholder: "Job",
       onChange: updateFormData,
-      value: formData.job
+      validateValue: (value: string) => {
+        return value.length > 0;
+      },
+      value: formData.job,
+      errorMessage: "Please enter a job",
+      formSubmitted: formSubmitted
     },
     {
       label: "Marital Status",
@@ -147,12 +186,41 @@ const NewPatient: React.FC<NewPatientProps> = props => {
     }
   ];
 
+  const formIsValid = fieldsMap.reduce((previousValue, currentField) => {
+    if (currentField.validateValue) {
+      console.log(currentField.name);
+      console.log(currentField.validateValue(currentField.value));
+      return previousValue && currentField.validateValue(currentField.value);
+    } else {
+      return previousValue;
+    }
+  }, true);
+
+  let handleClick = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setFormSubmitted(true);
+
+    if (formIsValid) {
+      try {
+        let callResults = await Axios.post(firebaseURl, formData);
+        console.log(callResults);
+        history.push(`/main/search#success`);
+      } catch (error) {
+        toastr.error("New Patient", error.message);
+      }
+    }
+  };
+
   return (
     <div className="container">
       <h2>New Patient</h2>
       <br />
       <div className="row  justify-content-center">
-        <form className="w-75   align-content-center" onSubmit={handleClick}>
+        <form
+          className="w-75   align-content-center"
+          onSubmit={handleClick}
+          noValidate
+        >
           {fieldsMap.map(field => {
             return <FieldRenderer field={field} key={field.name} />;
           })}

@@ -4,7 +4,7 @@ import { toastr } from "react-redux-toastr";
 import AutoComplete from "./ui/autoComplete";
 //import options from "./options";
 import "react-bootstrap-typeahead/css/Typeahead.css";
-import NewPatient from "./newPatient";
+import NewPatient from "./NewPatient";
 
 const Search: React.FC = Props => {
   const [fouce, setCount] = useState(false);

@@ -21,7 +21,7 @@ import {
 } from "react-router-dom";
 import History from "./history";
 import Visit from "./visit";
-import NewPatient from "./newPatient";
+import NewPatient from "./NewPatient";
 
 // import ".././App.css";
 
