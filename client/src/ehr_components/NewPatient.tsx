@@ -93,7 +93,12 @@ const NewPatient: React.FC<NewPatientProps> = props => {
         }
       ],
       onChange: updateFormData,
-      value: formData.gender
+      value: formData.gender,
+      validateValue: (value: string) => {
+        return value.length > 0;
+      },
+      errorMessage: "Please select a gender",
+      formSubmitted: formSubmitted
     },
     {
       label: "Phone Number",
@@ -182,14 +187,17 @@ const NewPatient: React.FC<NewPatientProps> = props => {
         { value: "M", label: "Married" },
         { value: "D", label: "Divorced" },
         { value: "W", label: "Widow" }
-      ]
+      ],
+      validateValue: (value: string) => {
+        return value.length > 0;
+      },
+      errorMessage: "Please select a marital status",
+      formSubmitted: formSubmitted
     }
   ];
 
   const formIsValid = fieldsMap.reduce((previousValue, currentField) => {
     if (currentField.validateValue) {
-      console.log(currentField.name);
-      console.log(currentField.validateValue(currentField.value));
       return previousValue && currentField.validateValue(currentField.value);
     } else {
       return previousValue;

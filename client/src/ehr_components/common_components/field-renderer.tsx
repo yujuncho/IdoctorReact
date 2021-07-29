@@ -76,6 +76,9 @@ const FieldRenderer = function (props: Props) {
             options={options}
             value={value}
             onChange={onChange}
+            validateValue={validateValue}
+            errorMessage={errorMessage}
+            formSubmitted={formSubmitted}
           />
         );
 
@@ -87,6 +90,9 @@ const FieldRenderer = function (props: Props) {
             value={value}
             placeholder={placeholder}
             onChange={onChange}
+            validateValue={validateValue}
+            errorMessage={errorMessage}
+            formSubmitted={formSubmitted}
           />
         );
 
