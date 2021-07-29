@@ -55,11 +55,13 @@ const Main: React.FC<MainProps> = () => {
       {/* <p> Main Page</p> */}
 
       <Router>
-        <Route path="/main/search" component={Search} />
-        <Route path="/main/history" component={History} />
-        <Route path="/main/visit" component={Visit} />
-        <Route path="/main/newPatient" component={NewPatient} />
-        <Redirect to="/main/search" />
+        <Switch>
+          <Route path="/main/search" component={Search} />
+          <Route path="/main/history" component={History} />
+          <Route path="/main/visit" component={Visit} />
+          <Route path="/main/newPatient" component={NewPatient} />
+          <Redirect to="/main/search" />
+        </Switch>
       </Router>
     </Fragment>
   );

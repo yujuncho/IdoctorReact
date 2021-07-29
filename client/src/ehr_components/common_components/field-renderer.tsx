@@ -3,14 +3,26 @@ import Field from "../ui/field";
 import Input from "../ui/input";
 import Radio from "../ui/radio";
 import TextArea from "../ui/textarea";
+import Select from "../ui/Select";
 
 export interface Props {
-  field: any
+  field: any;
 }
 
-const FieldRenderer = function(props: Props) {
+const FieldRenderer = function (props: Props) {
   let { field } = props;
-  let { name, label, value, onChange, options, placeholder, gridSize = '', type, append, inputType } = field;
+  let {
+    name,
+    label,
+    value,
+    onChange,
+    options,
+    placeholder,
+    gridSize = "",
+    type,
+    append,
+    inputType
+  } = field;
 
   function onACChange(name: string) {
     return (selection: Array<Object>) => onChange(name, selection);
@@ -18,7 +30,7 @@ const FieldRenderer = function(props: Props) {
 
   function getFieldMarkup() {
     switch (type) {
-      case 'Textarea':
+      case "Textarea":
         return (
           <TextArea
             name={name}
@@ -27,8 +39,8 @@ const FieldRenderer = function(props: Props) {
             onChange={onChange}
           />
         );
-      
-      case 'Input':
+
+      case "Input":
         return (
           <Input
             name={name}
@@ -40,7 +52,7 @@ const FieldRenderer = function(props: Props) {
           />
         );
 
-      case 'Autocomplete':
+      case "Autocomplete":
         return (
           <AutoComplete
             title={placeholder}
@@ -49,12 +61,23 @@ const FieldRenderer = function(props: Props) {
           />
         );
 
-      case 'Radio':
+      case "Radio":
         return (
           <Radio
             name={name}
             options={options}
             value={value}
+            onChange={onChange}
+          />
+        );
+
+      case "Select":
+        return (
+          <Select
+            name={name}
+            options={options}
+            value={value}
+            placeholder={placeholder}
             onChange={onChange}
           />
         );
@@ -69,6 +92,6 @@ const FieldRenderer = function(props: Props) {
       {getFieldMarkup()}
     </Field>
   );
-}
+};
 
 export default FieldRenderer;
