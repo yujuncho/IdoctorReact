@@ -2,9 +2,13 @@ import express from "express";
 import path from "path";
 import mongoose from "mongoose";
 
+import userRoutes from "./routes/user-routes";
+
 const app = express();
 
 app.use(express.static(path.join(__dirname, "/client/build")));
+
+app.use("/api/user", userRoutes);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "/client/build/index.html"));

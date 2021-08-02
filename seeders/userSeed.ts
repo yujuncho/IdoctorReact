@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import UserModel, { User } from "../models/UserModel";
+import UserModel, { IUser } from "../models/UserModel";
 
 const DB_LINK = process.env.DB_LINK || "mongodb://localhost/user";
 
@@ -14,7 +14,7 @@ let userSeed = [
   }
 ];
 
-function seedUsers(seed: User[]) {
+function seedUsers(seed: IUser[]) {
   UserModel.deleteMany({})
     .then(() => UserModel.insertMany(seed))
     .then(data => {
