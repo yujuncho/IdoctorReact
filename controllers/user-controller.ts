@@ -1,39 +1,87 @@
-import UserModel, { IUser } from "../models/UserModel";
+import UserModel from "../models/UserModel";
 import { RequestHandler } from "express";
+import { validationResult, ValidationError } from "express-validator";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-const getUser: RequestHandler = (req, res, next) => {
-  console.log("Get request in users");
-  res.json({ message: "it works!" });
+const tokenSecret = process.env.JWT_SECRET || "local_secret";
+
+const errorFormatter = ({
+  location,
+  msg,
+  param,
+  value,
+  nestedErrors
+}: ValidationError) => {
+  const formattedValue = value === undefined ? "" : `'${value}' `;
+  return `${param} ${formattedValue}${msg}`;
 };
 
-const signup: RequestHandler = (req, res, next) => {
+const signup: RequestHandler = async (req, res, next) => {
+  const result = validationResult(req).formatWith(errorFormatter);
+
+  if (!result.isEmpty()) {
+    return res.status(422).json({ errors: result.array() });
+  }
+
   const { email, password } = req.body;
+  try {
+    let existingUser = await UserModel.findOne({ email });
 
-  const createdUser: IUser = {
-    email,
-    password
-  };
+    if (existingUser !== null) {
+      return res.status(422).json({ error: "User already exists" });
+    }
 
-  // Save to MongoDB
+    let hashedPassword = await bcrypt.hash(password, 12);
+    let newUser = await UserModel.create({ email, password: hashedPassword });
 
-  res.status(201).json({ user: createdUser });
+    let token = jwt.sign(
+      { userId: newUser.id, email: newUser.email },
+      tokenSecret,
+      { expiresIn: "1h" }
+    );
+
+    res
+      .status(201)
+      .json({ userId: newUser.id, email: newUser.email, token: token });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
-const login: RequestHandler = (req, res, next) => {
+const login: RequestHandler = async (req, res, next) => {
+  const result = validationResult(req).formatWith(errorFormatter);
+
+  if (!result.isEmpty()) {
+    return res.status(422).json({ errors: result.array() });
+  }
+
   const { email, password } = req.body;
 
-  const identifiedUser: IUser = {
-    email,
-    password
-  };
+  try {
+    let user = await UserModel.findOne({ email });
 
-  // Authenticate user
+    if (user === null) {
+      return res.status(401).json({ error: "Incorrect email or password" });
+    }
 
-  res.json({ message: "Logged in!" });
+    const isValidPassword = await bcrypt.compare(password, user.password);
+
+    if (!isValidPassword) {
+      return res.status(401).json({ error: "Incorrect email or password" });
+    }
+
+    let token = jwt.sign({ userId: user.id, email: user.email }, tokenSecret, {
+      expiresIn: "1h"
+    });
+
+    res.json({ userId: user.id, email: user.email, token: token });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 const userController = {
-  getUser,
   signup,
   login
 };

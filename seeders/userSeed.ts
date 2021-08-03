@@ -31,7 +31,8 @@ mongoose
   .connect(DB_LINK, {
     useNewUrlParser: true,
     useFindAndModify: false,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
   })
   .then(() => {
     seedUsers(userSeed);

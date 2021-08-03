@@ -1,12 +1,28 @@
-import express from "express";
+import { Router } from "express";
 import userController from "../controllers/user-controller";
+import { check } from "express-validator";
 
-const userRoutes = express.Router();
+const userRoutes = Router();
 
-userRoutes.get("/", userController.getUser);
+userRoutes.post(
+  "/signup",
+  [
+    check("email")
+      .isEmail()
+      .withMessage("is an invalid email format")
+      .normalizeEmail(),
+    check("password").not().isEmpty().withMessage("must not be empty")
+  ],
+  userController.signup
+);
 
-userRoutes.post("/signup", userController.signup);
-
-userRoutes.post("login", userController.login);
+userRoutes.post(
+  "/login",
+  [
+    check("email").not().isEmpty().withMessage("must not be empty"),
+    check("password").not().isEmpty().withMessage("must not be empty")
+  ],
+  userController.login
+);
 
 export default userRoutes;
