@@ -46,7 +46,10 @@ const NewPatient: React.FC<NewPatientProps> = props => {
   const formIsValid = fieldsMap.reduce(
     (
       previousValue: boolean,
-      currentField: { validateValue: (value: string) => boolean; value: string }
+      currentField: {
+        validateValue?: (value: string) => boolean;
+        value: string;
+      }
     ) => {
       if (currentField.validateValue) {
         return previousValue && currentField.validateValue(currentField.value);

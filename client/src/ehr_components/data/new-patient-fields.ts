@@ -148,20 +148,6 @@ export default function generateNewPatientFields(
       isFormSubmitted: isFormSubmitted
     },
     {
-      label: "Job",
-      name: "job",
-      type: "Input",
-      inputType: "text",
-      placeholder: "Job",
-      onChange: onChangeHandler,
-      validateValue: (value: string) => {
-        return value.length > 0;
-      },
-      value: formData.job,
-      errorMessage: "Please enter a job",
-      isFormSubmitted: isFormSubmitted
-    },
-    {
       label: "Marital Status",
       name: "maritalStatus",
       type: "Select",
@@ -179,6 +165,15 @@ export default function generateNewPatientFields(
       },
       errorMessage: "Please select a marital status",
       isFormSubmitted: isFormSubmitted
+    },
+    {
+      label: "Job",
+      name: "job",
+      type: "Input",
+      inputType: "text",
+      placeholder: "Job",
+      onChange: onChangeHandler,
+      value: formData.job
     }
   ];
 

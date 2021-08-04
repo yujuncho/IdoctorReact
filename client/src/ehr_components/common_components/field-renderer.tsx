@@ -102,7 +102,12 @@ const FieldRenderer = function (props: Props) {
   }
 
   return (
-    <Field name={name} label={label} gridSize={gridSize}>
+    <Field
+      name={name}
+      label={label}
+      gridSize={gridSize}
+      required={!!validateValue}
+    >
       {getFieldMarkup()}
     </Field>
   );

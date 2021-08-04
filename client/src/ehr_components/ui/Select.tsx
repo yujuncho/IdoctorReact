@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 export interface SelectProps {
   name: string;
   value: string;
@@ -21,12 +23,22 @@ const Select = (props: SelectProps) => {
     isFormSubmitted
   } = props;
 
-  const showError = validateValue
-    ? !validateValue(value) && isFormSubmitted
-    : false;
+  const [touched, setTouched] = useState(false);
+
+  useEffect(() => {
+    if (isFormSubmitted) {
+      setTouched(true);
+    }
+  }, [isFormSubmitted]);
+
+  const showError = validateValue ? !validateValue(value) && touched : false;
 
   function _onChange(event: any) {
     onChange(name, event);
+  }
+
+  function _onBlur() {
+    setTouched(true);
   }
 
   return (
@@ -38,6 +50,7 @@ const Select = (props: SelectProps) => {
         id={name}
         value={value}
         onChange={_onChange}
+        onBlur={_onBlur}
       >
         <option value="" disabled hidden>
           {placeholder}
