@@ -1,11 +1,11 @@
-export interface Prop {
+export interface FieldProps {
   label: string;
   name: string;
   children: JSX.Element;
   gridSize?: string;
 }
 
-const Field = (props: Prop) => {
+const Field = (props: FieldProps) => {
   let { label, name, children, gridSize } = props;
 
   return (

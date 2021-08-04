@@ -1,6 +1,6 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-export interface Prop {
+export interface InputProps {
   value: string;
   name: string;
   placeholder?: string;
@@ -10,10 +10,10 @@ export interface Prop {
   errorMessage?: string;
   validateValue?: (value: string) => boolean;
   formatValue?: (value: string) => string;
-  formSubmitted?: boolean;
+  isFormSubmitted?: boolean;
 }
 
-const Input = (props: Prop) => {
+const Input = (props: InputProps) => {
   let {
     value,
     name,
@@ -24,16 +24,16 @@ const Input = (props: Prop) => {
     validateValue,
     formatValue,
     errorMessage,
-    formSubmitted
+    isFormSubmitted
   } = props;
 
   const [touched, setTouched] = useState(false);
 
   useEffect(() => {
-    if (formSubmitted) {
+    if (isFormSubmitted) {
       setTouched(true);
     }
-  }, [formSubmitted]);
+  }, [isFormSubmitted]);
 
   const showError = validateValue ? !validateValue(value) && touched : false;
   value = formatValue ? formatValue(value) : value;

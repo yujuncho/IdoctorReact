@@ -1,4 +1,4 @@
-export interface Prop {
+export interface SelectProps {
   name: string;
   value: string;
   placeholder: string;
@@ -6,10 +6,10 @@ export interface Prop {
   onChange: (name: string, event: React.ChangeEvent<HTMLInputElement>) => void;
   errorMessage?: string;
   validateValue?: (value: string) => boolean;
-  formSubmitted?: boolean;
+  isFormSubmitted?: boolean;
 }
 
-const Select = (props: Prop) => {
+const Select = (props: SelectProps) => {
   let {
     name,
     options = [],
@@ -18,11 +18,11 @@ const Select = (props: Prop) => {
     onChange,
     errorMessage,
     validateValue,
-    formSubmitted
+    isFormSubmitted
   } = props;
 
   const showError = validateValue
-    ? !validateValue(value) && formSubmitted
+    ? !validateValue(value) && isFormSubmitted
     : false;
 
   function _onChange(event: any) {

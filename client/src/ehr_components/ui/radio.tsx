@@ -1,16 +1,14 @@
-import { useState, useEffect } from "react";
-
-export interface Prop {
+export interface RadioProps {
   name: string;
   value: string;
   options: Array<any>;
   onChange: (name: string, event: React.ChangeEvent<HTMLInputElement>) => void;
   errorMessage?: string;
   validateValue?: (value: string) => boolean;
-  formSubmitted?: boolean;
+  isFormSubmitted?: boolean;
 }
 
-const Radio = (props: Prop) => {
+const Radio = (props: RadioProps) => {
   let {
     name,
     options = [],
@@ -18,11 +16,11 @@ const Radio = (props: Prop) => {
     onChange,
     errorMessage,
     validateValue,
-    formSubmitted
+    isFormSubmitted
   } = props;
 
   const showError = validateValue
-    ? !validateValue(value) && formSubmitted
+    ? !validateValue(value) && isFormSubmitted
     : false;
 
   function _onChange(event: any) {

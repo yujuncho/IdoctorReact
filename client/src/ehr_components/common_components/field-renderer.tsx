@@ -25,7 +25,7 @@ const FieldRenderer = function (props: Props) {
     validateValue,
     formatValue,
     errorMessage,
-    formSubmitted
+    isFormSubmitted
   } = field;
 
   function onACChange(name: string) {
@@ -56,7 +56,7 @@ const FieldRenderer = function (props: Props) {
             validateValue={validateValue}
             formatValue={formatValue}
             errorMessage={errorMessage}
-            formSubmitted={formSubmitted}
+            isFormSubmitted={isFormSubmitted}
           />
         );
 
@@ -78,7 +78,7 @@ const FieldRenderer = function (props: Props) {
             onChange={onChange}
             validateValue={validateValue}
             errorMessage={errorMessage}
-            formSubmitted={formSubmitted}
+            isFormSubmitted={isFormSubmitted}
           />
         );
 
@@ -92,7 +92,7 @@ const FieldRenderer = function (props: Props) {
             onChange={onChange}
             validateValue={validateValue}
             errorMessage={errorMessage}
-            formSubmitted={formSubmitted}
+            isFormSubmitted={isFormSubmitted}
           />
         );
 
