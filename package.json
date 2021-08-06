@@ -2,12 +2,12 @@
   "name": "IdoctorReact",
   "version": "1.0.0",
   "description": "",
-  "main": "server/dist/server.js",
+  "main": "server.ts",
   "scripts": {
     "start": "ts-node -r dotenv/config server.ts",
     "watch-local": "concurrently \"nodemon server.ts\" \"cd client && npm start\"",
     "watch-dev": "concurrently \"nodemon -r dotenv/config server.ts\" \"cd client && npm start\"",
-    "install": "npm i && cd client && npm i",
+    "install": "cd client && npm i",
     "build": "cd client && npm run build",
     "seed-local": "ts-node seeders/userSeed.ts",
     "seed-dev": "ts-node -r dotenv/config seeders/userSeed.ts"
