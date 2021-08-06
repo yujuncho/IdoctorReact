@@ -37,7 +37,8 @@ const App: React.FC = () => {
     routes = (
       <Switch>
         <Route path="/" exact component={Home} />
-        <Route path="/auth" component={Auth} />
+        <Route path="/login" component={Auth} />
+        <Route path="/signup" component={Auth} />
         <Redirect to="/" />
       </Switch>
     );
