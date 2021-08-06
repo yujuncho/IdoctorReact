@@ -13,7 +13,10 @@ function Navigation() {
   };
 
   return (
-    <nav id="menu" className="navbar  navbar-expand-sm navbar-light bg-light  ">
+    <nav
+      id="menu"
+      className="navbar  navbar-expand-sm navbar-light bg-light mb-5"
+    >
       <Link className="navbar-brand page-scroll" to="/">
         IDoctor
       </Link>

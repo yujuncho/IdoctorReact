@@ -1,8 +1,10 @@
 import { Fragment, useState, useContext } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 
-import { AuthContext } from "./store/auth-context";
-import FieldRenderer from "./common_components/field-renderer";
+import { AuthContext } from "../ehr_components/store/auth-context";
+import FieldRenderer from "../ehr_components/common_components/field-renderer";
+
+import Navigation from "./navigation";
 
 enum AuthPage {
   LOGIN = "Log In",
@@ -119,26 +121,29 @@ export default function Auth() {
   }
 
   return (
-    <div className="container">
-      <h2 className="mt-5 mb-3">{page}</h2>
-      <div className="row justify-content-center">
-        <form
-          className="align-content-center w-25"
-          onSubmit={loginHandler}
-          noValidate
-        >
-          {fieldsMap.map((field: { name: string }) => {
-            return <FieldRenderer field={field} key={field.name} />;
-          })}
+    <div>
+      <Navigation isFixed={false} />
+      <div className="container">
+        <h2 className="mt-5 mb-3">{page}</h2>
+        <div className="row justify-content-center">
+          <form
+            className="align-content-center w-25"
+            onSubmit={loginHandler}
+            noValidate
+          >
+            {fieldsMap.map((field: { name: string }) => {
+              return <FieldRenderer field={field} key={field.name} />;
+            })}
 
-          <div className="form-group mt-4">
-            <button className="bttn-custom">{page}</button>
-          </div>
+            <div className="form-group mb-5">
+              <button className="bttn-custom">{page}</button>
+            </div>
 
-          <div className="form-row mt-5 pt-4 border-top border-dark justify-content-center">
-            {switchAuthPage}
-          </div>
-        </form>
+            <div className="form-row pt-4 border-top border-dark justify-content-center">
+              {switchAuthPage}
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

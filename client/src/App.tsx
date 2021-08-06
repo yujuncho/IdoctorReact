@@ -10,7 +10,7 @@ import "./App.css";
 
 import Home from "./ehr_components/home";
 import Main from "./ehr_components/Main";
-import Auth from "./ehr_components/Auth";
+import Auth from "./components/Auth";
 
 import { AuthContextProvider } from "./ehr_components/store/auth-context";
 
