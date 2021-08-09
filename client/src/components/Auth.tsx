@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import Axios from "axios";
 
@@ -19,10 +19,25 @@ export default function Auth() {
   const [formData, setFormData] = useState(formDefaultState);
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoginPage, setIsLoginPage] = useState<null | boolean>(null);
 
   const history = useHistory();
   const { pathname } = useLocation();
   const page = pathname === "/login" ? AuthType.LOGIN : AuthType.SIGNUP;
+
+  useEffect(() => {
+    if (isLoginPage && page === AuthType.SIGNUP) {
+      setIsLoginPage(false);
+    } else if (!isLoginPage && page === AuthType.LOGIN) {
+      setIsLoginPage(true);
+    }
+  }, [isLoginPage, page]);
+
+  useEffect(() => {
+    setIsFormSubmitted(false);
+    setFormData(formDefaultState);
+    setErrorMessage(null);
+  }, [isLoginPage]);
 
   const updateFormData = (
     fieldName: string,
@@ -38,6 +53,7 @@ export default function Auth() {
     onChangeHandler: updateFormData,
     formData,
     isFormSubmitted,
+    resetToggle: isLoginPage,
     authType: page
   });
 

@@ -11,6 +11,7 @@ export interface InputProps {
   validateValue?: (value: string) => boolean;
   formatValue?: (value: string) => string;
   isFormSubmitted?: boolean;
+  resetToggle?: boolean;
 }
 
 const Input = (props: InputProps) => {
@@ -24,7 +25,8 @@ const Input = (props: InputProps) => {
     validateValue,
     formatValue,
     errorMessage,
-    isFormSubmitted
+    isFormSubmitted,
+    resetToggle
   } = props;
 
   const [touched, setTouched] = useState(false);
@@ -34,6 +36,10 @@ const Input = (props: InputProps) => {
       setTouched(true);
     }
   }, [isFormSubmitted]);
+
+  useEffect(() => {
+    setTouched(false);
+  }, [resetToggle]);
 
   const showError = validateValue ? !validateValue(value) && touched : false;
   value = formatValue ? formatValue(value) : value;

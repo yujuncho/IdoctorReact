@@ -4,6 +4,7 @@ interface AuthFieldsParams {
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   isFormSubmitted: boolean;
+  resetToggle: boolean | null;
   formData: {
     email: string;
     password: string;
@@ -17,7 +18,8 @@ export enum AuthType {
 }
 
 export default function generateAuthFields(params: AuthFieldsParams) {
-  let { onChangeHandler, isFormSubmitted, formData, authType } = params;
+  let { onChangeHandler, isFormSubmitted, resetToggle, formData, authType } =
+    params;
 
   let fieldsMap = [
     {
@@ -29,12 +31,13 @@ export default function generateAuthFields(params: AuthFieldsParams) {
       onChange: onChangeHandler,
       validateValue: (value: string) => {
         let emailRegex =
-          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return emailRegex.test(value);
       },
       value: formData.email,
       errorMessage: "Please enter a valid email",
-      isFormSubmitted: isFormSubmitted
+      isFormSubmitted: isFormSubmitted,
+      resetToggle: resetToggle
     },
     {
       label: "Password",
@@ -48,7 +51,8 @@ export default function generateAuthFields(params: AuthFieldsParams) {
       },
       value: formData.password,
       errorMessage: "Please enter a password",
-      isFormSubmitted: isFormSubmitted
+      isFormSubmitted: isFormSubmitted,
+      resetToggle: resetToggle
     }
   ];
 

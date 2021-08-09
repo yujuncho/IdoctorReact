@@ -26,7 +26,8 @@ const FieldRenderer = function (props: Props) {
     formatValue,
     errorMessage,
     isFormSubmitted,
-    isFormRow = true
+    isFormRow = true,
+    resetToggle
   } = field;
 
   function onACChange(name: string) {
@@ -58,6 +59,7 @@ const FieldRenderer = function (props: Props) {
             formatValue={formatValue}
             errorMessage={errorMessage}
             isFormSubmitted={isFormSubmitted}
+            resetToggle={resetToggle}
           />
         );
 
