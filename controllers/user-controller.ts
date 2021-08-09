@@ -29,7 +29,7 @@ const signup: RequestHandler = async (req, res, next) => {
     let existingUser = await UserModel.findOne({ email });
 
     if (existingUser !== null) {
-      return res.status(422).json({ error: "User already exists" });
+      return res.status(422).json({ message: "User already exists" });
     }
 
     let hashedPassword = await bcrypt.hash(password, 12);
@@ -45,7 +45,7 @@ const signup: RequestHandler = async (req, res, next) => {
       .status(201)
       .json({ userId: newUser.id, email: newUser.email, token: token });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -62,13 +62,13 @@ const login: RequestHandler = async (req, res, next) => {
     let user = await UserModel.findOne({ email });
 
     if (user === null) {
-      return res.status(401).json({ error: "Incorrect email or password" });
+      return res.status(401).json({ message: "Incorrect email or password" });
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
-      return res.status(401).json({ error: "Incorrect email or password" });
+      return res.status(401).json({ message: "Incorrect email or password" });
     }
 
     let token = jwt.sign({ userId: user.id, email: user.email }, tokenSecret, {
@@ -77,7 +77,7 @@ const login: RequestHandler = async (req, res, next) => {
 
     res.json({ userId: user.id, email: user.email, token: token });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 

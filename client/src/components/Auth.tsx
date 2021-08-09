@@ -1,28 +1,28 @@
-import { Fragment, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
+import Axios from "axios";
 
-import { AuthContext } from "../ehr_components/store/auth-context";
+import { AuthContext } from "../store/auth-context";
 import FieldRenderer from "../ehr_components/common_components/field-renderer";
+import generateAuthFields, { AuthType } from "./data/auth-fields";
 
 import Navigation from "./navigation";
 
-enum AuthPage {
-  LOGIN = "Log In",
-  SIGNUP = "Sign Up"
-}
+const formDefaultState = {
+  email: "",
+  password: ""
+};
 
 export default function Auth() {
   const authContext = useContext(AuthContext);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: ""
-  });
+  const [formData, setFormData] = useState(formDefaultState);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const history = useHistory();
-  const location = useLocation();
-  const page =
-    location.pathname === "/login" ? AuthPage.LOGIN : AuthPage.SIGNUP;
+  const { pathname } = useLocation();
+  const page = pathname === "/login" ? AuthType.LOGIN : AuthType.SIGNUP;
 
   const updateFormData = (
     fieldName: string,
@@ -34,38 +34,12 @@ export default function Auth() {
     });
   };
 
-  let fieldsMap = [
-    {
-      label: "Email",
-      name: "email",
-      type: "Input",
-      inputType: "text",
-      isFormRow: false,
-      onChange: updateFormData,
-      validateValue: (value: string) => {
-        let emailRegex =
-          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return emailRegex.test(value);
-      },
-      value: formData.email,
-      errorMessage: "Please enter a valid email",
-      isFormSubmitted: isFormSubmitted
-    },
-    {
-      label: "Password",
-      name: "password",
-      type: "Input",
-      inputType: "password",
-      isFormRow: false,
-      onChange: updateFormData,
-      validateValue: (value: string) => {
-        return value.length > 0;
-      },
-      value: formData.password,
-      errorMessage: "Please enter a password",
-      isFormSubmitted: isFormSubmitted
-    }
-  ];
+  let { fieldsMap, linkProperties } = generateAuthFields({
+    onChangeHandler: updateFormData,
+    formData,
+    isFormSubmitted,
+    authType: page
+  });
 
   const formIsValid = fieldsMap.reduce(
     (
@@ -84,41 +58,43 @@ export default function Auth() {
     true
   );
 
-  const loginHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+  const authHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsFormSubmitted(true);
+    setIsLoading(true);
 
     if (formIsValid) {
       try {
-        // let callResults = await Axios.post(firebaseURl, formData);
-        authContext.login();
+        let {
+          data: { userId, token }
+        } = await Axios.post(`/api/user${pathname}`, formData);
+        authContext.login(userId, token);
         history.push("/main");
+        setErrorMessage(null);
       } catch (error) {
-        alert(error.message);
+        if (error.response) {
+          setErrorMessage(error.response.data.message);
+        } else {
+          setErrorMessage(error);
+        }
       }
     }
+
+    setIsLoading(false);
   };
 
-  let switchAuthPage;
-  if (page === AuthPage.SIGNUP) {
-    switchAuthPage = (
-      <Fragment>
-        Already have an account?
-        <Link to="/login" className="ml-1">
-          Log in
-        </Link>
-      </Fragment>
+  const formError =
+    errorMessage === null ? null : (
+      <div className="form-row mb-3 p-3 justify-content-center bg-danger text-white">
+        <p className="p-0 m-0">{errorMessage}</p>
+      </div>
     );
-  } else {
-    switchAuthPage = (
-      <Fragment>
-        Don't have an account?
-        <Link to="/signup" className="ml-1">
-          Sign up
-        </Link>
-      </Fragment>
-    );
-  }
+
+  const authSubmitButtonText = isLoading ? (
+    <i className="fa fa-spinner fa-spin" />
+  ) : (
+    page
+  );
 
   return (
     <div>
@@ -128,19 +104,24 @@ export default function Auth() {
         <div className="row justify-content-center">
           <form
             className="align-content-center w-25"
-            onSubmit={loginHandler}
+            onSubmit={authHandler}
             noValidate
           >
+            {formError}
+
             {fieldsMap.map((field: { name: string }) => {
               return <FieldRenderer field={field} key={field.name} />;
             })}
 
             <div className="form-group mb-5">
-              <button className="bttn-custom">{page}</button>
+              <button className="bttn-custom">{authSubmitButtonText}</button>
             </div>
 
             <div className="form-row pt-4 border-top border-dark justify-content-center">
-              {switchAuthPage}
+              {linkProperties.description}
+              <Link to={linkProperties.path} className="ml-1">
+                {linkProperties.text}
+              </Link>
             </div>
           </form>
         </div>

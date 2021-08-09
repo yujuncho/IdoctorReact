@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Route,
   BrowserRouter as Router,
@@ -12,23 +12,17 @@ import Home from "./ehr_components/home";
 import Main from "./ehr_components/Main";
 import Auth from "./components/Auth";
 
-import { AuthContextProvider } from "./ehr_components/store/auth-context";
+import { AuthContextProvider } from "./store/auth-context";
+import { useAuth } from "./hooks/auth-hook";
 
 const App: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const login = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
-
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-  }, []);
+  const { userData, login, logout } = useAuth();
 
   let routes;
-  if (isLoggedIn) {
+  if (userData.token) {
     routes = (
       <Switch>
+        <Route path="/" exact component={Home} />
         <Route path="/main" component={Main} />
         <Redirect to="/main" />
       </Switch>
@@ -45,7 +39,9 @@ const App: React.FC = () => {
   }
 
   return (
-    <AuthContextProvider value={{ isLoggedIn, login, logout }}>
+    <AuthContextProvider
+      value={{ isLoggedIn: !!userData.token, ...userData, login, logout }}
+    >
       <div className="App">
         <Router>{routes}</Router>
       </div>
