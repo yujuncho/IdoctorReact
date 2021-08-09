@@ -91,7 +91,7 @@ export default function Auth() {
         if (error.response) {
           setErrorMessage(error.response.data.message);
         } else {
-          setErrorMessage(error);
+          setErrorMessage(error.message);
         }
       }
     }
