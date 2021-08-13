@@ -10,13 +10,18 @@ import "./App.css";
 
 import Home from "./ehr_components/home";
 import Main from "./ehr_components/Main";
+import Loader from "./components/Loader";
 import Auth from "./components/Auth";
 
 import { AuthContextProvider } from "./store/auth-context";
 import { useAuth } from "./hooks/auth-hook";
 
 const App: React.FC = () => {
-  const { userData, login, logout } = useAuth();
+  const { userData, login, logout, checkedStorage } = useAuth();
+
+  if (!checkedStorage) {
+    return <Loader />;
+  }
 
   let routes;
   if (userData.token) {

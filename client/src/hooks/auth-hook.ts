@@ -7,6 +7,7 @@ const userDataDefault = {
 
 export const useAuth = () => {
   const [userData, setUserData] = useState(userDataDefault);
+  const [checkedStorage, setCheckingStorage] = useState(false);
 
   const login = useCallback((uid: string, token: string) => {
     setUserData({ uid, token });
@@ -24,7 +25,8 @@ export const useAuth = () => {
       const { uid, token } = JSON.parse(storedUserData);
       login(uid, token);
     }
+    setCheckingStorage(true);
   }, [login]);
 
-  return { login, logout, userData };
+  return { login, logout, userData, checkedStorage };
 };
