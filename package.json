@@ -5,6 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "start": "ts-node -r dotenv/config server.ts",
+    "prod:start": "ts-node server.ts",
     "watch-local": "concurrently \"nodemon server.ts\" \"cd client && npm start\"",
     "watch-dev": "concurrently \"nodemon -r dotenv/config server.ts\" \"cd client && npm start\"",
     "install": "cd client && npm i",
@@ -26,9 +27,8 @@
   "devDependencies": {
     "concurrently": "^6.2.0",
     "dotenv": "^10.0.0",
-    "nodemon": "^2.0.12",
-    "ts-node": "^10.1.0",
-    "typescript": "^4.3.5"
+    "heroku": "^7.57.0",
+    "nodemon": "^2.0.12"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -40,6 +40,8 @@
     "express-validator": "^6.12.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.5",
-    "react-router-hash-link": "^2.4.3"
+    "react-router-hash-link": "^2.4.3",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.3.5"
   }
 }
