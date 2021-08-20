@@ -25,7 +25,9 @@ const FieldRenderer = function (props: Props) {
     validateValue,
     formatValue,
     errorMessage,
-    isFormSubmitted
+    isFormSubmitted,
+    isFormRow = true,
+    resetToggle
   } = field;
 
   function onACChange(name: string) {
@@ -57,6 +59,7 @@ const FieldRenderer = function (props: Props) {
             formatValue={formatValue}
             errorMessage={errorMessage}
             isFormSubmitted={isFormSubmitted}
+            resetToggle={resetToggle}
           />
         );
 
@@ -107,6 +110,7 @@ const FieldRenderer = function (props: Props) {
       label={label}
       gridSize={gridSize}
       required={!!validateValue}
+      isFormRow={isFormRow}
     >
       {getFieldMarkup()}
     </Field>

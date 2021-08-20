@@ -1,17 +1,15 @@
 import { Schema, model } from "mongoose";
 
-export interface User {
+export interface IUser {
   email: string;
   password: string;
 }
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<IUser>({
   email: {
     type: String,
     unique: true,
-    required: true,
-    match:
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    required: true
   },
   password: {
     type: String,
@@ -23,6 +21,6 @@ const userSchema = new Schema<User>({
   }
 });
 
-const UserModel = model<User>("User", userSchema);
+const UserModel = model<IUser>("User", userSchema);
 
 export default UserModel;

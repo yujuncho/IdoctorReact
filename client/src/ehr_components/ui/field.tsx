@@ -4,19 +4,35 @@ export interface FieldProps {
   children: JSX.Element;
   gridSize?: string;
   required?: boolean;
+  isFormRow?: boolean;
 }
 
 const Field = (props: FieldProps) => {
-  let { label, name, children, gridSize, required } = props;
+  let { label, name, children, gridSize, required, isFormRow } = props;
+
+  let fieldOrientation;
+  let labelLength;
+  let childrenLength;
+  if (isFormRow) {
+    fieldOrientation = "form-row";
+    labelLength = "col-sm-4";
+    childrenLength = "col-sm-8";
+  } else {
+    fieldOrientation = "form-group";
+    labelLength = childrenLength = "w-100";
+  }
+
+  if (gridSize) childrenLength = gridSize;
 
   return (
-    <div className="form-row mb-4">
-      <label htmlFor={name} className="col-sm-4 col-form-label text-left">
+    <div className={`${fieldOrientation} mb-4`}>
+      <label
+        htmlFor={name}
+        className={`${labelLength} col-form-label text-left`}
+      >
         {required ? label + "*" : label}
       </label>
-      <div className={`${gridSize ? gridSize : "col-sm-8"} text-left`}>
-        {children}
-      </div>
+      <div className={`${childrenLength} text-left`}>{children}</div>
     </div>
   );
 };

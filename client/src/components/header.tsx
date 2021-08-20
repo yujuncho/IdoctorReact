@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Link } from "react-router-dom";
+
 interface Data {
   title: string;
   paragraph?: string;
@@ -22,9 +24,9 @@ export const Header: React.FC<Props> = ({ data }) => {
                   <span></span>
                 </h1>
                 <p>{data.paragraph ? data.paragraph : "Loading.."}</p>
-                <a href="/main" className=" bttn-custom  ">
+                <Link to="/login" className=" bttn-custom  ">
                   Log In
-                </a>
+                </Link>
               </div>
             </div>
           </div>

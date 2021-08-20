@@ -20,8 +20,6 @@ export default function generateNewPatientFields(
   params: NewPatientFieldParams
 ) {
   let { onChangeHandler, isFormSubmitted, formData } = params;
-  console.log("Generate Fields!");
-  console.log(isFormSubmitted);
 
   let fieldsMap = [
     {

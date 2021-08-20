@@ -1,20 +1,17 @@
-import React, { Fragment, useState, useContext, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { Fragment, useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
 import AutoComplete from "./ui/autoComplete";
-//import options from "./options";
 import "react-bootstrap-typeahead/css/Typeahead.css";
-import NewPatient from "./NewPatient";
 
 const Search: React.FC = Props => {
-  const [fouce, setCount] = useState(false);
-  const [newPatient, setNewPatient] = useState(false);
   const [searchedPatient, setSearchedPatient] = useState<any>(null);
   const [patientsList, setPatientsList] = useState<any>([]);
   const [options, setOptions] = useState<any>();
   const history = useHistory();
 
   useEffect(() => {
+    console.log(new Date(Date.now()).toISOString(), "FETCHING PATIENTS");
     newPatientAdded();
     // Update the document title using the browser API
     let nameList: any[] = [];
@@ -26,7 +23,6 @@ const Search: React.FC = Props => {
         let list: any[] = [];
         for (var id in res) {
           list.push(res[id]);
-          // console.log(res[id], id);
           if (res[id]?.fullName?.trim())
             nameList.push({
               label: res[id].fullName
@@ -36,26 +32,19 @@ const Search: React.FC = Props => {
           if (res[id].number?.trim())
             numberList.push({ label: res[id].number });
         }
+        console.log(
+          new Date(Date.now()).toISOString(),
+          "RETRIEVED PATIENTS",
+          nameList
+        );
         setPatientsList(list);
-        updateOptions({ nameList, numberList, DOBList });
+        setOptions({ nameList, numberList, DOBList });
       });
   }, []);
 
-  let updateOptions = (lists: any) => {
-    setOptions(lists);
-    console.log("Namelist", lists.nameList);
-    // console.log("Namelist", lists.nameList);
-    // console.log("Namelist", lists.nameList);
-    //  console.log(options);
-  };
-
   let selectedPatient = (selected: any, type: string) => {
-    // console.log(selected ? selected[0].label : null);
-    // console.log("LIST", patientsList);
-
     for (let patient of patientsList) {
-      //console.log("found", patient[type]);
-      if (patient[type] == selected[0].label) {
+      if (patient[type] === selected[0].label) {
         console.log("found", patient);
         setSearchedPatient(patient);
       }
@@ -63,15 +52,13 @@ const Search: React.FC = Props => {
   };
 
   let newPatientAdded = () => {
-    console.log(window.location.hash);
-    if (window.location.hash == "#success")
-      toastr.success("New Painent", "Added Successfuly");
+    console.log("Location Hash: ", window.location.hash);
+    if (window.location.hash === "#success")
+      toastr.success("New Patient", "Added Successfuly");
   };
 
   let handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     let button = e.target as HTMLInputElement;
-    console.log(button.name);
-    // console.log(searchedPatient);}
     history.push({ pathname: `/main/${button.name}`, state: searchedPatient });
   };
   return (
