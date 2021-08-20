@@ -1,29 +1,18 @@
-import React, { Fragment, useState, useContext } from "react";
+import React, { Fragment, useEffect } from "react";
 import Navigation from "./common_components/navigation";
 import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
 
-import ReduxToastr, {
-  reducer as toastrReducer,
-  toastr
-} from "react-redux-toastr";
+import ReduxToastr, { reducer as toastrReducer } from "react-redux-toastr";
 
 import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
 import "react-bootstrap-typeahead/css/Typeahead.css";
+import { Route, Switch, Redirect, useRouteMatch } from "react-router-dom";
+
 import Search from "./search";
-import {
-  Route,
-  Switch,
-  BrowserRouter as Router,
-  Link,
-  Redirect,
-  useRouteMatch
-} from "react-router-dom";
 import History from "./history";
 import Visit from "./visit";
-import NewPatient from "./newPatient";
-
-// import ".././App.css";
+import NewPatient from "./NewPatient";
 
 export interface MainProps {}
 
@@ -32,7 +21,9 @@ const Main: React.FC<MainProps> = () => {
     toastr: toastrReducer
   });
   const store = createStore(reducers);
-  let { path } = useRouteMatch();
+
+  const { path } = useRouteMatch();
+
   return (
     <Fragment>
       <Navigation />
@@ -43,7 +34,6 @@ const Main: React.FC<MainProps> = () => {
             newestOnTop={false}
             preventDuplicates
             position="top-right"
-            //  getState={state => state.toastr} // This is the default
             transitionIn="fadeIn"
             transitionOut="fadeOut"
             progressBar
@@ -52,15 +42,13 @@ const Main: React.FC<MainProps> = () => {
         </div>
       </Provider>
 
-      {/* <p> Main Page</p> */}
-
-      <Router>
-        <Route path="/main/search" component={Search} />
-        <Route path="/main/history" component={History} />
-        <Route path="/main/visit" component={Visit} />
-        <Route path="/main/newPatient" component={NewPatient} />
-        <Redirect to="/main/search" />
-      </Router>
+      <Switch>
+        <Route path={`${path}/search`} component={Search} />
+        <Route path={`${path}/history`} component={History} />
+        <Route path={`${path}/visit`} component={Visit} />
+        <Route path={`${path}/newPatient`} component={NewPatient} />
+        <Redirect to={`${path}/search`} />
+      </Switch>
     </Fragment>
   );
 };

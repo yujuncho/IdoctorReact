@@ -1,9 +1,9 @@
-export interface Prop {
+export interface ButtonProps {
   children: JSX.Element | string;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const Button = (props: Prop) => {
+const Button = (props: ButtonProps) => {
   let { onClick, children } = props;
 
   return (
