@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Axios from "axios";
 
 import { AuthContext } from "../store/auth-context";
@@ -21,7 +21,6 @@ export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoginPage, setIsLoginPage] = useState<null | boolean>(null);
 
-  const history = useHistory();
   const { pathname } = useLocation();
   const page = pathname === "/login" ? AuthType.LOGIN : AuthType.SIGNUP;
 
@@ -82,21 +81,18 @@ export default function Auth() {
     if (formIsValid) {
       try {
         let {
-          data: { userId, token }
+          data: { userId, token, email }
         } = await Axios.post(`/api/user${pathname}`, formData);
-        authContext.login(userId, token);
-        history.push("/main");
-        setErrorMessage(null);
+        authContext.login(userId, token, email);
       } catch (error) {
         if (error.response) {
           setErrorMessage(error.response.data.message);
         } else {
           setErrorMessage(error.message);
         }
+        setIsLoading(false);
       }
     }
-
-    setIsLoading(false);
   };
 
   const formError =

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import Navigation from "./common_components/navigation";
 import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";

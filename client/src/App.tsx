@@ -19,10 +19,6 @@ import { useAuth } from "./hooks/auth-hook";
 const App: React.FC = () => {
   const { userData, login, logout, checkedStorage } = useAuth();
 
-  if (!checkedStorage) {
-    return <Loader />;
-  }
-
   let routes;
   if (userData.token) {
     routes = (
@@ -41,6 +37,10 @@ const App: React.FC = () => {
         <Redirect to="/" />
       </Switch>
     );
+  }
+
+  if (!checkedStorage) {
+    return <Loader />;
   }
 
   return (
