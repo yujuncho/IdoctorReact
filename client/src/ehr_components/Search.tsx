@@ -43,6 +43,11 @@ const Search: React.FC = Props => {
   }, []);
 
   let selectedPatient = (selected: any, type: string) => {
+    if (selected === null) {
+      setSearchedPatient(null);
+      return;
+    }
+
     for (let patient of patientsList) {
       if (patient[type] === selected[0].label) {
         console.log("found", patient);
@@ -84,13 +89,15 @@ const Search: React.FC = Props => {
           <AutoComplete
             title={"Patient DOB"}
             options={options?.DOBList}
-            selected={selectedPatient}
+            selected={(selected: any) => selectedPatient(selected, "dob")}
           />
           <br />
           <AutoComplete
             options={options?.numberList}
             title={"Patient Phone Number"}
-            selected={selectedPatient}
+            selected={(selected: any) =>
+              selectedPatient(selected, "phoneNumber")
+            }
           />
           <br />
           <div className="row">

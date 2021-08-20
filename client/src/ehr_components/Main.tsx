@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import Navigation from "./common_components/navigation";
 import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
@@ -9,9 +9,9 @@ import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import { Route, Switch, Redirect, useRouteMatch } from "react-router-dom";
 
-import Search from "./search";
-import History from "./history";
-import Visit from "./visit";
+import Search from "./Search";
+import History from "./History";
+import Visit from "./Visit";
 import NewPatient from "./NewPatient";
 
 export interface MainProps {}
