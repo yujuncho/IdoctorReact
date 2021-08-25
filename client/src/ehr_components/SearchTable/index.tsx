@@ -1,10 +1,21 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Column, Row, Cell, HeaderGroup } from "react-table";
 
 import Table from "../ui/Table";
+import { Patient } from "../NewPatient";
+import ActionsCell from "./ActionsCell";
 
 type SearchTableProps = {
-  onButtonClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  patientsList: Patient[];
+};
+
+type TableData = {
+  name: string;
+  dob: string;
+  phoneNumber: string;
+  actions?: string;
+  patient?: object;
 };
 
 let columnWidths: { [char: string]: string } = {
@@ -19,14 +30,7 @@ let columnStyles: { [char: string]: string } = {
 };
 
 export default function SearchTable(props: SearchTableProps) {
-  type TableData = {
-    name: string;
-    dob: string;
-    phoneNumber: string;
-    actions?: string;
-  };
-
-  let { onButtonClick } = props;
+  let { patientsList } = props;
 
   const columns: Array<Column<TableData>> = useMemo(
     () => [
@@ -53,50 +57,19 @@ export default function SearchTable(props: SearchTableProps) {
         accessor: "actions",
         className: `${columnWidths["actions"]} align-self-stretch d-none d-md-block`,
         style: columnStyles,
-        Cell: ({ value: initialValue, row: { index }, column: { id } }) => {
-          return (
-            <div className="text-left text-md-right">
-              <button
-                className="btn btn-outline-primary"
-                onClick={onButtonClick}
-                name="history"
-              >
-                Edit History
-              </button>
-              <button
-                className="btn btn-outline-primary ml-4"
-                onClick={onButtonClick}
-                name="visit"
-              >
-                New Visit
-              </button>
-            </div>
-          );
-        }
-      }
-    ],
-    [onButtonClick]
-  );
-
-  const data = useMemo(
-    () => [
-      {
-        name: "Mark G",
-        dob: "1960-12-1",
-        phoneNumber: "913-182-1853"
-      },
-      {
-        name: "Mark G",
-        dob: "1960-12-1",
-        phoneNumber: "913-182-1853"
-      },
-      {
-        name: "Mark G",
-        dob: "1960-12-1",
-        phoneNumber: "913-182-1853"
+        Cell: ActionsCell
       }
     ],
     []
+  );
+
+  const data = useMemo(
+    () =>
+      patientsList.map(patient => {
+        let { fullName: name, dob, phoneNumber } = patient;
+        return { name, dob, phoneNumber, patient };
+      }),
+    [patientsList]
   );
 
   return (

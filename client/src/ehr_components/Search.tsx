@@ -1,21 +1,21 @@
-import React, { Fragment, useState, useEffect, useCallback } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
 import AutoComplete from "./ui/autoComplete";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 
 import SearchTable from "./SearchTable/";
+import { Patient } from "./NewPatient";
 
 const Search: React.FC = Props => {
-  const [searchedPatient, setSearchedPatient] = useState<any>(null);
-  const [patientsList, setPatientsList] = useState<any>([]);
+  const [patientsList, setPatientsList] = useState<Patient[]>([]);
   const [options, setOptions] = useState<any>();
   const history = useHistory();
 
   useEffect(() => {
     console.log(new Date(Date.now()).toISOString(), "FETCHING PATIENTS");
     newPatientAdded();
-    // Update the document title using the browser API
+
     let nameList: any[] = [];
     let numberList: any[] = [];
     let DOBList: any[] = [];
@@ -37,26 +37,14 @@ const Search: React.FC = Props => {
         console.log(
           new Date(Date.now()).toISOString(),
           "RETRIEVED PATIENTS",
-          nameList
+          list
         );
         setPatientsList(list);
         setOptions({ nameList, numberList, DOBList });
       });
   }, []);
 
-  let selectedPatient = (selected: any, type: string) => {
-    if (selected === null) {
-      setSearchedPatient(null);
-      return;
-    }
-
-    for (let patient of patientsList) {
-      if (patient[type] === selected[0].label) {
-        console.log("found", patient);
-        setSearchedPatient(patient);
-      }
-    }
-  };
+  let selectedPatient = (selected: any, type: string) => {};
 
   let newPatientAdded = () => {
     console.log("Location Hash: ", window.location.hash);
@@ -64,16 +52,14 @@ const Search: React.FC = Props => {
       toastr.success("New Patient", "Added Successfuly");
   };
 
-  let handleClick = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      let button = e.target as HTMLInputElement;
-      history.push({
-        pathname: `/main/${button.name}`,
-        state: searchedPatient
-      });
-    },
-    [history, searchedPatient]
-  );
+  let handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    let { name: btnName } = e.target as HTMLInputElement;
+
+    history.push({
+      pathname: `/main/${btnName}`
+    });
+  };
+
   return (
     <Fragment>
       <div className="container pt-2">
@@ -101,7 +87,7 @@ const Search: React.FC = Props => {
           selected={(selected: any) => selectedPatient(selected, "phoneNumber")}
         />
         <br />
-        <SearchTable onButtonClick={handleClick} />
+        <SearchTable patientsList={patientsList} />
       </div>
     </Fragment>
   );

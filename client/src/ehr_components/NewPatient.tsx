@@ -10,10 +10,22 @@ export interface NewPatientProps {
   added: Function;
 }
 
+export interface Patient {
+  id?: string;
+  fullName: string;
+  dob: string;
+  phoneNumber: string;
+  address: string;
+  zipCode: string;
+  gender: string;
+  job: string;
+  maritalStatus: string;
+}
+
 const NewPatient: React.FC<NewPatientProps> = props => {
   const history = useHistory();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Patient>({
     fullName: "",
     dob: "",
     phoneNumber: "",
