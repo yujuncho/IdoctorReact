@@ -51,7 +51,7 @@ const History: React.FC<HistoryProps> = props => {
   let currentUser: User = history.location.state as User;
 
   useEffect(() => {
-    console.log(currentUser.history?.note);
+    console.log("History note: ", currentUser.history?.note);
     setMedicalHistory({ ...medicalHistory, notes: currentUser.history?.note });
   }, []);
 

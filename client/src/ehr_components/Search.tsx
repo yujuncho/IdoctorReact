@@ -1,8 +1,10 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
 import AutoComplete from "./ui/autoComplete";
 import "react-bootstrap-typeahead/css/Typeahead.css";
+
+import SearchTable from "./SearchTable/";
 
 const Search: React.FC = Props => {
   const [searchedPatient, setSearchedPatient] = useState<any>(null);
@@ -62,69 +64,44 @@ const Search: React.FC = Props => {
       toastr.success("New Patient", "Added Successfuly");
   };
 
-  let handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    let button = e.target as HTMLInputElement;
-    history.push({ pathname: `/main/${button.name}`, state: searchedPatient });
-  };
+  let handleClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      let button = e.target as HTMLInputElement;
+      history.push({
+        pathname: `/main/${button.name}`,
+        state: searchedPatient
+      });
+    },
+    [history, searchedPatient]
+  );
   return (
     <Fragment>
       <div className="container pt-2">
-        <Fragment>
-          <button
-            className="bttn-custom"
-            name="newPatient"
-            onClick={handleClick}
-          >
-            Add New Patient
-          </button>
+        <button className="bttn-custom" name="newPatient" onClick={handleClick}>
+          Add New Patient
+        </button>
 
-          <br />
-          <br />
-          <AutoComplete
-            title={"Patient Name"}
-            options={options?.nameList}
-            selected={(selected: any) => selectedPatient(selected, "fullName")}
-          />
-          <br />
-          <AutoComplete
-            title={"Patient DOB"}
-            options={options?.DOBList}
-            selected={(selected: any) => selectedPatient(selected, "dob")}
-          />
-          <br />
-          <AutoComplete
-            options={options?.numberList}
-            title={"Patient Phone Number"}
-            selected={(selected: any) =>
-              selectedPatient(selected, "phoneNumber")
-            }
-          />
-          <br />
-          <div className="row">
-            <div className="  col-6 col-sm-6 pr-4">
-              <button
-                className="bttn-custom "
-                style={{ float: "right" }}
-                disabled={searchedPatient == null}
-                onClick={handleClick}
-                name="visit"
-              >
-                New Visit
-              </button>
-            </div>
-            <div className="col-6 col-sm-6 pl-4">
-              <button
-                className="bttn-custom"
-                style={{ float: "left" }}
-                disabled={searchedPatient == null}
-                onClick={e => handleClick(e)}
-                name="history"
-              >
-                Edit History
-              </button>
-            </div>
-          </div>
-        </Fragment>
+        <br />
+        <br />
+        <AutoComplete
+          title={"Patient Name"}
+          options={options?.nameList}
+          selected={(selected: any) => selectedPatient(selected, "fullName")}
+        />
+        <br />
+        <AutoComplete
+          title={"Patient DOB"}
+          options={options?.DOBList}
+          selected={(selected: any) => selectedPatient(selected, "dob")}
+        />
+        <br />
+        <AutoComplete
+          options={options?.numberList}
+          title={"Patient Phone Number"}
+          selected={(selected: any) => selectedPatient(selected, "phoneNumber")}
+        />
+        <br />
+        <SearchTable onButtonClick={handleClick} />
       </div>
     </Fragment>
   );
