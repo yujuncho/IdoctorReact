@@ -1,31 +1,49 @@
-import React, { Fragment, useState, useContext } from "react";
+import { Fragment, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { ClearButton, Typeahead } from "react-bootstrap-typeahead";
+import {
+  ClearButton,
+  Typeahead,
+  Menu,
+  MenuItem
+} from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 
 function AutoComplete(props) {
-  let { options, multiple } = props;
+  let { name, placeholder, options, multiple, onSelect, className } = props;
+  const [focus, setFocus] = useState(false);
 
-  const [focus, setCount] = useState(false);
-  const [currentText, setCurrentText] = useState(false);
-  // let patient = useContext(PatientContext);
+  const onChange = selected => {
+    if (selected.length !== 0) {
+      onSelect(selected[0]);
+    } else {
+      onSelect("");
+    }
+  };
+
+  const renderMenu = (results, menuProps) => {
+    return (
+      <Menu className="shadow" {...menuProps}>
+        {results.map((result, index) => (
+          <MenuItem option={result} position={index} key={result.id || index}>
+            {result.label}
+          </MenuItem>
+        ))}
+      </Menu>
+    );
+  };
 
   return (
     <Fragment>
       <Typeahead
-        id="onclear-example"
+        id={name}
         options={options ? options : []}
-        onChange={selected => {
-          if (selected.length != 0) props.selected(selected);
-          else props.selected(null);
-        }}
-        onInputChange={(value, onClear) => {
-          value && <ClearButton onClick={onClear} />;
-        }}
-        placeholder={"Search " + props.title}
-        onFocus={() => setCount(true)}
-        onBlur={() => setCount(false)}
+        onChange={onChange}
+        placeholder={"Search " + placeholder}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
         multiple={multiple}
+        className={className}
+        renderMenu={renderMenu}
       >
         {({ onClear, selected, value }) => (
           <div className="rbt-aux">

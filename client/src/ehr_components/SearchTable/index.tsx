@@ -1,32 +1,22 @@
-import React, { useMemo, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useMemo } from "react";
 import { Column, Row, Cell, HeaderGroup } from "react-table";
 
 import Table from "../ui/Table";
 import { Patient } from "../NewPatient";
 import ActionsCell from "./ActionsCell";
+import FiltersGroup from "./FiltersGroup";
+import { columnStyles, columnWidths } from "./styles";
 
 type SearchTableProps = {
   patientsList: Patient[];
 };
 
 type TableData = {
-  name: string;
+  fullName: string;
   dob: string;
   phoneNumber: string;
   actions?: string;
   patient?: object;
-};
-
-let columnWidths: { [char: string]: string } = {
-  name: "col-5 col-md-3",
-  dob: "col-3 col-md-2",
-  phoneNumber: "col-4 col-md-2",
-  actions: "col-12 col-md-5"
-};
-let columnStyles: { [char: string]: string } = {
-  verticalAlign: "middle",
-  textAlign: "left"
 };
 
 export default function SearchTable(props: SearchTableProps) {
@@ -36,41 +26,51 @@ export default function SearchTable(props: SearchTableProps) {
     () => [
       {
         Header: "Name",
-        accessor: "name",
-        className: columnWidths["name"],
-        style: columnStyles
+        accessor: "fullName",
+        get className(): string {
+          return columnWidths[this.accessor];
+        },
+        style: columnStyles,
+        filter: "fuzzyText"
       },
       {
         Header: "Birth Date",
         accessor: "dob",
-        className: columnWidths["dob"],
-        style: columnStyles
+        get className(): string {
+          return columnWidths[this.accessor];
+        },
+        style: columnStyles,
+        filter: "fuzzyText"
       },
       {
         Header: "Phone",
         accessor: "phoneNumber",
-        className: columnWidths["phoneNumber"],
-        style: columnStyles
+        get className(): string {
+          return columnWidths[this.accessor];
+        },
+        style: columnStyles,
+        filter: "fuzzyText"
       },
       {
         Header: "",
         accessor: "actions",
-        className: `${columnWidths["actions"]} align-self-stretch d-none d-md-block`,
+        get className(): string {
+          return `${columnWidths["actions"]} align-self-stretch d-none d-md-block`;
+        },
         style: columnStyles,
+        disableFilters: true,
         Cell: ActionsCell
       }
     ],
     []
   );
 
-  const data = useMemo(
-    () =>
-      patientsList.map(patient => {
-        let { fullName: name, dob, phoneNumber } = patient;
-        return { name, dob, phoneNumber, patient };
-      }),
-    [patientsList]
-  );
+  const data = useMemo(() => {
+    return patientsList.map(patient => {
+      let { fullName, dob, phoneNumber } = patient;
+      return { fullName, dob, phoneNumber, patient };
+    });
+  }, [patientsList]);
 
   return (
     <Table<TableData>
@@ -85,6 +85,8 @@ export default function SearchTable(props: SearchTableProps) {
       getHeaderGroupProps={(headerGroup: HeaderGroup) => ({
         className: "d-flex flex-wrap align-items-center"
       })}
+      showOnFilter={true}
+      FiltersGroup={FiltersGroup}
     />
   );
 }

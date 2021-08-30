@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
-import AutoComplete from "./ui/autoComplete";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 
 import SearchTable from "./SearchTable/";
@@ -9,7 +8,6 @@ import { Patient } from "./NewPatient";
 
 const Search: React.FC = Props => {
   const [patientsList, setPatientsList] = useState<Patient[]>([]);
-  const [options, setOptions] = useState<any>();
   const history = useHistory();
 
   useEffect(() => {
@@ -40,11 +38,8 @@ const Search: React.FC = Props => {
           list
         );
         setPatientsList(list);
-        setOptions({ nameList, numberList, DOBList });
       });
   }, []);
-
-  let selectedPatient = (selected: any, type: string) => {};
 
   let newPatientAdded = () => {
     console.log("Location Hash: ", window.location.hash);
@@ -63,30 +58,13 @@ const Search: React.FC = Props => {
   return (
     <Fragment>
       <div className="container pt-2">
-        <button className="bttn-custom" name="newPatient" onClick={handleClick}>
+        <button
+          className="bttn-custom mb-5"
+          name="newPatient"
+          onClick={handleClick}
+        >
           Add New Patient
         </button>
-
-        <br />
-        <br />
-        <AutoComplete
-          title={"Patient Name"}
-          options={options?.nameList}
-          selected={(selected: any) => selectedPatient(selected, "fullName")}
-        />
-        <br />
-        <AutoComplete
-          title={"Patient DOB"}
-          options={options?.DOBList}
-          selected={(selected: any) => selectedPatient(selected, "dob")}
-        />
-        <br />
-        <AutoComplete
-          options={options?.numberList}
-          title={"Patient Phone Number"}
-          selected={(selected: any) => selectedPatient(selected, "phoneNumber")}
-        />
-        <br />
         <SearchTable patientsList={patientsList} />
       </div>
     </Fragment>
