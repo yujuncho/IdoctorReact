@@ -19,6 +19,7 @@ interface HeaderGroupProperties<T extends Record<string, unknown>>
 interface TableProperties<T extends Record<string, unknown>>
   extends TableOptions<T> {
   getHeaderGroupProps?: Function;
+  headerProps?: Object;
   getRowProps?: Function;
   getCellProps?: Function;
   showOnFilter?: boolean;
@@ -33,6 +34,7 @@ export default function Table<T extends Record<string, unknown>>(
     data,
     getRowProps,
     getCellProps,
+    headerProps,
     getHeaderGroupProps,
     showOnFilter,
     FiltersGroup
@@ -74,13 +76,16 @@ export default function Table<T extends Record<string, unknown>>(
     <>
       {FiltersGroup && <FiltersGroup columns={allColumns} />}
       {showTable && (
-        <div className="table-responsive table-borderless border shadow">
+        <div
+          className="table-responsive table-borderless border shadow mb-5"
+          style={{ maxHeight: 440 }}
+        >
           <table
             className="table table-striped mb-0"
-            style={{ minWidth: "480px" }}
+            style={{ minWidth: 440 }}
             {...getTableProps()}
           >
-            <thead>
+            <thead {...headerProps}>
               {headerGroups.map(headerGroup => (
                 <tr
                   {...headerGroup.getHeaderGroupProps([

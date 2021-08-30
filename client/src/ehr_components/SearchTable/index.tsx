@@ -82,6 +82,15 @@ export default function SearchTable(props: SearchTableProps) {
       getRowProps={(row: Row) => ({
         className: "d-flex flex-wrap align-items-center border-top"
       })}
+      headerProps={{
+        className: "bg-white",
+        style: {
+          boxShadow: "inset 0px 0px #000, 0 1px #000",
+          position: "sticky",
+          top: "0",
+          zIndex: "1"
+        }
+      }}
       getHeaderGroupProps={(headerGroup: HeaderGroup) => ({
         className: "d-flex flex-wrap align-items-center"
       })}
