@@ -4,7 +4,8 @@ import {
   TableOptions,
   HeaderGroup,
   Column,
-  useFilters
+  useFilters,
+  useSortBy
 } from "react-table";
 
 import DefaultColumnFilter from "../SearchTable/DefaultColumnFilter";
@@ -64,13 +65,32 @@ export default function Table<T extends Record<string, unknown>>(
       defaultColumn,
       filterTypes
     },
-    useFilters
+    useFilters,
+    useSortBy
   );
 
   let showTable = true;
   if (showOnFilter && filteredRows.length === data.length) {
     showTable = false;
   }
+
+  let renderSortIcon = <T extends Record<string, unknown>>(
+    column: HeaderGroupProperties<T>
+  ) => {
+    if (column.canSort) {
+      if (column.isSorted) {
+        if (column.isSortedDesc) {
+          return <i className="fa fa-sort-down" />;
+        } else {
+          return <i className="fa fa-sort-up" />;
+        }
+      } else {
+        return <i className="fa fa-sort text-muted" />;
+      }
+    } else {
+      return "";
+    }
+  };
 
   return (
     <>
@@ -100,10 +120,12 @@ export default function Table<T extends Record<string, unknown>>(
                           {
                             className: column.className || "",
                             style: column.style || {}
-                          }
+                          },
+                          column.getSortByToggleProps()
                         ])}
                       >
                         {column.render("Header")}
+                        <span className="pl-2">{renderSortIcon(column)}</span>
                       </th>
                     )
                   )}

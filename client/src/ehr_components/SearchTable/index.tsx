@@ -59,6 +59,7 @@ export default function SearchTable(props: SearchTableProps) {
         },
         style: columnStyles,
         disableFilters: true,
+        disableSortBy: true,
         Cell: ActionsCell
       }
     ],
