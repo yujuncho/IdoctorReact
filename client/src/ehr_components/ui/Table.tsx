@@ -133,6 +133,13 @@ export default function Table<T extends Record<string, unknown>>(
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
+              {rows.length === 0 && (
+                <tr>
+                  <td>
+                    <h3 className="m-0 p-3">No matches found</h3>
+                  </td>
+                </tr>
+              )}
               {rows.map((row, i) => {
                 prepareRow(row);
                 return (

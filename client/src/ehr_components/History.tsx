@@ -98,7 +98,7 @@ const History: React.FC<HistoryProps> = props => {
           <form className="col-9">
             <Field name="chronic_diseases" label="Chronic Diseases">
               <AutoComplete
-                id="Chronic Diseases"
+                name="Chronic Diseases"
                 placeholder="Chronic Diseases"
                 multiple={true}
                 options={diseases}

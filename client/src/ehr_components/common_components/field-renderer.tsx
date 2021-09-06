@@ -66,9 +66,9 @@ const FieldRenderer = function (props: Props) {
       case "Autocomplete":
         return (
           <AutoComplete
-            title={placeholder}
+            placeholder={placeholder}
             options={options}
-            selected={onACChange(name)}
+            onSelect={onACChange(name)}
           />
         );
 
