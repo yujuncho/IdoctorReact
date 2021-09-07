@@ -51,7 +51,7 @@ const History: React.FC<HistoryProps> = props => {
   let currentUser: User = history.location.state as User;
 
   useEffect(() => {
-    console.log(currentUser.history?.note);
+    console.log("History note: ", currentUser.history?.note);
     setMedicalHistory({ ...medicalHistory, notes: currentUser.history?.note });
   }, []);
 
@@ -98,10 +98,11 @@ const History: React.FC<HistoryProps> = props => {
           <form className="col-9">
             <Field name="chronic_diseases" label="Chronic Diseases">
               <AutoComplete
-                title="Chronic Diseases"
+                name="Chronic Diseases"
+                placeholder="Chronic Diseases"
                 multiple={true}
                 options={diseases}
-                selected={handleDiseaseChange}
+                onSelect={handleDiseaseChange}
               />
             </Field>
 
@@ -203,9 +204,10 @@ const History: React.FC<HistoryProps> = props => {
 
             <Field name="blood_group" label="Blood Group">
               <AutoComplete
-                title="Blood Group"
+                name="Blood Group"
+                placeholder="Blood Group"
                 options={bloodGroups}
-                selected={handleBloodGroupChange}
+                onSelect={handleBloodGroupChange}
               />
             </Field>
 
