@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
 import { Document } from "mongoose";
-import { validationResult, ValidationError } from "express-validator";
 
 import PatientModel, { IPatient } from "../models/PatientModel";
+import validationErrorHandler from "../utils/validation-error-handler";
 
 const getAllPatients: RequestHandler = async (req, res, next) => {
   let patients;
@@ -21,6 +21,12 @@ const getAllPatients: RequestHandler = async (req, res, next) => {
 };
 
 const createPatient: RequestHandler = async (req, res, next) => {
+  const validationError = validationErrorHandler(req, res);
+
+  if (validationError) {
+    return validationError;
+  }
+
   const {
     fullName,
     dob,
@@ -41,7 +47,18 @@ const createPatient: RequestHandler = async (req, res, next) => {
     zipCode,
     maritalStatus,
     job,
-    history: {},
+    history: {
+      chronic_diseases: "",
+      previous_admission: "",
+      past_surgery: "",
+      fractures: "",
+      family_history: "",
+      drug_allergy: "",
+      chronic_drug_usage: "",
+      smoking_status: "",
+      alcohol: "",
+      notes: ""
+    },
     visits: []
   });
 
@@ -55,18 +72,24 @@ const createPatient: RequestHandler = async (req, res, next) => {
 };
 
 const updateHistory: RequestHandler = async (req, res, next) => {
+  const validationError = validationErrorHandler(req, res);
+
+  if (validationError) {
+    return validationError;
+  }
+
   const {
     patient,
-    chronic_diseases = "",
-    previous_admission = "",
-    past_surgery = "",
-    fractures = "",
-    family_history = "",
-    drug_allergy = "",
-    chronic_drug_usage = "",
-    smoking_status = "",
-    alcohol = "",
-    notes = ""
+    chronic_diseases,
+    previous_admission,
+    past_surgery,
+    fractures,
+    family_history,
+    drug_allergy,
+    chronic_drug_usage,
+    smoking_status,
+    alcohol,
+    notes
   } = req.body;
 
   let foundPatient: (IPatient & Document<any, any, IPatient>) | null;
@@ -82,16 +105,19 @@ const updateHistory: RequestHandler = async (req, res, next) => {
       .json({ message: "Could not find patient for given patient ID" });
   }
 
-  foundPatient.history.chronic_diseases = chronic_diseases;
-  foundPatient.history.previous_admission = previous_admission;
-  foundPatient.history.past_surgery = past_surgery;
-  foundPatient.history.fractures = fractures;
-  foundPatient.history.family_history = family_history;
-  foundPatient.history.drug_allergy = drug_allergy;
-  foundPatient.history.chronic_drug_usage = chronic_drug_usage;
-  foundPatient.history.smoking_status = smoking_status;
-  foundPatient.history.alcohol = alcohol;
-  foundPatient.history.notes = notes;
+  if (chronic_diseases)
+    foundPatient.history.chronic_diseases = chronic_diseases;
+  if (previous_admission)
+    foundPatient.history.previous_admission = previous_admission;
+  if (past_surgery) foundPatient.history.past_surgery = past_surgery;
+  if (fractures) foundPatient.history.fractures = fractures;
+  if (family_history) foundPatient.history.family_history = family_history;
+  if (drug_allergy) foundPatient.history.drug_allergy = drug_allergy;
+  if (chronic_drug_usage)
+    foundPatient.history.chronic_drug_usage = chronic_drug_usage;
+  if (smoking_status) foundPatient.history.smoking_status = smoking_status;
+  if (alcohol) foundPatient.history.alcohol = alcohol;
+  if (notes) foundPatient.history.notes = notes;
 
   let updatedPatient: (IPatient & Document<any, any, IPatient>) | null;
   try {

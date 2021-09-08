@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
 import { Document, startSession } from "mongoose";
-import { validationResult, ValidationError } from "express-validator";
 
 import PatientModel, { IPatient } from "../models/PatientModel";
 import PatientVisitModel from "../models/PatientVisitModel";
+import validationErrorHandler from "../utils/validation-error-handler";
 
 const getVisitsByPatientId: RequestHandler = async (req, res, next) => {
   let patientId = req.params.patientId;
@@ -32,6 +32,12 @@ const getVisitsByPatientId: RequestHandler = async (req, res, next) => {
 };
 
 const createVisit: RequestHandler = async (req, res, next) => {
+  const validationError = validationErrorHandler(req, res);
+
+  if (validationError) {
+    return validationError;
+  }
+
   const {
     patient,
     date,
