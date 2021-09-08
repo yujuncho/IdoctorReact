@@ -1,23 +1,99 @@
 import { toastr } from "react-redux-toastr";
 import { useCallback, useState } from "react";
+import { useLocation, useHistory } from "react-router-dom";
+
+import Axios from "axios";
+
 import Button from "./ui/button";
 import { labInvOptions, reviewsOptions, yesOrNoOptions } from "./data/visit";
 import FieldRenderer from "./common_components/field-renderer";
 import Field from "./ui/field";
 import Input from "./ui/input";
+import { Patient } from "./NewPatient";
 
 export interface VisitProps {
   added: Function;
 }
 
-const initialState: any = {};
+interface PatientVisit {
+  patient: string;
+  date: string;
+  complaint: string;
+  present_illness_history: string;
+  other_system_review: string;
+  bp_dia: string;
+  bp_sys: string;
+  pulse_rate: string;
+  temperature: string;
+  respiratory_rate: string;
+  spo2: string;
+  weight: string;
+  height: string;
+  bmi: string;
+  lab_investigation: string;
+  diagnosis: string;
+  treatment: string;
+  is_free: string;
+  is_review: string;
+  is_referred: string;
+  cost: string;
+  notes: string;
+}
+
+const initialVisitState: PatientVisit = {
+  patient: "",
+  date: "",
+  complaint: "",
+  present_illness_history: "",
+  other_system_review: "",
+  bp_dia: "",
+  bp_sys: "",
+  pulse_rate: "",
+  temperature: "",
+  respiratory_rate: "",
+  spo2: "",
+  weight: "",
+  height: "",
+  bmi: "",
+  lab_investigation: "",
+  diagnosis: "",
+  treatment: "",
+  is_free: "",
+  is_review: "",
+  is_referred: "",
+  cost: "",
+  notes: ""
+};
 
 const Visit: React.FC<VisitProps> = () => {
-  let [medicalVisit, setMedicalVisit] = useState(initialState);
+  let history = useHistory();
+  let { state: patientState } = useLocation<Patient>();
 
-  let handleClick = () => {
-    toastr.success("Patient Medical Visit", "Added Successfully");
-    console.log(medicalVisit);
+  let [medicalVisit, setMedicalVisit] = useState<PatientVisit>({
+    ...initialVisitState,
+    patient: patientState.id || ""
+  });
+
+  let handleClick = async () => {
+    try {
+      let response = await Axios.post("/api/visits", medicalVisit);
+      console.log("CREATED VISIT", response.data.visit);
+      toastr.success("Patient Visit", "Added Successfully");
+      history.push("/main/search");
+    } catch (error: any) {
+      let message;
+      if (error.response) {
+        if (error.response.data.errors) {
+          let errors = error.response.data.errors as string[];
+          message = errors.join(". ");
+        } else {
+          message = error.response.data.message;
+        }
+      } else {
+        message = error.message;
+      }
+      toastr.error("New Patient", message);
+    }
   };
 
   let handleFieldChange = useCallback(
@@ -27,17 +103,14 @@ const Visit: React.FC<VisitProps> = () => {
         | React.ChangeEvent<HTMLInputElement>
         | React.ChangeEvent<HTMLTextAreaElement>
     ) => {
-      updateState(fieldName, event.target.value);
+      let { value } = event.target;
+      setMedicalVisit(prevState => {
+        let newState = { ...prevState };
+        newState[fieldName as keyof PatientVisit] = value;
+        return newState;
+      });
     },
     []
-  );
-
-  let updateState = useCallback(
-    (fieldName: string, value: any) => {
-      medicalVisit[fieldName] = value;
-      setMedicalVisit({ ...medicalVisit });
-    },
-    [medicalVisit]
   );
 
   let fieldsMap = [

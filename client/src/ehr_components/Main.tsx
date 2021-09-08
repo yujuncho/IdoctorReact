@@ -1,9 +1,7 @@
 import React, { Fragment } from "react";
 import Navigation from "./common_components/navigation";
-import { createStore, combineReducers } from "redux";
-import { Provider } from "react-redux";
 
-import ReduxToastr, { reducer as toastrReducer } from "react-redux-toastr";
+import ReduxToastr from "react-redux-toastr";
 
 import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
 import "react-bootstrap-typeahead/css/Typeahead.css";
@@ -17,30 +15,21 @@ import NewPatient from "./NewPatient";
 export interface MainProps {}
 
 const Main: React.FC<MainProps> = () => {
-  const reducers = combineReducers({
-    toastr: toastrReducer
-  });
-  const store = createStore(reducers);
-
   const { path } = useRouteMatch();
 
   return (
     <Fragment>
       <Navigation />
-      <Provider store={store}>
-        <div>
-          <ReduxToastr
-            timeOut={4000}
-            newestOnTop={false}
-            preventDuplicates
-            position="top-right"
-            transitionIn="fadeIn"
-            transitionOut="fadeOut"
-            progressBar
-            closeOnToastrClick
-          />
-        </div>
-      </Provider>
+      <ReduxToastr
+        timeOut={4000}
+        newestOnTop={false}
+        preventDuplicates
+        position="top-right"
+        transitionIn="fadeIn"
+        transitionOut="fadeOut"
+        progressBar
+        closeOnToastrClick
+      />
 
       <Switch>
         <Route path={`${path}/search`} component={Search} />

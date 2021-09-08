@@ -10,7 +10,8 @@ visitsRoutes.post(
   "/",
   [
     check("patient").not().isEmpty().withMessage("must not be empty"),
-    check("date").isDate().withMessage("is an invalid date")
+    check("date").isDate().withMessage("is an invalid date"),
+    check("complaint").not().isEmpty().withMessage("must not be empty")
   ],
   visitsController.createVisit
 );
