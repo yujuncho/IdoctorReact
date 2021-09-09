@@ -6,10 +6,6 @@ import Axios from "axios";
 import FieldRenderer from "./common_components/field-renderer";
 import generateNewPatientFields from "./data/new-patient-fields";
 
-export interface NewPatientProps {
-  added: Function;
-}
-
 export interface PatientHistory {
   chronic_diseases: string;
   previous_admission: string;
@@ -36,7 +32,7 @@ export interface Patient {
   history?: PatientHistory;
 }
 
-const NewPatient: React.FC<NewPatientProps> = props => {
+const NewPatient: React.FC = () => {
   const history = useHistory();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formData, setFormData] = useState<Patient>({
@@ -49,9 +45,6 @@ const NewPatient: React.FC<NewPatientProps> = props => {
     job: "",
     maritalStatus: ""
   });
-
-  const firebaseURl =
-    "https://idoctorpwa-default-rtdb.firebaseio.com/patients.json";
 
   const updateFormData = (
     fieldName: string,
