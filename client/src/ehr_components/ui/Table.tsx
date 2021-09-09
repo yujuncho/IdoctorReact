@@ -57,7 +57,7 @@ export default function Table<T extends Record<string, unknown>>(
     rows,
     allColumns,
     prepareRow,
-    filteredRows
+    state
   } = useTable(
     {
       columns,
@@ -70,7 +70,7 @@ export default function Table<T extends Record<string, unknown>>(
   );
 
   let showTable = true;
-  if (showOnFilter && filteredRows.length === data.length) {
+  if (showOnFilter && state.filters.length === 0) {
     showTable = false;
   }
 
