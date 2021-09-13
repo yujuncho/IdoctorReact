@@ -86,7 +86,7 @@ const AutoComplete = forwardRef((props: AutoCompleteProps, ref) => {
   }: TypeaheadChildrenProps) => {
     let handleClearClick = (e: React.MouseEvent<"button", MouseEvent>) => {
       onClear(e);
-      onSelect({});
+      onSelect([]);
     };
 
     return (
