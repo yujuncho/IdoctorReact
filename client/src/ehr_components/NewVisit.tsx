@@ -5,8 +5,8 @@ import { useLocation, useHistory } from "react-router-dom";
 import Axios from "axios";
 
 import FieldRenderer from "./common_components/field-renderer";
-import Field from "./ui/field";
-import Input from "./ui/input";
+import Field from "./ui/Field";
+import Input from "./ui/Input";
 import { Patient } from "./NewPatient";
 import generateNewVisitFields, { PatientVisit } from "./data/new-visit-fields";
 
@@ -39,7 +39,7 @@ const initialVisitState: PatientVisit = {
   notes: ""
 };
 
-const Visit: React.FC<VisitProps> = () => {
+const NewVisit: React.FC<VisitProps> = () => {
   let history = useHistory();
   let { state: patientState } = useLocation<Patient>();
 
@@ -121,7 +121,7 @@ const Visit: React.FC<VisitProps> = () => {
         return field.label;
       });
       let message = namesOfInvalidFields.join(", ");
-      toastr.error("Invalid inputs", `Please fix the following: ${message}`);
+      toastr.error("Invalid Inputs", `Please fix the following: ${message}`);
     }
   };
 
@@ -195,4 +195,4 @@ const Visit: React.FC<VisitProps> = () => {
   );
 };
 
-export default Visit;
+export default NewVisit;

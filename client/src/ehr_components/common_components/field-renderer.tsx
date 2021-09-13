@@ -1,8 +1,8 @@
-import AutoComplete from "../ui/autoComplete";
-import Field from "../ui/field";
-import Input from "../ui/input";
-import Radio from "../ui/radio";
-import TextArea from "../ui/textarea";
+import AutoComplete from "../ui/AutoComplete";
+import Field from "../ui/Field";
+import Input from "../ui/Input";
+import Radio from "../ui/Radio";
+import TextArea from "../ui/Textarea";
 import Select from "../ui/Select";
 
 export interface Props {

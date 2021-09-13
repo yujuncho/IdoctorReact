@@ -30,7 +30,7 @@ export default function ActionsCell<T extends Record<string, unknown>>(
         <button
           className="btn btn-outline-primary ml-4"
           onClick={handleClick}
-          name="visit"
+          name="newVisit"
         >
           New Visit
         </button>
