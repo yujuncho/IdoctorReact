@@ -69,7 +69,12 @@ export default function SearchTable(props: SearchTableProps) {
   const data = useMemo(() => {
     return patientsList.map(patient => {
       let { fullName, dob, phoneNumber } = patient;
-      return { fullName, dob, phoneNumber, patient };
+      let formattedNumber = `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
+        3,
+        6
+      )}-${phoneNumber.slice(6)}`;
+
+      return { fullName, dob, phoneNumber: formattedNumber, patient };
     });
   }, [patientsList]);
 

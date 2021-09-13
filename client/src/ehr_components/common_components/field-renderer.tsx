@@ -43,6 +43,9 @@ const FieldRenderer = function (props: Props) {
             placeholder={placeholder}
             value={value}
             onChange={onChange}
+            validateValue={validateValue}
+            errorMessage={errorMessage}
+            isFormSubmitted={isFormSubmitted}
           />
         );
 
