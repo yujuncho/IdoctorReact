@@ -21,6 +21,7 @@ interface AutoCompleteProps {
   name?: string;
   placeholder?: string;
   options: any[];
+  defaultSelected?: any[];
   multiple?: boolean;
   onSelect: (select: any) => void;
   onKeyDown?: (e: Event) => void;
@@ -39,6 +40,7 @@ const AutoComplete = forwardRef((props: AutoCompleteProps, ref) => {
     name,
     placeholder,
     options,
+    defaultSelected,
     multiple,
     onSelect,
     onKeyDown,
@@ -57,9 +59,7 @@ const AutoComplete = forwardRef((props: AutoCompleteProps, ref) => {
   });
 
   const handleChange = (selected: any[]) => {
-    if (selected.length !== 0) {
-      onSelect(selected);
-    }
+    onSelect(selected);
   };
 
   const handleBlur = (e: Event) => {
@@ -105,6 +105,7 @@ const AutoComplete = forwardRef((props: AutoCompleteProps, ref) => {
         ref={typeaheadRef}
         id={name}
         options={options ? options : []}
+        defaultSelected={defaultSelected ? defaultSelected : []}
         onChange={handleChange}
         onKeyDown={onKeyDown}
         placeholder={"Search " + placeholder}

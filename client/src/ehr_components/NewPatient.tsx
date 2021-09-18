@@ -6,20 +6,29 @@ import Axios from "axios";
 import FieldRenderer from "./common_components/field-renderer";
 import generateNewPatientFields from "./data/new-patient-fields";
 
-export interface PatientHistory {
-  chronic_diseases: string;
+interface ObjectKeyAccess {
+  [key: string]: string | any[] | PatientHistory | undefined;
+}
+
+export interface PatientHistory extends ObjectKeyAccess {
+  patient: string;
+  chronic_diseases: any[];
   previous_admission: string;
+  previous_admission_description: string;
   past_surgery: string;
+  past_surgery_description: string;
   fractures: string;
   family_history: string;
   drug_allergy: string;
+  drug_allergy_description: string;
   chronic_drug_usage: string;
+  blood_group: string;
   smoking_status: string;
   alcohol: string;
   notes: string;
 }
 
-export interface Patient {
+export interface Patient extends ObjectKeyAccess {
   id?: string;
   fullName: string;
   dob: string;
@@ -50,9 +59,11 @@ const NewPatient: React.FC = () => {
     fieldName: string,
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setFormData({
-      ...formData,
-      [fieldName]: event.target.value
+    let { value } = event.target;
+    setFormData(prevState => {
+      let newState = { ...prevState };
+      newState[fieldName] = value;
+      return newState;
     });
   };
 

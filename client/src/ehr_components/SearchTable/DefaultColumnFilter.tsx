@@ -33,8 +33,9 @@ export default function DefaultColumnFilter<T extends Record<string, unknown>>({
       placeholder={`Patient ${render("Header")}`}
       options={options}
       onSelect={(selected: any) => {
-        let filter = selected.length > 0 ? selected[0].value : "";
-        setFilter(filter);
+        if (selected.length > 0) {
+          setFilter(selected[0].value);
+        }
       }}
       onKeyDown={(e: Event) => {
         let { key } = e as KeyboardEvent;

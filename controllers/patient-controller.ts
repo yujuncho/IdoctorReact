@@ -50,11 +50,15 @@ const createPatient: RequestHandler = async (req, res, next) => {
     history: {
       chronic_diseases: "",
       previous_admission: "",
+      previous_admission_description: "",
       past_surgery: "",
+      past_surgery_description: "",
       fractures: "",
       family_history: "",
       drug_allergy: "",
+      drug_allergy_description: "",
       chronic_drug_usage: "",
+      blood_group: "",
       smoking_status: "",
       alcohol: "",
       notes: ""
@@ -82,11 +86,15 @@ const updateHistory: RequestHandler = async (req, res, next) => {
     patient,
     chronic_diseases,
     previous_admission,
+    previous_admission_description,
     past_surgery,
+    past_surgery_description,
     fractures,
     family_history,
     drug_allergy,
+    drug_allergy_description,
     chronic_drug_usage,
+    blood_group,
     smoking_status,
     alcohol,
     notes
@@ -105,19 +113,31 @@ const updateHistory: RequestHandler = async (req, res, next) => {
       .json({ message: "Could not find patient for given patient ID" });
   }
 
-  if (chronic_diseases)
+  if (chronic_diseases !== undefined)
     foundPatient.history.chronic_diseases = chronic_diseases;
-  if (previous_admission)
+  if (previous_admission !== undefined)
     foundPatient.history.previous_admission = previous_admission;
-  if (past_surgery) foundPatient.history.past_surgery = past_surgery;
-  if (fractures) foundPatient.history.fractures = fractures;
-  if (family_history) foundPatient.history.family_history = family_history;
-  if (drug_allergy) foundPatient.history.drug_allergy = drug_allergy;
-  if (chronic_drug_usage)
+  if (previous_admission_description !== undefined)
+    foundPatient.history.previous_admission_description =
+      previous_admission_description;
+  if (past_surgery !== undefined)
+    foundPatient.history.past_surgery = past_surgery;
+  if (past_surgery_description !== undefined)
+    foundPatient.history.past_surgery_description = past_surgery_description;
+  if (fractures !== undefined) foundPatient.history.fractures = fractures;
+  if (family_history !== undefined)
+    foundPatient.history.family_history = family_history;
+  if (drug_allergy !== undefined)
+    foundPatient.history.drug_allergy = drug_allergy;
+  if (drug_allergy_description !== undefined)
+    foundPatient.history.drug_allergy_description = drug_allergy_description;
+  if (chronic_drug_usage !== undefined)
     foundPatient.history.chronic_drug_usage = chronic_drug_usage;
-  if (smoking_status) foundPatient.history.smoking_status = smoking_status;
-  if (alcohol) foundPatient.history.alcohol = alcohol;
-  if (notes) foundPatient.history.notes = notes;
+  if (blood_group !== undefined) foundPatient.history.blood_group = blood_group;
+  if (smoking_status !== undefined)
+    foundPatient.history.smoking_status = smoking_status;
+  if (alcohol !== undefined) foundPatient.history.alcohol = alcohol;
+  if (notes !== undefined) foundPatient.history.notes = notes;
 
   let updatedPatient: (IPatient & Document<any, any, IPatient>) | null;
   try {

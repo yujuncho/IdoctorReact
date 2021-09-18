@@ -5,7 +5,7 @@ import { CellProps } from "react-table";
 export default function ActionsCell<T extends Record<string, unknown>>(
   cell: React.PropsWithChildren<CellProps<T>>
 ) {
-  let [patient, setPatient] = useState(cell.data[cell.row.index].patient);
+  let patient = useState(cell.data[cell.row.index].patient)[0];
   const history = useHistory();
 
   let handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
