@@ -47,6 +47,7 @@ export default function DefaultColumnFilter<T extends Record<string, unknown>>({
         let { value } = e.target as HTMLInputElement;
         setFilter(value.trim());
       }}
+      onClear={() => setFilter("")}
       className="mb-4"
     />
   );

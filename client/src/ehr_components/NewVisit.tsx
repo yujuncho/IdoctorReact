@@ -15,6 +15,7 @@ export interface VisitProps {
 }
 
 const initialVisitState: PatientVisit = {
+  id: "",
   patient: "",
   date: "",
   complaint: "",
@@ -184,7 +185,7 @@ const NewVisit: React.FC<VisitProps> = () => {
                 alt="Patient"
               />
               <div className="card-body">
-                <h5 className="card-title">Joey</h5>
+                <h5 className="card-title">{patientState.fullName}</h5>
                 <button className="btn btn-primary">Update Image</button>
               </div>
             </div>

@@ -6,6 +6,7 @@ export default function ActionsCell<T extends Record<string, unknown>>(
   cell: React.PropsWithChildren<CellProps<T>>
 ) {
   let patient = useState(cell.data[cell.row.index].patient)[0];
+  let visitsCount = patient.visits.length;
   const history = useHistory();
 
   let handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -21,11 +22,14 @@ export default function ActionsCell<T extends Record<string, unknown>>(
     <Fragment>
       <div className="text-left text-md-right">
         <button
-          className="btn btn-outline-primary"
+          disabled={visitsCount === 0}
+          className={`btn btn-outline-${
+            visitsCount === 0 ? "secondary" : "primary"
+          }`}
           onClick={handleClick}
-          name="history"
+          name="visits"
         >
-          Edit History
+          {`${visitsCount} Past Visit${visitsCount === 1 ? "" : "s"}`}
         </button>
         <button
           className="btn btn-outline-primary ml-4"
@@ -33,6 +37,13 @@ export default function ActionsCell<T extends Record<string, unknown>>(
           name="newVisit"
         >
           New Visit
+        </button>
+        <button
+          className="btn btn-outline-primary ml-4"
+          onClick={handleClick}
+          name="history"
+        >
+          Medical History
         </button>
       </div>
     </Fragment>

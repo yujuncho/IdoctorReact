@@ -26,6 +26,7 @@ interface AutoCompleteProps {
   onSelect: (select: any) => void;
   onKeyDown?: (e: Event) => void;
   onBlur?: (e: Event) => void;
+  onClear?: () => void;
   className?: string;
 }
 
@@ -45,6 +46,7 @@ const AutoComplete = forwardRef((props: AutoCompleteProps, ref) => {
     onSelect,
     onKeyDown,
     onBlur,
+    onClear,
     className
   } = props;
   const [focus, setFocus] = useState(false);
@@ -67,6 +69,10 @@ const AutoComplete = forwardRef((props: AutoCompleteProps, ref) => {
     setFocus(false);
   };
 
+  const handleClear = () => {
+    onClear && onClear();
+  };
+
   const renderMenu = (results: any[], menuProps: TypeaheadMenuProps<any>) => {
     return (
       <Menu className="shadow" {...menuProps}>
@@ -87,6 +93,7 @@ const AutoComplete = forwardRef((props: AutoCompleteProps, ref) => {
     let handleClearClick = (e: React.MouseEvent<"button", MouseEvent>) => {
       onClear(e);
       onSelect([]);
+      handleClear();
     };
 
     return (

@@ -1,6 +1,7 @@
 import { labInvOptions, reviewsOptions, yesOrNoOptions } from "./visit";
 
 export interface PatientVisit {
+  id: string;
   patient: string;
   date: string;
   complaint: string;
@@ -70,7 +71,7 @@ export default function generateNewVisitFields(params: NewVisitFieldParams) {
     },
 
     {
-      label: "History of present illness",
+      label: "History of Present Illness",
       placeholder: "Add details about the history of the present illness",
       name: "present_illness_history",
       type: "Textarea",
@@ -78,7 +79,7 @@ export default function generateNewVisitFields(params: NewVisitFieldParams) {
       value: formData.present_illness_history
     },
     {
-      label: "Review of other system",
+      label: "Review of Other System",
       name: "other_system_review",
       type: "Radio",
       value: formData.other_system_review,
@@ -183,7 +184,7 @@ export default function generateNewVisitFields(params: NewVisitFieldParams) {
       value: formData.treatment
     },
     {
-      label: "Is the visit free",
+      label: "Free Visit",
       name: "is_free",
       type: "Radio",
       options: yesOrNoOptions,
@@ -191,7 +192,7 @@ export default function generateNewVisitFields(params: NewVisitFieldParams) {
       value: formData.is_free
     },
     {
-      label: "Is the visit review",
+      label: "Visit Review",
       name: "is_review",
       type: "Radio",
       options: yesOrNoOptions,
@@ -199,7 +200,7 @@ export default function generateNewVisitFields(params: NewVisitFieldParams) {
       value: formData.is_review
     },
     {
-      label: "Is referred from other doctor",
+      label: "Referred",
       name: "is_referred",
       type: "Radio",
       options: yesOrNoOptions,
