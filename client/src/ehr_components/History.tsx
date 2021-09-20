@@ -1,15 +1,13 @@
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
-import React, { Fragment, useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-import Field from "./ui/field";
-import TextArea from "./ui/textarea";
-import Radio from "./ui/radio";
-import AutoComplete from "./ui/autoComplete";
+import Field from "./ui/Field";
+import TextArea from "./ui/Textarea";
+import Radio from "./ui/Radio";
+import AutoComplete from "./ui/AutoComplete";
 import { bloodGroups, diseases, yesOrNoOptions } from "./data/patient-history";
 import Button from "./ui/button";
-import Axios from "axios";
-import userEvent from "@testing-library/user-event";
 
 export interface HistoryProps {
   added: Function;
