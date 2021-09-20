@@ -47,22 +47,7 @@ const createPatient: RequestHandler = async (req, res, next) => {
     zipCode,
     maritalStatus,
     job,
-    history: {
-      chronic_diseases: "",
-      previous_admission: "",
-      previous_admission_description: "",
-      past_surgery: "",
-      past_surgery_description: "",
-      fractures: "",
-      family_history: "",
-      drug_allergy: "",
-      drug_allergy_description: "",
-      chronic_drug_usage: "",
-      blood_group: "",
-      smoking_status: "",
-      alcohol: "",
-      notes: ""
-    },
+    history: {},
     visits: []
   });
 

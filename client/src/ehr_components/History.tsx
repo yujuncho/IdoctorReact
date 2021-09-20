@@ -180,7 +180,7 @@ const History: React.FC = () => {
           <form className="col-9" onSubmit={handleClick}>
             {fields}
             <div className="form-group">
-              <button className="bttn-custom">Add</button>
+              <button className="bttn-custom">Update</button>
             </div>
           </form>
 
