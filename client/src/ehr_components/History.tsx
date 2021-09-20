@@ -42,7 +42,11 @@ const History: React.FC = () => {
 
   const [changedField, setChangedField] = useState("");
   let [medicalHistory, setMedicalHistory] = useState<PatientHistory>(() => {
-    let chronicDiseases = patientState?.history?.chronic_diseases as string[];
+    if (patientState === undefined) {
+      return { ...initialHistoryState, patient: "" };
+    }
+
+    let chronicDiseases = patientState.history?.chronic_diseases as string[];
 
     let mappedChronicDiseases: ChronicDisease[] = [];
     if (chronicDiseases !== undefined) {
@@ -170,6 +174,11 @@ const History: React.FC = () => {
       return <FieldRenderer field={field} key={field.name} />;
     }
   });
+
+  if (patientState === undefined) {
+    history.push("/main/search");
+    return <></>;
+  }
 
   return (
     <div>

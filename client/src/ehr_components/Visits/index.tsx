@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import Axios from "axios";
 
 import VisitsList from "./VisitsList";
@@ -11,12 +11,14 @@ export default function Visits() {
   const [isAnimating, setIsAnimating] = useState(0);
   const [visitsList, setVisitsList] = useState<PatientVisit[]>([]);
   const [selectedVisit, setSelectedVisit] = useState<PatientVisit>();
-  let {
-    state: { id: patientId }
-  } = useLocation<Patient>();
+  let history = useHistory();
+  let { state: patientState } = useLocation<Patient>();
+  let patientId = patientState && patientState.id ? patientState.id : "";
 
   useEffect(() => {
     console.log(new Date(Date.now()).toISOString(), "FETCHING VISITS");
+
+    if (patientId.length === 0) return;
 
     let getVisits = async () => {
       let {
@@ -41,6 +43,11 @@ export default function Visits() {
     setIsAnimating(1);
     setSelectedVisit(newSelectedVisit);
   };
+
+  if (patientState === undefined) {
+    history.push("/main/search");
+    return <></>;
+  }
 
   return (
     <div className="container text-left mb-5">

@@ -46,7 +46,7 @@ const NewVisit: React.FC<VisitProps> = () => {
 
   let [medicalVisit, setMedicalVisit] = useState<PatientVisit>({
     ...initialVisitState,
-    patient: patientState.id || ""
+    patient: patientState && (patientState.id || "")
   });
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -163,6 +163,11 @@ const NewVisit: React.FC<VisitProps> = () => {
       return <FieldRenderer field={field} key={field.name} />;
     }
   });
+
+  if (patientState === undefined) {
+    history.push("/main/search");
+    return <></>;
+  }
 
   return (
     <div>
