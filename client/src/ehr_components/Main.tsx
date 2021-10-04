@@ -12,6 +12,7 @@ import History from "./History";
 import NewVisit from "./NewVisit";
 import NewPatient from "./NewPatient";
 import Visits from "./Visits/";
+import Account from "./Account/";
 
 export interface MainProps {}
 
@@ -38,6 +39,7 @@ const Main: React.FC<MainProps> = () => {
         <Route path={`${path}/visits`} component={Visits} />
         <Route path={`${path}/newVisit`} component={NewVisit} />
         <Route path={`${path}/newPatient`} component={NewPatient} />
+        <Route path={`${path}/account`} component={Account} />
         <Redirect to={`${path}/search`} />
       </Switch>
     </Fragment>

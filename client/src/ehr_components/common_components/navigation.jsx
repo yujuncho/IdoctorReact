@@ -33,29 +33,24 @@ function Navigation() {
       </button>
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="navbar-nav ml-auto pr-3">
+        <ul className="navbar-nav ml-auto">
           <li className="nav-item  ">
             <Link to="/main" className=" nav-link page-scroll">
               Patients
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="#about" className="nav-link page-scroll">
+            <Link to="/main" className="nav-link page-scroll">
               Reports
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="#services" className="nav-link page-scroll">
+            <Link to="/main/account" className="nav-link page-scroll">
               Account
             </Link>
           </li>
-          <li className="nav-item">
-            <Link to="#portfolio" className="nav-link page-scroll">
-              Help
-            </Link>
-          </li>
         </ul>
-        <form className="form-inline">
+        <form className="form-inline justify-content-center mt-2 mt-sm-0 ml-0 ml-sm-2">
           <button onClick={logoutHandler} className="btn btn-outline-secondary">
             Log out
           </button>

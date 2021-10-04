@@ -6,10 +6,20 @@ export interface FieldProps {
   required?: boolean;
   isFormRow?: boolean;
   fadeIn?: boolean;
+  showRequiredIcon?: boolean;
 }
 
 const Field = (props: FieldProps) => {
-  let { label, name, children, gridSize, required, isFormRow, fadeIn } = props;
+  let {
+    label,
+    name,
+    children,
+    gridSize,
+    required,
+    isFormRow,
+    fadeIn,
+    showRequiredIcon = true
+  } = props;
 
   let fieldOrientation;
   let labelLength;
@@ -31,7 +41,7 @@ const Field = (props: FieldProps) => {
         htmlFor={name}
         className={`${labelLength} col-form-label text-left`}
       >
-        {required ? label + "*" : label}
+        {required && showRequiredIcon ? label + "*" : label}
       </label>
       <div className={`${childrenLength} text-left`}>{children}</div>
     </div>

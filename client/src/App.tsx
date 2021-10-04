@@ -31,7 +31,6 @@ const App: React.FC = () => {
   if (userData.token) {
     routes = (
       <Switch>
-        <Route path="/" exact component={Home} />
         <Route path="/main" component={Main} />
         <Redirect to="/main" />
       </Switch>
