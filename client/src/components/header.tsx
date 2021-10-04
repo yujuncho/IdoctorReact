@@ -18,7 +18,7 @@ export const Header: React.FC<Props> = ({ data }) => {
         <div className="overlay">
           <div className="container">
             <div className="row">
-              <div className="col-lg-8 offset-md-2 intro-text">
+              <div className="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2 intro-text">
                 <h1>
                   {data.title}
                   <span></span>

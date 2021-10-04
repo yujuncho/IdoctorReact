@@ -8,64 +8,62 @@ export class Contact extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-8">
-                <div className="row">
-                  <div className="section-title">
-                    <h2 className="main">Get In Touch</h2>
-                    <p>
-                      Please fill out the form below to send us an email and we
-                      will get back to you as soon as possible.
-                    </p>
-                  </div>
-
-                  <form
-                    name="sentMessage"
-                    id="contactForm"
-                    noValidate
-                    style={{ width: "100%" }}
-                  >
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <input
-                            type="text"
-                            id="name"
-                            className="form-control"
-                            placeholder="Name"
-                            required="required"
-                          />
-                          <p className="help-block text-danger"></p>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <input
-                            type="email"
-                            id="email"
-                            className="form-control"
-                            placeholder="Email"
-                            required="required"
-                          />
-                          <p className="help-block text-danger"></p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <textarea
-                        name="message"
-                        id="message"
-                        className="form-control"
-                        rows="4"
-                        placeholder="Message"
-                        required
-                      ></textarea>
-                      <p className="help-block text-danger"></p>
-                    </div>
-                    <div id="success"></div>
-                    <button type="submit" className=" bttn-custom ">
-                      Send Message
-                    </button>
-                  </form>
+                <div className="section-title">
+                  <h2 className="main">Get In Touch</h2>
+                  <p>
+                    Please fill out the form below to send us an email and we
+                    will get back to you as soon as possible.
+                  </p>
                 </div>
+
+                <form
+                  name="sentMessage"
+                  id="contactForm"
+                  noValidate
+                  style={{ width: "100%" }}
+                >
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          id="name"
+                          className="form-control"
+                          placeholder="Name"
+                          required="required"
+                        />
+                        <p className="help-block text-danger"></p>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <input
+                          type="email"
+                          id="email"
+                          className="form-control"
+                          placeholder="Email"
+                          required="required"
+                        />
+                        <p className="help-block text-danger"></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <textarea
+                      name="message"
+                      id="message"
+                      className="form-control"
+                      rows="4"
+                      placeholder="Message"
+                      required
+                    ></textarea>
+                    <p className="help-block text-danger"></p>
+                  </div>
+                  <div id="success"></div>
+                  <button type="submit" className=" bttn-custom ">
+                    Send Message
+                  </button>
+                </form>
               </div>
               <div className="col-md-3 offset-md-1 contact-info">
                 <div className="contact-item">
@@ -96,34 +94,26 @@ export class Contact extends Component {
               </div>
 
               <div className="col-md-12">
-                <div className="row">
-                  <div className="social">
-                    <ul>
-                      <li>
-                        <a
-                          href={
-                            this.props.data ? this.props.data.facebook : "/"
-                          }
-                        >
-                          <i className="fa fa-facebook"></i>
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href={this.props.data ? this.props.data.twitter : "/"}
-                        >
-                          <i className="fa fa-twitter"></i>
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href={this.props.data ? this.props.data.youtube : "/"}
-                        >
-                          <i className="fa fa-youtube"></i>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                <div className="social">
+                  <ul>
+                    <li>
+                      <a
+                        href={this.props.data ? this.props.data.facebook : "/"}
+                      >
+                        <i className="fa fa-facebook"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href={this.props.data ? this.props.data.twitter : "/"}>
+                        <i className="fa fa-twitter"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href={this.props.data ? this.props.data.youtube : "/"}>
+                        <i className="fa fa-youtube"></i>
+                      </a>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
