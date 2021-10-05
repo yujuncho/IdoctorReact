@@ -19,10 +19,41 @@ userRoutes.post(
 userRoutes.post(
   "/login",
   [
-    check("email").not().isEmpty().withMessage("must not be empty"),
+    check("email")
+      .isEmail()
+      .withMessage("is an invalid email format")
+      .normalizeEmail(),
     check("password").not().isEmpty().withMessage("must not be empty")
   ],
   userController.login
+);
+
+userRoutes.patch(
+  "/",
+  check("id").not().isEmpty().withMessage("must not be empty"),
+  userController.updateUser
+);
+
+userRoutes.patch(
+  "/password",
+  [
+    check("email")
+      .isEmail()
+      .withMessage("is an invalid email format")
+      .normalizeEmail(),
+    check("oldPassword").not().isEmpty().withMessage("must not be empty"),
+    check("newPassword").not().isEmpty().withMessage("must not be empty")
+  ],
+  userController.updatePassword
+);
+
+userRoutes.patch(
+  "/activate",
+  [
+    check("id").not().isEmpty().withMessage("must not be empty"),
+    check("deactivate").isBoolean().withMessage("must be a boolean")
+  ],
+  userController.updateActiveStatus
 );
 
 export default userRoutes;
