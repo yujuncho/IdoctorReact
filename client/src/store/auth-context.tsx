@@ -7,12 +7,14 @@ export const AuthContext = React.createContext({
   token: "",
   email: "",
   loginAt: new Date(),
+  isDeactivated: false,
   login: (
     uid: string,
     username: string,
     token: string,
     email: string,
-    loginAt: Date
+    loginAt: Date,
+    isDeactivated: boolean
   ) => {},
   logout: () => {}
 });

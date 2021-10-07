@@ -36,7 +36,8 @@ const signup: RequestHandler = async (req, res, next) => {
       email: newUser.email,
       username: newUser.username || "",
       token: token,
-      loginAt: newUser.loginAt
+      loginAt: newUser.loginAt,
+      deactivated: newUser.isDeactivated
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -77,7 +78,8 @@ const login: RequestHandler = async (req, res, next) => {
       email: user.email,
       username: user.username || "",
       token: token,
-      loginAt: user.loginAt
+      loginAt: user.loginAt,
+      isDeactivated: user.isDeactivated
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

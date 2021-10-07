@@ -84,6 +84,7 @@ export default function Deactivate() {
   ) : (
     "Deactivate Account"
   );
+
   return (
     <div className="card justify-content-center mt-5">
       <h2 className="card-header">Deactivate</h2>

@@ -6,6 +6,7 @@ interface UserData {
   email: string;
   token: string;
   loginAt: Date;
+  isDeactivated: boolean;
 }
 
 const userDataDefault: UserData = {
@@ -13,7 +14,8 @@ const userDataDefault: UserData = {
   username: "",
   email: "",
   token: "",
-  loginAt: new Date()
+  loginAt: new Date(),
+  isDeactivated: false
 };
 
 export const useAuth = () => {
@@ -26,12 +28,13 @@ export const useAuth = () => {
       username: string,
       token: string,
       email: string,
-      loginAt: Date
+      loginAt: Date,
+      isDeactivated: boolean
     ) => {
-      setUserData({ uid, username, token, email, loginAt });
+      setUserData({ uid, username, token, email, loginAt, isDeactivated });
       localStorage.setItem(
         "userData",
-        JSON.stringify({ uid, username, token, email, loginAt })
+        JSON.stringify({ uid, username, token, email, loginAt, isDeactivated })
       );
     },
     []
@@ -45,9 +48,9 @@ export const useAuth = () => {
   useEffect(() => {
     let storedUserData = localStorage.getItem("userData");
     if (storedUserData) {
-      const { uid, username, token, email, loginAt } =
+      const { uid, username, token, email, loginAt, isDeactivated } =
         JSON.parse(storedUserData);
-      login(uid, username, token, email, new Date(loginAt));
+      login(uid, username, token, email, new Date(loginAt), isDeactivated);
     }
     setCheckingStorage(true);
   }, [login]);

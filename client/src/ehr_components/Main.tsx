@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from "react";
+import React, { Fragment, useContext } from "react";
 import Navigation from "./common_components/navigation";
 
 import ReduxToastr from "react-redux-toastr";
@@ -13,11 +13,19 @@ import NewVisit from "./NewVisit";
 import NewPatient from "./NewPatient";
 import Visits from "./Visits/";
 import Account from "./Account/";
+import Reactivate from "./Reactivate";
+
+import { AuthContext } from "../store/auth-context";
 
 export interface MainProps {}
 
 const Main: React.FC<MainProps> = () => {
+  const authContext = useContext(AuthContext);
   const { path } = useRouteMatch();
+
+  if (authContext.isDeactivated) {
+    return <Reactivate />;
+  }
 
   return (
     <Fragment>
