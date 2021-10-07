@@ -51,15 +51,20 @@ const App: React.FC = () => {
   }
 
   return (
-    <AuthContextProvider
-      value={{ isLoggedIn: !!userData.token, ...userData, login, logout }}
-    >
-      <ReduxProvider store={store}>
+    <ReduxProvider store={store}>
+      <AuthContextProvider
+        value={{
+          isLoggedIn: !!userData.token,
+          ...userData,
+          login,
+          logout
+        }}
+      >
         <div className="App">
           <Router>{routes}</Router>
         </div>
-      </ReduxProvider>
-    </AuthContextProvider>
+      </AuthContextProvider>
+    </ReduxProvider>
   );
 };
 

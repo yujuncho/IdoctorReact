@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo } from "react";
 import Navigation from "./common_components/navigation";
 
 import ReduxToastr from "react-redux-toastr";

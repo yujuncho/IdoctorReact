@@ -1,19 +1,41 @@
 import { useState, useEffect, useCallback } from "react";
 
-const userDataDefault = {
+interface UserData {
+  uid: string;
+  username: string;
+  email: string;
+  token: string;
+  loginAt: Date;
+}
+
+const userDataDefault: UserData = {
   uid: "",
+  username: "",
   email: "",
-  token: ""
+  token: "",
+  loginAt: new Date()
 };
 
 export const useAuth = () => {
   const [userData, setUserData] = useState(userDataDefault);
   const [checkedStorage, setCheckingStorage] = useState(false);
 
-  const login = useCallback((uid: string, token: string, email: string) => {
-    setUserData({ uid, token, email });
-    localStorage.setItem("userData", JSON.stringify({ uid, token, email }));
-  }, []);
+  const login = useCallback(
+    (
+      uid: string,
+      username: string,
+      token: string,
+      email: string,
+      loginAt: Date
+    ) => {
+      setUserData({ uid, username, token, email, loginAt });
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({ uid, username, token, email, loginAt })
+      );
+    },
+    []
+  );
 
   const logout = useCallback(() => {
     setUserData(userDataDefault);
@@ -23,8 +45,9 @@ export const useAuth = () => {
   useEffect(() => {
     let storedUserData = localStorage.getItem("userData");
     if (storedUserData) {
-      const { uid, token, email } = JSON.parse(storedUserData);
-      login(uid, token, email);
+      const { uid, username, token, email, loginAt } =
+        JSON.parse(storedUserData);
+      login(uid, username, token, email, new Date(loginAt));
     }
     setCheckingStorage(true);
   }, [login]);

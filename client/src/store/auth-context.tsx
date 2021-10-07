@@ -3,9 +3,17 @@ import React from "react";
 export const AuthContext = React.createContext({
   isLoggedIn: false,
   uid: "",
+  username: "",
   token: "",
   email: "",
-  login: (uid: string, token: string, email: string) => {},
+  loginAt: new Date(),
+  login: (
+    uid: string,
+    username: string,
+    token: string,
+    email: string,
+    loginAt: Date
+  ) => {},
   logout: () => {}
 });
 

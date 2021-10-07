@@ -5,7 +5,7 @@ interface SecurityFieldParams {
   ) => void;
   isFormSubmitted: boolean;
   formData: {
-    oldPassword: string;
+    currentPassword: string;
     newPassword: string;
     confirmNewPassword: string;
   };
@@ -16,16 +16,16 @@ export default function generateSecurityFields(params: SecurityFieldParams) {
 
   let fieldsMap = [
     {
-      label: "Old password",
-      name: "oldPassword",
+      label: "Current password",
+      name: "currentPassword",
       type: "Input",
       inputType: "password",
-      placeholder: "Old password",
+      placeholder: "Current password",
       onChange: onChangeHandler,
       validateValue: (value: string) => {
         return value.length > 0;
       },
-      value: formData.oldPassword,
+      value: formData.currentPassword,
       errorMessage: "Please enter a valid password",
       isFormSubmitted: isFormSubmitted,
       isFormRow: false,

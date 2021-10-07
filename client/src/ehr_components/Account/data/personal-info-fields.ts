@@ -3,7 +3,6 @@ interface PersonalInfoParams {
     fieldName: string,
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
-  isFormSubmitted: boolean;
   formData: {
     username: string;
     email: string;
@@ -11,7 +10,7 @@ interface PersonalInfoParams {
 }
 
 export default function generatePersonalInfoFields(params: PersonalInfoParams) {
-  let { onChangeHandler, isFormSubmitted, formData } = params;
+  let { onChangeHandler, formData } = params;
 
   let fieldsMap = [
     {
@@ -39,7 +38,6 @@ export default function generatePersonalInfoFields(params: PersonalInfoParams) {
       },
       value: formData.email,
       errorMessage: "Please enter a valid email",
-      isFormSubmitted: isFormSubmitted,
       isFormRow: false,
       showRequiredIcon: false
     }

@@ -37,11 +37,8 @@ userRoutes.patch(
 userRoutes.patch(
   "/password",
   [
-    check("email")
-      .isEmail()
-      .withMessage("is an invalid email format")
-      .normalizeEmail(),
-    check("oldPassword").not().isEmpty().withMessage("must not be empty"),
+    check("id").not().isEmpty().withMessage("must not be empty"),
+    check("currentPassword").not().isEmpty().withMessage("must not be empty"),
     check("newPassword").not().isEmpty().withMessage("must not be empty")
   ],
   userController.updatePassword

@@ -3,6 +3,7 @@ import { Schema, model } from "mongoose";
 export interface IUser {
   username?: string;
   email: string;
+  token: string;
   password: string;
   loginAt: Date;
   isDeactivated: boolean;

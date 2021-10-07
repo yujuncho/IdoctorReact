@@ -115,19 +115,24 @@ const updatePassword: RequestHandler = async (req, res, next) => {
     return validationError;
   }
 
-  const { email, oldPassword, newPassword } = req.body;
+  const { id, currentPassword, newPassword } = req.body;
 
   try {
-    let user = await UserModel.findOne({ email });
+    let user = await UserModel.findById(id);
 
     if (user === null) {
       return res.status(401).json({ message: "User not found" });
     }
 
-    const isValidPassword = await bcrypt.compare(oldPassword, user.password);
+    const isValidPassword = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
 
     if (!isValidPassword) {
-      return res.status(401).json({ message: "The old password is incorrect" });
+      return res
+        .status(401)
+        .json({ message: "The current password is incorrect" });
     }
 
     let hashedPassword = await bcrypt.hash(newPassword, 12);
