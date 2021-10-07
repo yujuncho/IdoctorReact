@@ -46,7 +46,7 @@ const NewVisit: React.FC<VisitProps> = () => {
 
   let [medicalVisit, setMedicalVisit] = useState<PatientVisit>({
     ...initialVisitState,
-    patient: patientState && (patientState.id || "")
+    patient: patientState?.id || ""
   });
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
