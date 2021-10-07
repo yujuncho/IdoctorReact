@@ -23,10 +23,6 @@ const Main: React.FC<MainProps> = () => {
   const authContext = useContext(AuthContext);
   const { path } = useRouteMatch();
 
-  if (authContext.isDeactivated) {
-    return <Reactivate />;
-  }
-
   return (
     <Fragment>
       <Navigation />
@@ -41,15 +37,19 @@ const Main: React.FC<MainProps> = () => {
         closeOnToastrClick
       />
 
-      <Switch>
-        <Route path={`${path}/search`} component={Search} />
-        <Route path={`${path}/history`} component={History} />
-        <Route path={`${path}/visits`} component={Visits} />
-        <Route path={`${path}/newVisit`} component={NewVisit} />
-        <Route path={`${path}/newPatient`} component={NewPatient} />
-        <Route path={`${path}/account`} component={Account} />
-        <Redirect to={`${path}/search`} />
-      </Switch>
+      {authContext.isDeactivated ? (
+        <Reactivate />
+      ) : (
+        <Switch>
+          <Route path={`${path}/search`} component={Search} />
+          <Route path={`${path}/history`} component={History} />
+          <Route path={`${path}/history`} component={History} />
+          <Route path={`${path}/newVisit`} component={NewVisit} />
+          <Route path={`${path}/newPatient`} component={NewPatient} />
+          <Route path={`${path}/account`} component={Account} />
+          <Redirect to={`${path}/search`} />
+        </Switch>
+      )}
     </Fragment>
   );
 };

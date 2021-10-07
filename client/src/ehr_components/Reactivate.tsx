@@ -45,32 +45,27 @@ export default function Reactivate() {
   );
 
   return (
-    <div
-      className="position-absolute d-flex justify-content-center align-items-center"
-      style={{ top: 0, left: 0, right: 0, bottom: 0 }}
-    >
-      <div className="container">
-        <div className="col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
-          {showAlert && (
-            <Alert
-              alertType={"alert-danger"}
-              message={alertMessage}
-              onClose={() => {
-                setAlertMessage("");
-                setShowAlert(false);
-              }}
-            />
-          )}
-          <h1>Reactivate</h1>
-          <p>
-            Your account was previously deactivated.
-            <br />
-            Would you like to reactivate your account?
-          </p>
-          <button className="bttn-custom" onClick={handleClick}>
-            {buttonText}
-          </button>
-        </div>
+    <div className="container mt-5">
+      <div className="col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
+        {showAlert && (
+          <Alert
+            alertType={"alert-danger"}
+            message={alertMessage}
+            onClose={() => {
+              setAlertMessage("");
+              setShowAlert(false);
+            }}
+          />
+        )}
+        <h1>Reactivate</h1>
+        <p>
+          Your account was previously deactivated.
+          <br />
+          Would you like to reactivate your account?
+        </p>
+        <button className="bttn-custom" onClick={handleClick}>
+          {buttonText}
+        </button>
       </div>
     </div>
   );
