@@ -15,6 +15,7 @@ export interface VisitProps {
 }
 
 const initialVisitState: PatientVisit = {
+  id: "",
   patient: "",
   date: "",
   complaint: "",
@@ -45,7 +46,7 @@ const NewVisit: React.FC<VisitProps> = () => {
 
   let [medicalVisit, setMedicalVisit] = useState<PatientVisit>({
     ...initialVisitState,
-    patient: patientState.id || ""
+    patient: patientState?.id || ""
   });
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -163,6 +164,11 @@ const NewVisit: React.FC<VisitProps> = () => {
     }
   });
 
+  if (patientState === undefined) {
+    history.push("/main/search");
+    return <></>;
+  }
+
   return (
     <div>
       <h2 className=" main p-1 mt-4 mb-5">Visit</h2>
@@ -184,7 +190,7 @@ const NewVisit: React.FC<VisitProps> = () => {
                 alt="Patient"
               />
               <div className="card-body">
-                <h5 className="card-title">Joey</h5>
+                <h5 className="card-title">{patientState.fullName}</h5>
                 <button className="btn btn-primary">Update Image</button>
               </div>
             </div>

@@ -29,7 +29,7 @@ patientRoutes.post(
 );
 
 patientRoutes.patch(
-  "/:patientId",
+  "/history",
   [check("patient").not().isEmpty().withMessage("must not be empty")],
   patientController.updateHistory
 );

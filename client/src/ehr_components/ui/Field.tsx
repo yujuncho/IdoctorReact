@@ -5,10 +5,11 @@ export interface FieldProps {
   gridSize?: string;
   required?: boolean;
   isFormRow?: boolean;
+  fadeIn?: boolean;
 }
 
 const Field = (props: FieldProps) => {
-  let { label, name, children, gridSize, required, isFormRow } = props;
+  let { label, name, children, gridSize, required, isFormRow, fadeIn } = props;
 
   let fieldOrientation;
   let labelLength;
@@ -25,7 +26,7 @@ const Field = (props: FieldProps) => {
   if (gridSize) childrenLength = gridSize;
 
   return (
-    <div className={`${fieldOrientation} mb-4`}>
+    <div className={`${fieldOrientation} mb-4 ${fadeIn && "animated fadeIn"}`}>
       <label
         htmlFor={name}
         className={`${labelLength} col-form-label text-left`}

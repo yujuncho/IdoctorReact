@@ -21,10 +21,12 @@ interface AutoCompleteProps {
   name?: string;
   placeholder?: string;
   options: any[];
+  defaultSelected?: any[];
   multiple?: boolean;
   onSelect: (select: any) => void;
   onKeyDown?: (e: Event) => void;
   onBlur?: (e: Event) => void;
+  onClear?: () => void;
   className?: string;
 }
 
@@ -39,10 +41,12 @@ const AutoComplete = forwardRef((props: AutoCompleteProps, ref) => {
     name,
     placeholder,
     options,
+    defaultSelected,
     multiple,
     onSelect,
     onKeyDown,
     onBlur,
+    onClear,
     className
   } = props;
   const [focus, setFocus] = useState(false);
@@ -57,14 +61,16 @@ const AutoComplete = forwardRef((props: AutoCompleteProps, ref) => {
   });
 
   const handleChange = (selected: any[]) => {
-    if (selected.length !== 0) {
-      onSelect(selected);
-    }
+    onSelect(selected);
   };
 
   const handleBlur = (e: Event) => {
     onBlur && onBlur(e);
     setFocus(false);
+  };
+
+  const handleClear = () => {
+    onClear && onClear();
   };
 
   const renderMenu = (results: any[], menuProps: TypeaheadMenuProps<any>) => {
@@ -87,6 +93,7 @@ const AutoComplete = forwardRef((props: AutoCompleteProps, ref) => {
     let handleClearClick = (e: React.MouseEvent<"button", MouseEvent>) => {
       onClear(e);
       onSelect([]);
+      handleClear();
     };
 
     return (
@@ -105,6 +112,7 @@ const AutoComplete = forwardRef((props: AutoCompleteProps, ref) => {
         ref={typeaheadRef}
         id={name}
         options={options ? options : []}
+        defaultSelected={defaultSelected ? defaultSelected : []}
         onChange={handleChange}
         onKeyDown={onKeyDown}
         placeholder={"Search " + placeholder}
