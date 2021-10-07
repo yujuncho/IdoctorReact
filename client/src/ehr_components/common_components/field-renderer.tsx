@@ -1,8 +1,8 @@
-import AutoComplete from "../ui/autoComplete";
-import Field from "../ui/field";
-import Input from "../ui/input";
-import Radio from "../ui/radio";
-import TextArea from "../ui/textarea";
+import AutoComplete from "../ui/AutoComplete";
+import Field from "../ui/Field";
+import Input from "../ui/Input";
+import Radio from "../ui/Radio";
+import TextArea from "../ui/Textarea";
 import Select from "../ui/Select";
 
 export interface Props {
@@ -27,7 +27,9 @@ const FieldRenderer = function (props: Props) {
     errorMessage,
     isFormSubmitted,
     isFormRow = true,
-    resetToggle
+    resetToggle,
+    display = true,
+    fadeIn = false
   } = field;
 
   function onACChange(name: string) {
@@ -43,6 +45,9 @@ const FieldRenderer = function (props: Props) {
             placeholder={placeholder}
             value={value}
             onChange={onChange}
+            validateValue={validateValue}
+            errorMessage={errorMessage}
+            isFormSubmitted={isFormSubmitted}
           />
         );
 
@@ -66,9 +71,9 @@ const FieldRenderer = function (props: Props) {
       case "Autocomplete":
         return (
           <AutoComplete
-            title={placeholder}
+            placeholder={placeholder}
             options={options}
-            selected={onACChange(name)}
+            onSelect={onACChange(name)}
           />
         );
 
@@ -104,6 +109,8 @@ const FieldRenderer = function (props: Props) {
     }
   }
 
+  if (!display) return <></>;
+
   return (
     <Field
       name={name}
@@ -111,6 +118,7 @@ const FieldRenderer = function (props: Props) {
       gridSize={gridSize}
       required={!!validateValue}
       isFormRow={isFormRow}
+      fadeIn={fadeIn}
     >
       {getFieldMarkup()}
     </Field>

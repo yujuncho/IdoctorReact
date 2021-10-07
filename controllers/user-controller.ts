@@ -1,27 +1,17 @@
 import UserModel from "../models/UserModel";
 import { RequestHandler } from "express";
-import { validationResult, ValidationError } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+import validationErrorHandler from "../utils/validation-error-handler";
+
 const tokenSecret = process.env.JWT_SECRET || "local_secret";
 
-const errorFormatter = ({
-  location,
-  msg,
-  param,
-  value,
-  nestedErrors
-}: ValidationError) => {
-  const formattedValue = value === undefined ? "" : `'${value}' `;
-  return `${param} ${formattedValue}${msg}`;
-};
-
 const signup: RequestHandler = async (req, res, next) => {
-  const result = validationResult(req).formatWith(errorFormatter);
+  const validationError = validationErrorHandler(req, res);
 
-  if (!result.isEmpty()) {
-    return res.status(422).json({ errors: result.array() });
+  if (validationError) {
+    return validationError;
   }
 
   const { email, password } = req.body;
@@ -50,10 +40,10 @@ const signup: RequestHandler = async (req, res, next) => {
 };
 
 const login: RequestHandler = async (req, res, next) => {
-  const result = validationResult(req).formatWith(errorFormatter);
+  const validationError = validationErrorHandler(req, res);
 
-  if (!result.isEmpty()) {
-    return res.status(422).json({ errors: result.array() });
+  if (validationError) {
+    return validationError;
   }
 
   const { email, password } = req.body;

@@ -6,14 +6,45 @@ import Axios from "axios";
 import FieldRenderer from "./common_components/field-renderer";
 import generateNewPatientFields from "./data/new-patient-fields";
 
-export interface NewPatientProps {
-  added: Function;
+interface ObjectKeyAccess {
+  [key: string]: string | any[] | PatientHistory | undefined;
 }
 
-const NewPatient: React.FC<NewPatientProps> = props => {
+export interface PatientHistory extends ObjectKeyAccess {
+  patient: string;
+  chronic_diseases: any[];
+  previous_admission: string;
+  previous_admission_description: string;
+  past_surgery: string;
+  past_surgery_description: string;
+  fractures: string;
+  family_history: string;
+  drug_allergy: string;
+  drug_allergy_description: string;
+  chronic_drug_usage: string;
+  blood_group: string;
+  smoking_status: string;
+  alcohol: string;
+  notes: string;
+}
+
+export interface Patient extends ObjectKeyAccess {
+  id?: string;
+  fullName: string;
+  dob: string;
+  phoneNumber: string;
+  address: string;
+  zipCode: string;
+  gender: string;
+  job: string;
+  maritalStatus: string;
+  history?: PatientHistory;
+}
+
+const NewPatient: React.FC = () => {
   const history = useHistory();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Patient>({
     fullName: "",
     dob: "",
     phoneNumber: "",
@@ -24,16 +55,15 @@ const NewPatient: React.FC<NewPatientProps> = props => {
     maritalStatus: ""
   });
 
-  const firebaseURl =
-    "https://idoctorpwa-default-rtdb.firebaseio.com/patients.json";
-
   const updateFormData = (
     fieldName: string,
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setFormData({
-      ...formData,
-      [fieldName]: event.target.value
+    let { value } = event.target;
+    setFormData(prevState => {
+      let newState = { ...prevState };
+      newState[fieldName] = value;
+      return newState;
     });
   };
 
@@ -66,11 +96,27 @@ const NewPatient: React.FC<NewPatientProps> = props => {
 
     if (formIsValid) {
       try {
-        let callResults = await Axios.post(firebaseURl, formData);
-        console.log(callResults);
-        history.push(`/main/search#success`);
-      } catch (error) {
-        toastr.error("New Patient", error.message);
+        let patientData = {
+          ...formData,
+          phoneNumber: formData.phoneNumber.replace(/[^\d]/g, "")
+        };
+        let response = await Axios.post("/api/patient", patientData);
+        console.log("CREATED PATIENT", response.data.patient);
+        toastr.success("New Patient", "Added Successfuly");
+        history.push(`/main/search`);
+      } catch (error: any) {
+        let message;
+        if (error.response) {
+          if (error.response.data.errors) {
+            let errors = error.response.data.errors as string[];
+            message = errors.join(". ");
+          } else {
+            message = error.response.data.message;
+          }
+        } else {
+          message = error.message;
+        }
+        toastr.error("New Patient", message);
       }
     }
   };

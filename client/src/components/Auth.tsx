@@ -17,7 +17,7 @@ export default function Auth() {
   const authContext = useContext(AuthContext);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formData, setFormData] = useState(formDefaultState);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoginPage, setIsLoginPage] = useState<null | boolean>(null);
 
@@ -84,9 +84,14 @@ export default function Auth() {
           data: { userId, token, email }
         } = await Axios.post(`/api/user${pathname}`, formData);
         authContext.login(userId, token, email);
-      } catch (error) {
+      } catch (error: any) {
         if (error.response) {
-          setErrorMessage(error.response.data.message);
+          if (error.response.data.errors) {
+            let errors = error.response.data.errors as string[];
+            setErrorMessage(errors.join(". "));
+          } else {
+            setErrorMessage(error.response.data.message);
+          }
         } else {
           setErrorMessage(error.message);
         }

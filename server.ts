@@ -3,6 +3,8 @@ import path from "path";
 import mongoose from "mongoose";
 
 import userRoutes from "./routes/user-routes";
+import patientRoutes from "./routes/patient-routes";
+import visitsRoutes from "./routes/visits-routes";
 
 const app = express();
 
@@ -10,6 +12,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "/client/build")));
 
 app.use("/api/user", userRoutes);
+app.use("/api/patient", patientRoutes);
+app.use("/api/visits", visitsRoutes);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "/client/build/index.html"));
