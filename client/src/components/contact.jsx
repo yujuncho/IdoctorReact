@@ -20,7 +20,7 @@ export class Contact extends Component {
                   name="sentMessage"
                   id="contactForm"
                   noValidate
-                  style={{ width: "100%" }}
+                  className="w-100"
                 >
                   <div className="row">
                     <div className="col-md-6">
