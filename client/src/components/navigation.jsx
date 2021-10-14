@@ -6,7 +6,7 @@ function Navigation(props) {
   return (
     <nav
       id="menu"
-      className={`navbar navbar-default navbar-expand-sm navbar-light ${
+      className={`navbar navbar-default navbar-expand-md navbar-light ${
         isFixed ? "fixed-top" : ""
       }`}
     >

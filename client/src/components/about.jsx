@@ -6,11 +6,11 @@ export class about extends Component {
       <div id="about">
         <div className="container">
           <div className="row">
-            <div className="col-6">
+            <div className="col-sm-6">
               {" "}
               <img src="img/about.jpg" className="img-responsive" alt="" />{" "}
             </div>
-            <div className="col-6">
+            <div className="col-sm-6">
               <div className="about-text">
                 <h2 className="main">About Us</h2>
                 <p>
@@ -19,8 +19,8 @@ export class about extends Component {
                 <h3>Why Choose Us?</h3>
                 <div className="list-style">
                   <div className="row">
-                    <div className="col-6">
-                      <ul>
+                    <div className="col-sm-6">
+                      <ul className="m-0">
                         {this.props.data
                           ? this.props.data.Why.map((d, i) => (
                               <li key={`${d}-${i}`}>{d}</li>
@@ -28,8 +28,8 @@ export class about extends Component {
                           : "loading"}
                       </ul>
                     </div>
-                    <div className="col-6">
-                      <ul>
+                    <div className="col-sm-6">
+                      <ul className="m-0">
                         {this.props.data
                           ? this.props.data.Why2.map((d, i) => (
                               <li key={`${d}-${i}`}> {d}</li>

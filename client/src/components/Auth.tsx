@@ -120,7 +120,7 @@ export default function Auth() {
         <h2 className="mt-5 mb-3">{page}</h2>
         <div className="row justify-content-center">
           <form
-            className="align-content-center w-25"
+            className="align-content-center"
             onSubmit={authHandler}
             noValidate
           >
