@@ -43,7 +43,7 @@ function Navigation() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/main" className="nav-link page-scroll">
+                <Link to="/main/reports" className="nav-link page-scroll">
                   Reports
                 </Link>
               </li>
