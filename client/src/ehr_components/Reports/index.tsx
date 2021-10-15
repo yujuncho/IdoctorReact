@@ -15,11 +15,11 @@ export default function Reports() {
   };
 
   return (
-    <div className="container">
+    <div className="container pb-5">
       <div className="row">
         <div className="col-12 offset-0 col-md-10 offset-md-1">
           <h1 className="text-left w-100 mb-3">Reports</h1>
-          <nav className="navbar navbar-expand navbar-light mb-5 p-0 border-bottom">
+          <nav className="navbar navbar-expand navbar-light p-0 border-bottom">
             <ul className="navbar-nav">
               <li className="nav-item">
                 <Link
@@ -43,13 +43,13 @@ export default function Reports() {
               </li>
             </ul>
           </nav>
+          <Switch>
+            <Route path={`${path}/patients`} component={Patients} />
+            <Route path={`${path}/visits`} component={PatientVisits} />
+            <Redirect to={`${path}/patients`} />
+          </Switch>
         </div>
       </div>
-      <Switch>
-        <Route path={`${path}/patients`} component={Patients} />
-        <Route path={`${path}/visits`} component={PatientVisits} />
-        <Redirect to={`${path}/patients`} />
-      </Switch>
     </div>
   );
 }
