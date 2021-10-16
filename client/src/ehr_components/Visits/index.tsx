@@ -51,7 +51,7 @@ export default function Visits() {
 
   return (
     <div className="container text-left mb-5">
-      <h3 className="mb-3">Past Visits</h3>
+      <h3 className="mb-4">Past Visits for {patientState.fullName}</h3>
       <div className="row">
         <VisitsList
           className="col-md-4 mb-4"

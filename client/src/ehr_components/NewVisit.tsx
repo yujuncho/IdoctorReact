@@ -170,32 +170,28 @@ const NewVisit: React.FC<VisitProps> = () => {
   }
 
   return (
-    <div>
-      <h2 className=" main p-1 mt-4 mb-5">Visit</h2>
-
-      <div className="mx-auto" style={{ width: "90%" }}>
-        <div className="row">
-          <form className="col-9" onSubmit={handleClick}>
-            {fields}
-            <div className="form-group">
-              <button className="bttn-custom">Add Visit Details</button>
-            </div>
-          </form>
-
-          <div className="offset-1 col-2">
-            <div className="card mr-2">
-              <img
-                className="card-img-top"
-                src="./img/team/02.jpg"
-                alt="Patient"
-              />
-              <div className="card-body">
-                <h5 className="card-title">{patientState.fullName}</h5>
-                <button className="btn btn-primary">Update Image</button>
-              </div>
+    <div className="container">
+      <h2 className="main mb-4">Visit</h2>
+      <div className="row">
+        <div className="col-md-3 mb-4 mb-md-0">
+          <div className="card mr-2">
+            <img
+              className="card-img-top"
+              src="./img/team/02.jpg"
+              alt="Patient"
+            />
+            <div className="card-body">
+              <h5 className="card-title">{patientState.fullName}</h5>
+              <button className="btn btn-primary">Update Image</button>
             </div>
           </div>
         </div>
+        <form className="col-md-9" onSubmit={handleClick}>
+          {fields}
+          <div className="form-group">
+            <button className="bttn-custom">Add Visit Details</button>
+          </div>
+        </form>
       </div>
     </div>
   );

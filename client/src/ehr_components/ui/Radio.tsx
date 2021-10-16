@@ -29,7 +29,7 @@ const Radio = (props: RadioProps) => {
 
   return (
     <div className="d-flex flex-column justify-content-center w-100 h-100">
-      <div className={`d-flex ${showError ? "is-invalid" : ""}`}>
+      <div className={`d-flex flex-wrap ${showError ? "is-invalid" : ""}`}>
         {options.map((option: any) => {
           let { value: optionValue, label } = option;
           let uniqueId = `${name}_${optionValue}`;
