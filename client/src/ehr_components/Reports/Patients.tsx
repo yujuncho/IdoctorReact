@@ -7,8 +7,7 @@ export default function Patients() {
   const [patientsList, setPatientsList] = useState<{ x: Date; y: number }[]>(
     []
   );
-  const [totalNewPatients, setTotalNewPatients] = useState<number>(0);
-  const title = `${totalNewPatients} new patients`;
+  const title = "New Patients";
 
   useEffect(() => {
     console.log(
@@ -51,12 +50,11 @@ export default function Patients() {
       for (let i = 0; i < keys.length; i++) {
         resultList.push({
           x: new Date(keys[i]),
-          y: Math.floor(mappedPatients[keys[i]])
+          y: mappedPatients[keys[i]]
         });
       }
 
       setPatientsList(resultList);
-      setTotalNewPatients(0);
     };
 
     getPatients();

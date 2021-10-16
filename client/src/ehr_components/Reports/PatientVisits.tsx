@@ -5,8 +5,7 @@ import BarChart from "./BarChart";
 
 export default function PatientVisits() {
   const [visitsList, setVisitsList] = useState<{ x: Date; y: number }[]>([]);
-  const [totalVisits, setTotalVisits] = useState<number>(0);
-  const title = `${totalVisits} patient visits`;
+  const title = "New Visits";
 
   useEffect(() => {
     console.log(
@@ -49,12 +48,11 @@ export default function PatientVisits() {
       for (let i = 0; i < keys.length; i++) {
         resultList.push({
           x: new Date(keys[i]),
-          y: Math.floor(mappedVisits[keys[i]])
+          y: mappedVisits[keys[i]]
         });
       }
 
       setVisitsList(resultList);
-      setTotalVisits(0);
     };
 
     getVisits();
