@@ -11,7 +11,7 @@ import Select from "../ui/Select";
 
 interface BarChartProps {
   title: string;
-  data: Array<any>;
+  data: Array<any> | undefined;
   formatLabel: ({ datum }: { datum: any }) => string;
 }
 
@@ -43,9 +43,9 @@ export default function BarChart(props: BarChartProps) {
   let oneYearRange: [Date, Date] = [oneYearAgo, todaysDate];
 
   const chartRanges = {
-    w: { domain: oneWeekRange, barRatio: 0.3 },
-    m: { domain: oneMonthRange, barRatio: 0.1 },
-    y: { domain: oneYearRange, barRatio: 0.01 }
+    w: { domain: oneWeekRange, barWidth: 30 },
+    m: { domain: oneMonthRange, barWidth: 15 },
+    y: { domain: oneYearRange, barWidth: 1 }
   };
 
   const handleSelectChange = (
@@ -57,9 +57,9 @@ export default function BarChart(props: BarChartProps) {
 
   return (
     <div className="card mt-4">
-      <div className="card-header w-100 d-flex align-items-center justify-content-center">
+      <div className="card-header w-100 d-sm-flex align-items-center justify-content-center">
         <h2 className="text-left m-0">{`${title}`}</h2>
-        <div className="ml-auto">
+        <div className="ml-auto mt-3 mt-sm-0">
           <Select
             name="timeframe"
             placeholder="Select timeframe"
@@ -74,14 +74,16 @@ export default function BarChart(props: BarChartProps) {
         width={800}
         theme={VictoryTheme.material}
         scale={{ x: "time" }}
-        domain={{ x: chartRanges[timeframe].domain, y: [0, 10] }}
+        domain={{ x: chartRanges[timeframe].domain }}
         domainPadding={{ x: 30 }}
         containerComponent={<VictoryContainer className="w-100 h-auto" />}
-        animate={{ duration: 1000, onLoad: { duration: 100 } }}
+        animate={{ duration: 1000, onLoad: { duration: 0 } }}
       >
         <VictoryBar
-          barRatio={chartRanges[timeframe].barRatio}
-          data={data}
+          barWidth={chartRanges[timeframe].barWidth}
+          data={data || []}
+          x={data => new Date(data.date)}
+          y="count"
           labels={formatLabel}
           labelComponent={
             <VictoryTooltip
@@ -90,6 +92,16 @@ export default function BarChart(props: BarChartProps) {
           }
         />
       </VictoryChart>
+      {data === undefined && (
+        <div
+          className="position-absolute w-100 h-100 d-flex justify-content-center align-items-center p-3 bg-secondary"
+          style={{ opacity: "70%" }}
+        >
+          <div className="spinner-border text-light" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
