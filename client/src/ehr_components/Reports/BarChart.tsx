@@ -12,7 +12,6 @@ import Select from "../ui/Select";
 interface BarChartProps {
   title: string;
   data: Array<any> | undefined;
-  formatLabel: ({ datum }: { datum: any }) => string;
 }
 
 enum TIMEFRAME {
@@ -29,7 +28,7 @@ const timeframeOptions = [
 
 export default function BarChart(props: BarChartProps) {
   const [timeframe, setTimeframe] = useState(TIMEFRAME.WEEK);
-  const { title, data, formatLabel } = props;
+  const { title, data } = props;
 
   const todaysDate = new Date();
   let oneWeekAgo = new Date();
@@ -53,6 +52,16 @@ export default function BarChart(props: BarChartProps) {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setTimeframe(event.target.value as TIMEFRAME);
+  };
+
+  const formatLabel = ({ datum }: { datum: any }) => {
+    let formattedDate = new Date(datum.date).toLocaleString("en-us", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "UTC"
+    });
+    return `+${datum.count} on ${formattedDate}`;
   };
 
   return (
@@ -82,7 +91,12 @@ export default function BarChart(props: BarChartProps) {
         <VictoryBar
           barWidth={chartRanges[timeframe].barWidth}
           data={data || []}
-          x={data => new Date(data.date)}
+          x={data => {
+            let [year, month, date] = data.date
+              .split("-")
+              .map((value: string) => parseInt(value));
+            return new Date(year, month - 1, date);
+          }}
           y="count"
           labels={formatLabel}
           labelComponent={

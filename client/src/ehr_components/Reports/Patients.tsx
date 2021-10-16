@@ -30,16 +30,5 @@ export default function Patients() {
     getPatients();
   }, []);
 
-  const formatLabel = ({ datum }: { datum: any }) => {
-    let formattedDate = new Date(datum.date).toLocaleString("en-us", {
-      month: "short",
-      day: "numeric",
-      year: "numeric"
-    });
-    return `+${datum.count} on ${formattedDate}`;
-  };
-
-  return (
-    <BarChart title={title} formatLabel={formatLabel} data={patientsList} />
-  );
+  return <BarChart title={title} data={patientsList} />;
 }
