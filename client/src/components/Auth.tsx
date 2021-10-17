@@ -81,9 +81,16 @@ export default function Auth() {
     if (formIsValid) {
       try {
         let {
-          data: { userId, token, email }
+          data: { userId, username, token, email, loginAt, isDeactivated }
         } = await Axios.post(`/api/user${pathname}`, formData);
-        authContext.login(userId, token, email);
+        authContext.login(
+          userId,
+          username,
+          token,
+          email,
+          new Date(loginAt),
+          isDeactivated
+        );
       } catch (error: any) {
         if (error.response) {
           if (error.response.data.errors) {

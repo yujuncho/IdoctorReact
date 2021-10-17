@@ -31,9 +31,14 @@ const signup: RequestHandler = async (req, res, next) => {
       { expiresIn: "1h" }
     );
 
-    res
-      .status(201)
-      .json({ userId: newUser.id, email: newUser.email, token: token });
+    res.status(201).json({
+      userId: newUser.id,
+      email: newUser.email,
+      username: newUser.username || "",
+      token: token,
+      loginAt: newUser.loginAt,
+      deactivated: newUser.isDeactivated
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -61,11 +66,110 @@ const login: RequestHandler = async (req, res, next) => {
       return res.status(401).json({ message: "Incorrect email or password" });
     }
 
+    user.loginAt = new Date(Date.now());
+    await user.save();
+
     let token = jwt.sign({ userId: user.id, email: user.email }, tokenSecret, {
       expiresIn: "1h"
     });
 
-    res.json({ userId: user.id, email: user.email, token: token });
+    res.json({
+      userId: user.id,
+      email: user.email,
+      username: user.username || "",
+      token: token,
+      loginAt: user.loginAt,
+      isDeactivated: user.isDeactivated
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const updateUser: RequestHandler = async (req, res, next) => {
+  const { username, email, id } = req.body;
+
+  try {
+    let user = await UserModel.findById(id);
+
+    if (user === null) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    if (username !== undefined) user.username = username;
+    if (email !== undefined) user.email = email;
+
+    let updatedUser = await user.save();
+
+    res.status(201).json({
+      username: updatedUser.username || "",
+      email: updatedUser.email
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const updatePassword: RequestHandler = async (req, res, next) => {
+  const validationError = validationErrorHandler(req, res);
+
+  if (validationError) {
+    return validationError;
+  }
+
+  const { id, currentPassword, newPassword } = req.body;
+
+  try {
+    let user = await UserModel.findById(id);
+
+    if (user === null) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    const isValidPassword = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+
+    if (!isValidPassword) {
+      return res
+        .status(401)
+        .json({ message: "The current password is incorrect" });
+    }
+
+    let hashedPassword = await bcrypt.hash(newPassword, 12);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(201).json({ message: "Successfully changed password" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const updateActiveStatus: RequestHandler = async (req, res, next) => {
+  const { id, password, deactivate } = req.body;
+
+  try {
+    let user = await UserModel.findById(id);
+
+    if (user === null) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    if (deactivate) {
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
+        return res.status(401).json({ message: "The password is incorrect" });
+      }
+    }
+
+    user.isDeactivated = deactivate;
+    await user.save();
+
+    res.status(201).json({
+      message: `Successfully ${deactivate ? "de" : "re"}activated account`
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -73,7 +177,10 @@ const login: RequestHandler = async (req, res, next) => {
 
 const userController = {
   signup,
-  login
+  login,
+  updateUser,
+  updatePassword,
+  updateActiveStatus
 };
 
 export default userController;

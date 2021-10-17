@@ -31,7 +31,6 @@ const App: React.FC = () => {
   if (userData.token) {
     routes = (
       <Switch>
-        <Route path="/" exact component={Home} />
         <Route path="/main" component={Main} />
         <Redirect to="/main" />
       </Switch>
@@ -52,15 +51,20 @@ const App: React.FC = () => {
   }
 
   return (
-    <AuthContextProvider
-      value={{ isLoggedIn: !!userData.token, ...userData, login, logout }}
-    >
-      <ReduxProvider store={store}>
+    <ReduxProvider store={store}>
+      <AuthContextProvider
+        value={{
+          isLoggedIn: !!userData.token,
+          ...userData,
+          login,
+          logout
+        }}
+      >
         <div className="App">
           <Router>{routes}</Router>
         </div>
-      </ReduxProvider>
-    </AuthContextProvider>
+      </AuthContextProvider>
+    </ReduxProvider>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
 import Navigation from "./common_components/navigation";
 
 import ReduxToastr from "react-redux-toastr";
@@ -12,10 +12,15 @@ import History from "./History";
 import NewVisit from "./NewVisit";
 import NewPatient from "./NewPatient";
 import Visits from "./Visits/";
+import Account from "./Account/";
+import Reactivate from "./Reactivate";
+
+import { AuthContext } from "../store/auth-context";
 
 export interface MainProps {}
 
 const Main: React.FC<MainProps> = () => {
+  const authContext = useContext(AuthContext);
   const { path } = useRouteMatch();
 
   return (
@@ -32,14 +37,19 @@ const Main: React.FC<MainProps> = () => {
         closeOnToastrClick
       />
 
-      <Switch>
-        <Route path={`${path}/search`} component={Search} />
-        <Route path={`${path}/history`} component={History} />
-        <Route path={`${path}/visits`} component={Visits} />
-        <Route path={`${path}/newVisit`} component={NewVisit} />
-        <Route path={`${path}/newPatient`} component={NewPatient} />
-        <Redirect to={`${path}/search`} />
-      </Switch>
+      {authContext.isDeactivated ? (
+        <Reactivate />
+      ) : (
+        <Switch>
+          <Route path={`${path}/search`} component={Search} />
+          <Route path={`${path}/history`} component={History} />
+          <Route path={`${path}/visits`} component={Visits} />
+          <Route path={`${path}/newVisit`} component={NewVisit} />
+          <Route path={`${path}/newPatient`} component={NewPatient} />
+          <Route path={`${path}/account`} component={Account} />
+          <Redirect to={`${path}/search`} />
+        </Switch>
+      )}
     </Fragment>
   );
 };

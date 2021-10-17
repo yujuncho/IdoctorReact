@@ -29,7 +29,8 @@ const FieldRenderer = function (props: Props) {
     isFormRow = true,
     resetToggle,
     display = true,
-    fadeIn = false
+    fadeIn = false,
+    showRequiredIcon
   } = field;
 
   function onACChange(name: string) {
@@ -119,6 +120,7 @@ const FieldRenderer = function (props: Props) {
       required={!!validateValue}
       isFormRow={isFormRow}
       fadeIn={fadeIn}
+      showRequiredIcon={showRequiredIcon}
     >
       {getFieldMarkup()}
     </Field>
