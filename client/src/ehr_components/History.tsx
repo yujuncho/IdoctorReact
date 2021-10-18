@@ -185,14 +185,14 @@ const History: React.FC = () => {
     <div className="container">
       <h2 className="main mb-4">Patient Medical History</h2>
       <div className="row">
-        <div className="col-md-3 mb-4 mb-md-0">
+        <div className="col-md-4 col-lg-3 mb-4 mb-md-0">
           <PatientImageUpload
             id={patientState.id || ""}
             name={patientState.fullName}
             profileImage={patientState?.profileImage || ""}
           />
         </div>
-        <form className="col-md-9" onSubmit={handleClick}>
+        <form className="col-md-8 col-lg-9" onSubmit={handleClick}>
           {fields}
           <div className="form-group">
             <button className="bttn-custom">Update</button>
