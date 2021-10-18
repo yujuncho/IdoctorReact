@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { Document } from "mongoose";
+import fs from "fs";
 
 import PatientModel, { IPatient } from "../models/PatientModel";
 import validationErrorHandler from "../utils/validation-error-handler";
@@ -159,6 +160,11 @@ const updatePatientImage: RequestHandler = async (req, res, next) => {
       .json({ message: "Could not find patient for given patient ID" });
   }
 
+  if (foundPatient.profileImage) {
+    fs.unlink(foundPatient.profileImage, error => {
+      if (error) console.log("ERROR FILE UNLINK", error);
+    });
+  }
   foundPatient.profileImage = req.file?.path;
 
   let updatedPatient: (IPatient & Document<any, any, IPatient>) | null;
