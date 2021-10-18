@@ -176,6 +176,7 @@ const NewVisit: React.FC<VisitProps> = () => {
       <div className="row">
         <div className="col-md-3 mb-4 mb-md-0">
           <PatientImageUpload
+            id={patientState.id || ""}
             name={patientState.fullName}
             profileImage={patientState?.profileImage || ""}
           />

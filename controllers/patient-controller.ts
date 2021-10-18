@@ -3,6 +3,7 @@ import { Document } from "mongoose";
 
 import PatientModel, { IPatient } from "../models/PatientModel";
 import validationErrorHandler from "../utils/validation-error-handler";
+import imageUploadRollback from "../utils/image-upload-rollback";
 
 const getAllPatients: RequestHandler = async (req, res, next) => {
   let patients;
@@ -57,7 +58,7 @@ const createPatient: RequestHandler = async (req, res, next) => {
     return res.status(500).json({ message: error.message });
   }
 
-  res.json({ patient: createdPatient.toObject({ getters: true }) });
+  res.status(201).json({ patient: createdPatient.toObject({ getters: true }) });
 };
 
 const updateHistory: RequestHandler = async (req, res, next) => {
@@ -131,13 +132,51 @@ const updateHistory: RequestHandler = async (req, res, next) => {
     return res.status(500).json({ message: error.message });
   }
 
-  res.status(201).json({ patient: updatedPatient });
+  res.json({ patient: updatedPatient });
+};
+
+const updatePatientImage: RequestHandler = async (req, res, next) => {
+  const validationError = validationErrorHandler(req, res);
+
+  if (validationError) {
+    return validationError;
+  }
+
+  const { id } = req.body;
+
+  let foundPatient: (IPatient & Document<any, any, IPatient>) | null;
+  try {
+    foundPatient = await PatientModel.findById(id);
+  } catch (error) {
+    imageUploadRollback(req);
+    return res.status(500).json({ message: error.message });
+  }
+
+  if (!foundPatient) {
+    imageUploadRollback(req);
+    return res
+      .status(404)
+      .json({ message: "Could not find patient for given patient ID" });
+  }
+
+  foundPatient.profileImage = req.file?.path;
+
+  let updatedPatient: (IPatient & Document<any, any, IPatient>) | null;
+  try {
+    updatedPatient = await foundPatient.save();
+  } catch (error) {
+    imageUploadRollback(req);
+    return res.status(500).json({ message: error.message });
+  }
+
+  res.json({ patient: updatedPatient });
 };
 
 const patientController = {
   getAllPatients,
   createPatient,
-  updateHistory
+  updateHistory,
+  updatePatientImage
 };
 
 export default patientController;

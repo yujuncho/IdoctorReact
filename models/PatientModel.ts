@@ -43,6 +43,7 @@ export interface IPatient {
   zipCode: string;
   maritalStatus: string;
   job?: string;
+  profileImage?: string;
   history: IPatientHistory;
   visits: Types.ObjectId[] | Document[];
 }
@@ -75,6 +76,9 @@ const patientSchema = new Schema<IPatient>({
   maritalStatus: {
     type: String,
     required: true
+  },
+  profileImage: {
+    type: String
   },
   job: {
     type: String

@@ -17,6 +17,11 @@ app.use("/api/patient", patientRoutes);
 app.use("/api/visits", visitsRoutes);
 app.use("/api/reports", reportsRoutes);
 
+app.use(
+  "/uploads/images",
+  express.static(path.join(__dirname, "/uploads/images"))
+);
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "/client/build/index.html"));
 });
