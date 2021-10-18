@@ -7,6 +7,7 @@ import Axios from "axios";
 import FieldRenderer from "./common_components/field-renderer";
 import Field from "./ui/Field";
 import Input from "./ui/Input";
+import PatientImageUpload from "./PatientImageUpload";
 import { Patient } from "./NewPatient";
 import generateNewVisitFields, { PatientVisit } from "./data/new-visit-fields";
 
@@ -174,17 +175,10 @@ const NewVisit: React.FC<VisitProps> = () => {
       <h2 className="main mb-4">Visit</h2>
       <div className="row">
         <div className="col-md-3 mb-4 mb-md-0">
-          <div className="card mr-2">
-            <img
-              className="card-img-top"
-              src="./img/team/02.jpg"
-              alt="Patient"
-            />
-            <div className="card-body">
-              <h5 className="card-title">{patientState.fullName}</h5>
-              <button className="btn btn-primary">Update Image</button>
-            </div>
-          </div>
+          <PatientImageUpload
+            name={patientState.fullName}
+            profileImage={patientState?.profileImage || ""}
+          />
         </div>
         <form className="col-md-9" onSubmit={handleClick}>
           {fields}
