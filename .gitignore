@@ -119,6 +119,3 @@ dist
 
 # production
 /dist
-
-# File uploads
-/uploads/*
