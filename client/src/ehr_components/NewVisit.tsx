@@ -169,11 +169,7 @@ const NewVisit: React.FC<VisitProps> = () => {
       <h2 className="main mb-4">Visit</h2>
       <div className="row">
         <div className="col-md-4 col-lg-3 mb-4 mb-md-0">
-          <PatientImageUpload
-            id={patientState.id || ""}
-            name={patientState.fullName}
-            profileImage={patientState?.profileImage || ""}
-          />
+          <PatientImageUpload />
         </div>
         <form className="col-md-8 col-lg-9" onSubmit={handleClick}>
           {fields}

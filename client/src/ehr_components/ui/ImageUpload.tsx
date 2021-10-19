@@ -25,7 +25,12 @@ export default function ImageUpload(props: ImageUploadProps) {
   return (
     <div className="card">
       {imgSrc.length > 0 && (
-        <img className="card-img-top" src={imgSrc} alt="Patient" />
+        <img
+          className="card-img-top"
+          style={{ objectFit: "cover", height: 200 }}
+          src={imgSrc}
+          alt="Patient"
+        />
       )}
       <div className="card-body">
         <h5 className="card-title">{title}</h5>

@@ -1,26 +1,21 @@
 import { useState } from "react";
 import Axios from "axios";
+import { useHistory, useLocation } from "react-router-dom";
 
 import ImageUpload from "./ui/ImageUpload";
+import { Patient } from "./NewPatient";
 
-interface PatientImageUploadProps {
-  id: string;
-  name: string;
-  profileImage: string;
-}
-
-export default function PatientImageUpload(props: PatientImageUploadProps) {
-  const { id, name, profileImage } = props;
-
-  const [imgSrc, setImgSrc] = useState(profileImage);
+export default function PatientImageUpload() {
+  let { pathname, state: patientState } = useLocation<Patient>();
   const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
 
   const pickedHandler = async (file: File) => {
     setIsLoading(true);
 
     try {
       let formData = new FormData();
-      formData.append("id", id);
+      formData.append("id", patientState.id || "");
       formData.append("image", file);
 
       let {
@@ -29,7 +24,7 @@ export default function PatientImageUpload(props: PatientImageUploadProps) {
         }
       } = await Axios.patch("/api/patient/image", formData);
 
-      setImgSrc(profileImage);
+      history.replace(pathname, { ...patientState, profileImage });
     } catch (error) {
       console.log(error);
     }
@@ -39,8 +34,8 @@ export default function PatientImageUpload(props: PatientImageUploadProps) {
 
   return (
     <ImageUpload
-      title={name}
-      imgSrc={imgSrc}
+      title={patientState.fullName}
+      imgSrc={patientState.profileImage || ""}
       onPicked={pickedHandler}
       loading={isLoading}
     />
