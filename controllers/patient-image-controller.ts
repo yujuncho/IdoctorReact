@@ -35,7 +35,11 @@ const savePatientImageLocally: RequestHandler = async (req, res, next) => {
   const upload = fileUpload.single("image");
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
-      return res.status(422).json({ message: err.message });
+      let message = err.message;
+      if (err.message === "File too large") {
+        message = "Please choose an image less than 16 MB";
+      }
+      return res.status(422).json({ message });
     } else if (err) {
       return res.status(500).json({ message: err.message });
     }
