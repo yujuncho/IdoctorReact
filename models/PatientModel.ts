@@ -43,7 +43,7 @@ export interface IPatient {
   zipCode: string;
   maritalStatus: string;
   job?: string;
-  profileImage?: string;
+  profileImage?: Types.ObjectId;
   history: IPatientHistory;
   visits: Types.ObjectId[] | Document[];
 }
@@ -78,7 +78,7 @@ const patientSchema = new Schema<IPatient>({
     required: true
   },
   profileImage: {
-    type: String
+    type: { type: Types.ObjectId, ref: "PatientImage" }
   },
   job: {
     type: String

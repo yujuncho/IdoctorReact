@@ -1,10 +1,8 @@
 import { RequestHandler } from "express";
 import { Document } from "mongoose";
-import fs from "fs";
 
 import PatientModel, { IPatient } from "../models/PatientModel";
 import validationErrorHandler from "../utils/validation-error-handler";
-import imageUploadRollback from "../utils/image-upload-rollback";
 
 const getAllPatients: RequestHandler = async (req, res, next) => {
   let patients;
@@ -136,53 +134,10 @@ const updateHistory: RequestHandler = async (req, res, next) => {
   res.json({ patient: updatedPatient });
 };
 
-const updatePatientImage: RequestHandler = async (req, res, next) => {
-  const validationError = validationErrorHandler(req, res);
-
-  if (validationError) {
-    return validationError;
-  }
-
-  const { id } = req.body;
-
-  let foundPatient: (IPatient & Document<any, any, IPatient>) | null;
-  try {
-    foundPatient = await PatientModel.findById(id);
-  } catch (error) {
-    imageUploadRollback(req);
-    return res.status(500).json({ message: error.message });
-  }
-
-  if (!foundPatient) {
-    imageUploadRollback(req);
-    return res
-      .status(404)
-      .json({ message: "Could not find patient for given patient ID" });
-  }
-
-  if (foundPatient.profileImage) {
-    fs.unlink(foundPatient.profileImage, error => {
-      if (error) console.log("ERROR FILE UNLINK", error);
-    });
-  }
-  foundPatient.profileImage = req.file?.path;
-
-  let updatedPatient: (IPatient & Document<any, any, IPatient>) | null;
-  try {
-    updatedPatient = await foundPatient.save();
-  } catch (error) {
-    imageUploadRollback(req);
-    return res.status(500).json({ message: error.message });
-  }
-
-  res.json({ patient: updatedPatient });
-};
-
 const patientController = {
   getAllPatients,
   createPatient,
-  updateHistory,
-  updatePatientImage
+  updateHistory
 };
 
 export default patientController;

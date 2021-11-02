@@ -2,7 +2,6 @@ import { Router } from "express";
 import { check } from "express-validator";
 
 import patientController from "../controllers/patient-controller";
-import fileUpload from "../middleware/file-upload";
 
 const patientRoutes = Router();
 
@@ -34,13 +33,6 @@ patientRoutes.patch(
   "/history",
   check("patient").not().isEmpty().withMessage("must not be empty"),
   patientController.updateHistory
-);
-
-patientRoutes.patch(
-  "/image",
-  fileUpload.single("image"),
-  check("id").not().isEmpty().withMessage("must not be empty"),
-  patientController.updatePatientImage
 );
 
 export default patientRoutes;
