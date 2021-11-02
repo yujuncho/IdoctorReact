@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 import { RequestHandler } from "express";
-import { Document, startSession } from "mongoose";
+import mongoose, { Document } from "mongoose";
 import multer from "multer";
 
 import PatientModel, { IPatient } from "../models/PatientModel";
@@ -9,6 +9,27 @@ import PatientImageModel, { IPatientImage } from "../models/PatientImageModel";
 import fileUpload from "../middleware/file-upload";
 import validationErrorHandler from "../utils/validation-error-handler";
 import imageUploadRollback from "../utils/image-upload-rollback";
+
+const getPatientImage: RequestHandler = async (req, res, next) => {
+  let imageId = req.params.imageId;
+
+  let foundPatientImage:
+    | (IPatientImage & Document<any, any, IPatientImage>)
+    | null;
+  try {
+    foundPatientImage = await PatientImageModel.findById(imageId);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+
+  if (!foundPatientImage) {
+    return res.status(404).json({
+      message: "Could not find patientImage for given patientImage ID"
+    });
+  }
+
+  res.json({ patientImage: foundPatientImage });
+};
 
 const savePatientImageLocally: RequestHandler = async (req, res, next) => {
   const upload = fileUpload.single("image");
@@ -29,13 +50,13 @@ const updatePatientImage: RequestHandler = async (req, res, next) => {
     return validationError;
   }
 
-  const { id } = req.body;
+  const { patientId } = req.body;
 
   let foundPatient: (IPatient & Document<any, any, IPatient>) | null;
   let patientImage: (IPatientImage & Document<any, any, IPatientImage>) | null;
   try {
-    foundPatient = await PatientModel.findById(id);
-    patientImage = await PatientImageModel.findOne({ patient: id });
+    foundPatient = await PatientModel.findById(patientId);
+    patientImage = await PatientImageModel.findOne({ patient: patientId });
   } catch (error) {
     imageUploadRollback(req);
     return res.status(500).json({ message: error.message });
@@ -50,16 +71,18 @@ const updatePatientImage: RequestHandler = async (req, res, next) => {
 
   if (!patientImage) {
     patientImage = new PatientImageModel({
-      patient: id
+      patient: patientId
     });
   }
 
   const imagePath = path.join(
-    __dirname + "/uploads/images" + req.file?.filename
+    __dirname,
+    "../uploads/images",
+    req.file?.filename || ""
   );
   const imageData = fs.readFileSync(imagePath);
-  patientImage.img.data = imageData;
-  patientImage.img.contentType = req.file?.mimetype || "";
+  patientImage.data = imageData.toString("base64");
+  patientImage.contentType = req.file?.mimetype || "";
   patientImage.filename = req.file?.fieldname || "";
 
   let updatedPatient: (IPatient & Document<any, any, IPatient>) | null;
@@ -67,10 +90,10 @@ const updatePatientImage: RequestHandler = async (req, res, next) => {
     | (IPatientImage & Document<any, any, IPatientImage>)
     | null;
   try {
-    const sess = await startSession();
+    const sess = await mongoose.startSession();
     sess.startTransaction();
     updatedPatientImage = await patientImage.save();
-    foundPatient.profileImage = patientImage.id;
+    foundPatient.profileImage = updatedPatientImage.id;
     updatedPatient = await foundPatient.save();
     sess.commitTransaction();
   } catch (error) {
@@ -79,10 +102,11 @@ const updatePatientImage: RequestHandler = async (req, res, next) => {
   }
 
   imageUploadRollback(req);
-  res.json({ patient: updatedPatient, patientImage: updatedPatientImage });
+  res.json({ patientImage: updatedPatientImage });
 };
 
 const patientImageController = {
+  getPatientImage,
   savePatientImageLocally,
   updatePatientImage
 };

@@ -1,4 +1,4 @@
-import { Types, Schema, model, Document } from "mongoose";
+import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface IPatientHistory {
   chronic_diseases?: string[];
@@ -43,9 +43,9 @@ export interface IPatient {
   zipCode: string;
   maritalStatus: string;
   job?: string;
-  profileImage?: Types.ObjectId;
+  profileImage?: mongoose.Types.ObjectId;
   history: IPatientHistory;
-  visits: Types.ObjectId[] | Document[];
+  visits: mongoose.Types.ObjectId[] | Document[];
 }
 
 const patientSchema = new Schema<IPatient>({
@@ -78,13 +78,16 @@ const patientSchema = new Schema<IPatient>({
     required: true
   },
   profileImage: {
-    type: { type: Types.ObjectId, ref: "PatientImage" }
+    type: mongoose.Types.ObjectId,
+    ref: "PatientImage"
   },
   job: {
     type: String
   },
   history: patientHistorySchema,
-  visits: [{ type: Types.ObjectId, required: true, ref: "PatientVisit" }],
+  visits: [
+    { type: mongoose.Types.ObjectId, required: true, ref: "PatientVisit" }
+  ],
   createdAt: {
     type: Date,
     default: Date.now
