@@ -124,10 +124,9 @@ const NewPatient: React.FC = () => {
   return (
     <div className="container">
       <h2>New Patient</h2>
-      <br />
-      <div className="row  justify-content-center">
+      <div className="row mt-4">
         <form
-          className="w-75   align-content-center"
+          className="col-12 col-md-10 col-lg-8 mx-auto"
           onSubmit={handleClick}
           noValidate
         >

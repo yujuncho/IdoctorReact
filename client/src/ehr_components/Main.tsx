@@ -14,6 +14,7 @@ import NewPatient from "./NewPatient";
 import Visits from "./Visits/";
 import Account from "./Account/";
 import Reactivate from "./Reactivate";
+import Reports from "./Reports/";
 
 import { AuthContext } from "../store/auth-context";
 
@@ -47,6 +48,7 @@ const Main: React.FC<MainProps> = () => {
           <Route path={`${path}/newVisit`} component={NewVisit} />
           <Route path={`${path}/newPatient`} component={NewPatient} />
           <Route path={`${path}/account`} component={Account} />
+          <Route path={`${path}/reports`} component={Reports} />
           <Redirect to={`${path}/search`} />
         </Switch>
       )}

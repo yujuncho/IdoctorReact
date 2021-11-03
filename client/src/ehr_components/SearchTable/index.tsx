@@ -34,7 +34,7 @@ export default function SearchTable(props: SearchTableProps) {
         filter: "fuzzyText"
       },
       {
-        Header: "Birth Date",
+        Header: "Birth",
         accessor: "dob",
         get className(): string {
           return columnWidths[this.accessor];
