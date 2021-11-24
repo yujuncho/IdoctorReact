@@ -7,6 +7,7 @@ import Axios from "axios";
 import FieldRenderer from "./common_components/field-renderer";
 import Field from "./ui/Field";
 import Input from "./ui/Input";
+import PatientImageUpload from "./PatientImageUpload";
 import { Patient } from "./NewPatient";
 import generateNewVisitFields, { PatientVisit } from "./data/new-visit-fields";
 
@@ -132,13 +133,7 @@ const NewVisit: React.FC<VisitProps> = () => {
     // special handling for blood pressure as it has two different inputs
     if (name === "blood_pressure") {
       return (
-        <Field
-          name="bp_sys"
-          label="Blood Pressure"
-          gridSize="col-sm-4"
-          isFormRow={true}
-          key={name}
-        >
+        <Field name="bp_sys" label="Blood Pressure" isFormRow={true} key={name}>
           <>
             <Input
               name="bp_sys"
@@ -173,20 +168,10 @@ const NewVisit: React.FC<VisitProps> = () => {
     <div className="container">
       <h2 className="main mb-4">Visit</h2>
       <div className="row">
-        <div className="col-md-3 mb-4 mb-md-0">
-          <div className="card mr-2">
-            <img
-              className="card-img-top"
-              src="./img/team/02.jpg"
-              alt="Patient"
-            />
-            <div className="card-body">
-              <h5 className="card-title">{patientState.fullName}</h5>
-              <button className="btn btn-primary">Update Image</button>
-            </div>
-          </div>
+        <div className="col-md-4 col-lg-3 mb-4 mb-md-0">
+          <PatientImageUpload />
         </div>
-        <form className="col-md-9" onSubmit={handleClick}>
+        <form className="col-md-8 col-lg-9" onSubmit={handleClick}>
           {fields}
           <div className="form-group">
             <button className="bttn-custom">Add Visit Details</button>

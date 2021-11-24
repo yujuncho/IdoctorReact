@@ -38,6 +38,7 @@ export interface Patient extends ObjectKeyAccess {
   gender: string;
   job: string;
   maritalStatus: string;
+  profileImage?: string;
   history?: PatientHistory;
 }
 

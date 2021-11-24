@@ -7,6 +7,7 @@ import Field from "./ui/Field";
 import AutoComplete from "./ui/AutoComplete";
 import { bloodGroups, diseases } from "./data/patient-history";
 import { Patient, PatientHistory } from "./NewPatient";
+import PatientImageUpload from "./PatientImageUpload";
 import FieldRenderer from "./common_components/field-renderer";
 import generatePatientHistoryFields from "./data/patient-history-fields";
 
@@ -184,20 +185,10 @@ const History: React.FC = () => {
     <div className="container">
       <h2 className="main mb-4">Patient Medical History</h2>
       <div className="row">
-        <div className="col-md-3 mb-4 mb-md-0">
-          <div className="card mr-2">
-            <img
-              className="card-img-top"
-              src="./img/team/02.jpg"
-              alt="Patient"
-            />
-            <div className="card-body">
-              <h5 className="card-title">{patientState.fullName}</h5>
-              <button className="btn btn-primary">Update Image</button>
-            </div>
-          </div>
+        <div className="col-md-4 col-lg-3 mb-4 mb-md-0">
+          <PatientImageUpload />
         </div>
-        <form className="col-md-9" onSubmit={handleClick}>
+        <form className="col-md-8 col-lg-9" onSubmit={handleClick}>
           {fields}
           <div className="form-group">
             <button className="bttn-custom">Update</button>
