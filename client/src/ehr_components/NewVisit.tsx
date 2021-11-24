@@ -2,8 +2,7 @@ import { toastr } from "react-redux-toastr";
 import { useCallback, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 
-import Axios from "axios";
-
+import useAuthAxios from "../hooks/useAuthAxios";
 import FieldRenderer from "./common_components/field-renderer";
 import Field from "./ui/Field";
 import Input from "./ui/Input";
@@ -43,6 +42,7 @@ const initialVisitState: PatientVisit = {
 
 const NewVisit: React.FC<VisitProps> = () => {
   let history = useHistory();
+  let axios = useAuthAxios();
   let { state: patientState } = useLocation<Patient>();
 
   let [medicalVisit, setMedicalVisit] = useState<PatientVisit>({
@@ -100,7 +100,7 @@ const NewVisit: React.FC<VisitProps> = () => {
 
     if (invalidFields.length === 0) {
       try {
-        let response = await Axios.post("/api/visits", medicalVisit);
+        let response = await axios.post("/api/visits", medicalVisit);
         console.log("CREATED VISIT", response.data.visit);
         toastr.success("Patient Visit", "Added Successfully");
         history.push("/main/search");

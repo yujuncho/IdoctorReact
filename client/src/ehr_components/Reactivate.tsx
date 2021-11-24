@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Axios from "axios";
 
+import useAuthAxios from "../hooks/useAuthAxios";
 import useAuth from "../hooks/useAuth";
 import Alert from "./ui/Alert";
 
@@ -9,11 +9,12 @@ export default function Reactivate() {
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const auth = useAuth();
+  const axios = useAuthAxios();
 
   let handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsLoading(true);
     try {
-      await Axios.patch("/api/user/activate", {
+      await axios.patch("/api/user/activate", {
         id: auth.userData.uid,
         deactivate: false
       });

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Axios from "axios";
 
+import useAuthAxios from "../../hooks/useAuthAxios";
 import useAuth from "../../hooks/useAuth";
 import generateDeactivateFields from "./data/deactivate-fields";
 import FieldRenderer from "../common_components/field-renderer";
@@ -8,6 +8,7 @@ import Alert from "../ui/Alert";
 
 export default function Deactivate() {
   const auth = useAuth();
+  const axios = useAuthAxios();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -57,7 +58,7 @@ export default function Deactivate() {
     if (formIsValid) {
       setIsLoading(true);
       try {
-        await Axios.patch("/api/user/activate", formData);
+        await axios.patch("/api/user/activate", formData);
         console.log("DEACTIVATED ACCOUNT");
         auth.logout();
       } catch (error: any) {

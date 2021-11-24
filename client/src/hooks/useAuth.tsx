@@ -63,7 +63,6 @@ export function AuthProvider({
       loginAt: Date,
       isDeactivated: boolean
     ) => {
-      console.log("LOG IN");
       setUserData({ uid, username, token, email, loginAt, isDeactivated });
       localStorage.setItem(
         "userData",
@@ -73,11 +72,10 @@ export function AuthProvider({
     []
   );
 
-  const logout = () => {
-    console.log("LOG OUT");
+  const logout = useCallback(() => {
     localStorage.removeItem("userData");
     setUserData(userDataDefault);
-  };
+  }, []);
 
   useEffect(() => {
     let storedUserData = localStorage.getItem("userData");

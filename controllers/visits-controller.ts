@@ -26,9 +26,12 @@ const getVisitsByPatientId: RequestHandler = async (req, res, next) => {
 
   let patientWithVisits;
   try {
-    patientWithVisits = await PatientModel.findById(patientId).populate(
-      "visits"
-    );
+    patientWithVisits = await PatientModel.findById(patientId).populate({
+      path: "visits",
+      options: {
+        sort: { date: -1 }
+      }
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
