@@ -14,7 +14,7 @@ export default function Security() {
   const [showAlert, setShowAlert] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [formData, setFormData] = useState({
-    id: authContext.uid,
+    id: authContext.userData.uid,
     currentPassword: "",
     newPassword: "",
     confirmNewPassword: ""

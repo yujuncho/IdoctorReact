@@ -21,7 +21,7 @@ function Navigation() {
         IDoctor
       </Link>
 
-      {!authContext.isDeactivated && (
+      {!authContext.userData.isDeactivated && (
         <>
           <button
             className="navbar-toggler collapsed"
@@ -66,7 +66,7 @@ function Navigation() {
           </div>
         </>
       )}
-      {authContext.isDeactivated && (
+      {authContext.userData.isDeactivated && (
         <form className={`form-inline justify-content-center ml-auto`}>
           <button onClick={logoutHandler} className="btn btn-outline-secondary">
             Log out

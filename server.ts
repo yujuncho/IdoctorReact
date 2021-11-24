@@ -2,16 +2,23 @@ import express from "express";
 import path from "path";
 import mongoose from "mongoose";
 
+import authRoutes from "./routes/auth-routes";
 import userRoutes from "./routes/user-routes";
 import patientRoutes from "./routes/patient-routes";
 import patientImageRoutes from "./routes/patient-image-routes";
 import visitsRoutes from "./routes/visits-routes";
 import reportsRoutes from "./routes/reports-routes";
 
+import authController from "./controllers/auth-controller";
+
 const app = express();
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "/client/build")));
+
+app.use("/api/user", authRoutes);
+
+app.use("/api/", authController.checkAuth);
 
 app.use("/api/user", userRoutes);
 app.use("/api/patient", patientRoutes);

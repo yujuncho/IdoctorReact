@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from "react";
+import React, { useContext } from "react";
 import Navigation from "./common_components/navigation";
 
 import ReduxToastr from "react-redux-toastr";
@@ -25,7 +25,7 @@ const Main: React.FC<MainProps> = () => {
   const { path } = useRouteMatch();
 
   return (
-    <Fragment>
+    <>
       <Navigation />
       <ReduxToastr
         timeOut={4000}
@@ -38,7 +38,7 @@ const Main: React.FC<MainProps> = () => {
         closeOnToastrClick
       />
 
-      {authContext.isDeactivated ? (
+      {authContext.userData.isDeactivated ? (
         <Reactivate />
       ) : (
         <Switch>
@@ -52,7 +52,7 @@ const Main: React.FC<MainProps> = () => {
           <Redirect to={`${path}/search`} />
         </Switch>
       )}
-    </Fragment>
+    </>
   );
 };
 

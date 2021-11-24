@@ -14,11 +14,13 @@ export default function Reactivate() {
     setIsLoading(true);
     try {
       await Axios.patch("/api/user/activate", {
-        id: authContext.uid,
+        id: authContext.userData.uid,
         deactivate: false
       });
       console.log("REACTIVATED ACCOUNT");
-      const { uid, username, token, email, loginAt } = authContext;
+      const {
+        userData: { uid, username, token, email, loginAt }
+      } = authContext;
       authContext.login(uid, username, token, email, loginAt, false);
     } catch (error: any) {
       let message;

@@ -7,8 +7,10 @@ import generatePersonalInfoFields from "./data/personal-info-fields";
 import Alert from "../ui/Alert";
 
 export default function PersonalInfo() {
-  const { uid, email, username, token, loginAt, isDeactivated, login } =
-    useContext(AuthContext);
+  const {
+    userData: { uid, email, username, token, loginAt, isDeactivated },
+    login
+  } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);

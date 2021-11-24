@@ -1,4 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+  createContext
+} from "react";
 
 interface UserData {
   uid: string;
@@ -18,7 +24,33 @@ const userDataDefault: UserData = {
   isDeactivated: false
 };
 
-export const useAuth = () => {
+const AuthContext = createContext({
+  login: (
+    uid: string,
+    username: string,
+    token: string,
+    email: string,
+    loginAt: Date,
+    isDeactivated: boolean
+  ) => {},
+  logout: () => {},
+  isLoggedIn: false,
+  userData: {
+    uid: "",
+    username: "",
+    token: "",
+    email: "",
+    loginAt: new Date(),
+    isDeactivated: false
+  },
+  checkedStorage: false
+});
+
+export function AuthProvider({
+  children
+}: {
+  children: JSX.Element | JSX.Element[];
+}) {
   const [userData, setUserData] = useState(userDataDefault);
   const [checkedStorage, setCheckingStorage] = useState(false);
 
@@ -31,6 +63,7 @@ export const useAuth = () => {
       loginAt: Date,
       isDeactivated: boolean
     ) => {
+      console.log("LOG IN");
       setUserData({ uid, username, token, email, loginAt, isDeactivated });
       localStorage.setItem(
         "userData",
@@ -40,10 +73,11 @@ export const useAuth = () => {
     []
   );
 
-  const logout = useCallback(() => {
-    setUserData(userDataDefault);
+  const logout = () => {
+    console.log("LOG OUT");
     localStorage.removeItem("userData");
-  }, []);
+    setUserData(userDataDefault);
+  };
 
   useEffect(() => {
     let storedUserData = localStorage.getItem("userData");
@@ -55,5 +89,17 @@ export const useAuth = () => {
     setCheckingStorage(true);
   }, [login]);
 
-  return { login, logout, userData, checkedStorage };
-};
+  let value = {
+    isLoggedIn: !!userData.token,
+    login,
+    logout,
+    userData,
+    checkedStorage
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export default function useAuth() {
+  return useContext(AuthContext);
+}

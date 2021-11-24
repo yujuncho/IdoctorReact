@@ -13,7 +13,7 @@ export default function Deactivate() {
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [formData, setFormData] = useState({
-    id: authContext.uid,
+    id: authContext.userData.uid,
     password: "",
     deactivate: true
   });
