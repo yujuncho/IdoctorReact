@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import Navigation from "./common_components/navigation";
 
 import ReduxToastr from "react-redux-toastr";
@@ -16,12 +16,12 @@ import Account from "./Account/";
 import Reactivate from "./Reactivate";
 import Reports from "./Reports/";
 
-import { AuthContext } from "../store/auth-context";
+import useAuth from "../hooks/useAuth";
 
 export interface MainProps {}
 
 const Main: React.FC<MainProps> = () => {
-  const authContext = useContext(AuthContext);
+  const auth = useAuth();
   const { path } = useRouteMatch();
 
   return (
@@ -38,7 +38,7 @@ const Main: React.FC<MainProps> = () => {
         closeOnToastrClick
       />
 
-      {authContext.userData.isDeactivated ? (
+      {auth.userData.isDeactivated ? (
         <Reactivate />
       ) : (
         <Switch>

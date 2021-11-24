@@ -1,27 +1,27 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Axios from "axios";
 
-import { AuthContext } from "../store/auth-context";
+import useAuth from "../hooks/useAuth";
 import Alert from "./ui/Alert";
 
 export default function Reactivate() {
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
-  const authContext = useContext(AuthContext);
+  const auth = useAuth();
 
   let handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsLoading(true);
     try {
       await Axios.patch("/api/user/activate", {
-        id: authContext.userData.uid,
+        id: auth.userData.uid,
         deactivate: false
       });
       console.log("REACTIVATED ACCOUNT");
       const {
         userData: { uid, username, token, email, loginAt }
-      } = authContext;
-      authContext.login(uid, username, token, email, loginAt, false);
+      } = auth;
+      auth.login(uid, username, token, email, loginAt, false);
     } catch (error: any) {
       let message;
       if (error.response) {

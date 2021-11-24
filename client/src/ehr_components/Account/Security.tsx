@@ -1,20 +1,20 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Axios from "axios";
 
-import { AuthContext } from "../../store/auth-context";
+import useAuth from "../../hooks/useAuth";
 import FieldRenderer from "../common_components/field-renderer";
 import generateSecurityFields from "./data/security-fields";
 import Alert from "../ui/Alert";
 
 export default function Security() {
-  const authContext = useContext(AuthContext);
+  const auth = useAuth();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [formData, setFormData] = useState({
-    id: authContext.userData.uid,
+    id: auth.userData.uid,
     currentPassword: "",
     newPassword: "",
     confirmNewPassword: ""

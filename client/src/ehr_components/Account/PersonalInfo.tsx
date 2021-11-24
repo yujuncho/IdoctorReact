@@ -1,7 +1,7 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Axios from "axios";
 
-import { AuthContext } from "../../store/auth-context";
+import useAuth from "../../hooks/useAuth";
 import FieldRenderer from "../common_components/field-renderer";
 import generatePersonalInfoFields from "./data/personal-info-fields";
 import Alert from "../ui/Alert";
@@ -10,7 +10,7 @@ export default function PersonalInfo() {
   const {
     userData: { uid, email, username, token, loginAt, isDeactivated },
     login
-  } = useContext(AuthContext);
+  } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);

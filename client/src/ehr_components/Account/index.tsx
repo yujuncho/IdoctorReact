@@ -1,25 +1,20 @@
-import { useContext } from "react";
-
-import { AuthContext } from "../../store/auth-context";
+import useAuth from "../../hooks/useAuth";
 import PersonalInfo from "./PersonalInfo";
 import Security from "./Security";
 import Deactivate from "./Deactivate";
 
 export default function Account() {
-  const authContext = useContext(AuthContext);
+  const auth = useAuth();
 
-  let lastLoginTimestamp = authContext.userData.loginAt?.toLocaleDateString(
-    "en-us",
-    {
-      weekday: "short",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-      second: "2-digit"
-    }
-  );
+  let lastLoginTimestamp = auth.userData.loginAt?.toLocaleDateString("en-us", {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit"
+  });
 
   return (
     <div className="container mb-5">
