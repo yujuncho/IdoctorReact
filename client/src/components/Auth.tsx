@@ -1,8 +1,8 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Axios from "axios";
 
-import { AuthContext } from "../store/auth-context";
+import useAuth from "../hooks/useAuth";
 import FieldRenderer from "../ehr_components/common_components/field-renderer";
 import generateAuthFields, { AuthType } from "./data/auth-fields";
 
@@ -14,7 +14,7 @@ const formDefaultState = {
 };
 
 export default function Auth() {
-  const authContext = useContext(AuthContext);
+  const auth = useAuth();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formData, setFormData] = useState(formDefaultState);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -83,7 +83,7 @@ export default function Auth() {
         let {
           data: { userId, username, token, email, loginAt, isDeactivated }
         } = await Axios.post(`/api/user${pathname}`, formData);
-        authContext.login(
+        auth.login(
           userId,
           username,
           token,

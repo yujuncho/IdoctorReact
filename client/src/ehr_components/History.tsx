@@ -1,8 +1,8 @@
 import { useLocation, useHistory } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
 import React, { useState } from "react";
-import Axios from "axios";
 
+import useAuthAxios from "../hooks/useAuthAxios";
 import Field from "./ui/Field";
 import AutoComplete from "./ui/AutoComplete";
 import { bloodGroups, diseases } from "./data/patient-history";
@@ -39,6 +39,7 @@ const initialHistoryState: PatientHistoryRendered = {
 
 const History: React.FC = () => {
   let history = useHistory();
+  let axios = useAuthAxios();
   let { state: patientState } = useLocation<Patient>();
 
   const [changedField, setChangedField] = useState("");
@@ -111,7 +112,7 @@ const History: React.FC = () => {
       let chronic_diseases = medicalHistory.chronic_diseases.map(
         disease => disease.label
       );
-      let response = await Axios.patch("/api/patient/history", {
+      let response = await axios.patch("/api/patient/history", {
         ...medicalHistory,
         chronic_diseases
       });

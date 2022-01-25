@@ -1,8 +1,8 @@
 import { useHistory } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
 import React, { useState } from "react";
-import Axios from "axios";
 
+import useAuthAxios from "../hooks/useAuthAxios";
 import FieldRenderer from "./common_components/field-renderer";
 import generateNewPatientFields from "./data/new-patient-fields";
 
@@ -43,6 +43,7 @@ export interface Patient extends ObjectKeyAccess {
 }
 
 const NewPatient: React.FC = () => {
+  const axios = useAuthAxios();
   const history = useHistory();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formData, setFormData] = useState<Patient>({
@@ -101,7 +102,7 @@ const NewPatient: React.FC = () => {
           ...formData,
           phoneNumber: formData.phoneNumber.replace(/[^\d]/g, "")
         };
-        let response = await Axios.post("/api/patient", patientData);
+        let response = await axios.post("/api/patient", patientData);
         console.log("CREATED PATIENT", response.data.patient);
         toastr.success("New Patient", "Added Successfuly");
         history.push(`/main/search`);

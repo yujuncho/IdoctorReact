@@ -4,30 +4,6 @@ import { check } from "express-validator";
 
 const userRoutes = Router();
 
-userRoutes.post(
-  "/signup",
-  [
-    check("email")
-      .isEmail()
-      .withMessage("is an invalid email format")
-      .normalizeEmail(),
-    check("password").not().isEmpty().withMessage("must not be empty")
-  ],
-  userController.signup
-);
-
-userRoutes.post(
-  "/login",
-  [
-    check("email")
-      .isEmail()
-      .withMessage("is an invalid email format")
-      .normalizeEmail(),
-    check("password").not().isEmpty().withMessage("must not be empty")
-  ],
-  userController.login
-);
-
 userRoutes.patch(
   "/",
   check("id").not().isEmpty().withMessage("must not be empty"),

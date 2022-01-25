@@ -1,14 +1,13 @@
-import { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 
-import { AuthContext } from "../../store/auth-context";
+import useAuth from "../../hooks/useAuth";
 
 function Navigation() {
-  const authContext = useContext(AuthContext);
+  const auth = useAuth();
   const history = useHistory();
 
   const logoutHandler = () => {
-    authContext.logout();
+    auth.logout();
     history.push("/");
   };
 
@@ -21,7 +20,7 @@ function Navigation() {
         IDoctor
       </Link>
 
-      {!authContext.isDeactivated && (
+      {!auth.userData.isDeactivated && (
         <>
           <button
             className="navbar-toggler collapsed"
@@ -66,7 +65,7 @@ function Navigation() {
           </div>
         </>
       )}
-      {authContext.isDeactivated && (
+      {auth.userData.isDeactivated && (
         <form className={`form-inline justify-content-center ml-auto`}>
           <button onClick={logoutHandler} className="btn btn-outline-secondary">
             Log out

@@ -1,20 +1,21 @@
-import { useContext, useState } from "react";
-import Axios from "axios";
+import { useState } from "react";
 
-import { AuthContext } from "../../store/auth-context";
+import useAuthAxios from "../../hooks/useAuthAxios";
+import useAuth from "../../hooks/useAuth";
 import FieldRenderer from "../common_components/field-renderer";
 import generateSecurityFields from "./data/security-fields";
 import Alert from "../ui/Alert";
 
 export default function Security() {
-  const authContext = useContext(AuthContext);
+  const auth = useAuth();
+  const axios = useAuthAxios();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [formData, setFormData] = useState({
-    id: authContext.uid,
+    id: auth.userData.uid,
     currentPassword: "",
     newPassword: "",
     confirmNewPassword: ""
@@ -59,7 +60,7 @@ export default function Security() {
     if (formIsValid) {
       setIsLoading(true);
       try {
-        await Axios.patch("/api/user/password", formData);
+        await axios.patch("/api/user/password", formData);
         console.log("UPDATED PASSWORD");
         setHasError(false);
         setAlertMessage("Successfully updated password");

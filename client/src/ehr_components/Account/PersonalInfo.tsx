@@ -1,14 +1,17 @@
-import { useState, useContext } from "react";
-import Axios from "axios";
+import { useState } from "react";
 
-import { AuthContext } from "../../store/auth-context";
+import useAuthAxios from "../../hooks/useAuthAxios";
+import useAuth from "../../hooks/useAuth";
 import FieldRenderer from "../common_components/field-renderer";
 import generatePersonalInfoFields from "./data/personal-info-fields";
 import Alert from "../ui/Alert";
 
 export default function PersonalInfo() {
-  const { uid, email, username, token, loginAt, isDeactivated, login } =
-    useContext(AuthContext);
+  const {
+    userData: { uid, email, username, token, loginAt, isDeactivated },
+    login
+  } = useAuth();
+  const axios = useAuthAxios();
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
@@ -55,7 +58,7 @@ export default function PersonalInfo() {
     setIsLoading(true);
     if (formIsValid) {
       try {
-        let response = await Axios.patch("/api/user/", formData);
+        let response = await axios.patch("/api/user/", formData);
         console.log("UPDATED PERSONAL INFO", response.data);
         let { username: updatedUsername, email: updatedEmail } = response.data;
         login(

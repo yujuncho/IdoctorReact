@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import Axios from "axios";
 
+import useAuthAxios from "../../hooks/useAuthAxios";
 import BarChart from "./BarChart";
 
 export default function Patients() {
   const [patientsList, setPatientsList] = useState();
+  const axios = useAuthAxios();
   const title = "New Patients";
 
   useEffect(() => {
@@ -16,7 +17,7 @@ export default function Patients() {
     let getPatients = async () => {
       let {
         data: { newPatients }
-      } = await Axios.get("/api/reports/patients");
+      } = await axios.get("/api/reports/patients");
 
       console.log(
         new Date(Date.now()).toISOString(),
@@ -28,7 +29,7 @@ export default function Patients() {
     };
 
     getPatients();
-  }, []);
+  }, [axios]);
 
   return <BarChart title={title} data={patientsList} />;
 }

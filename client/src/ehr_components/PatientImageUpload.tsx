@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { toastr } from "react-redux-toastr";
-import Axios from "axios";
 import { useHistory, useLocation } from "react-router-dom";
 
+import useAuthAxios from "../hooks/useAuthAxios";
 import ImageUpload from "./ui/ImageUpload";
 import { Patient } from "./NewPatient";
 
@@ -12,13 +12,14 @@ export default function PatientImageUpload() {
   const [isLoading, setIsLoading] = useState(!!profileImage);
   const [imgSrc, setImgSrc] = useState("");
   const history = useHistory();
+  const axios = useAuthAxios();
 
   useEffect(() => {
     const getImage = async () => {
       try {
         let {
           data: { patientImage }
-        } = await Axios.get(`/api/patient/image/${profileImage}`);
+        } = await axios.get(`/api/patient/image/${profileImage}`);
 
         setImgSrc(
           `data:${patientImage.contentType};base64,${patientImage.data}`
@@ -31,7 +32,7 @@ export default function PatientImageUpload() {
     };
 
     profileImage && getImage();
-  }, [profileImage]);
+  }, [profileImage, axios]);
 
   const pickedHandler = async (file: File) => {
     setIsLoading(true);
@@ -43,7 +44,7 @@ export default function PatientImageUpload() {
 
       let {
         data: { patientImage }
-      } = await Axios.patch("/api/patient/image", formData);
+      } = await axios.patch("/api/patient/image", formData);
 
       setImgSrc(`data:${patientImage.contentType};base64,${patientImage.data}`);
       history.replace(pathname, {

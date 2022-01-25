@@ -1,19 +1,20 @@
-import React, { useState, useContext } from "react";
-import Axios from "axios";
+import React, { useState } from "react";
 
-import { AuthContext } from "../../store/auth-context";
+import useAuthAxios from "../../hooks/useAuthAxios";
+import useAuth from "../../hooks/useAuth";
 import generateDeactivateFields from "./data/deactivate-fields";
 import FieldRenderer from "../common_components/field-renderer";
 import Alert from "../ui/Alert";
 
 export default function Deactivate() {
-  const authContext = useContext(AuthContext);
+  const auth = useAuth();
+  const axios = useAuthAxios();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [formData, setFormData] = useState({
-    id: authContext.uid,
+    id: auth.userData.uid,
     password: "",
     deactivate: true
   });
@@ -57,9 +58,9 @@ export default function Deactivate() {
     if (formIsValid) {
       setIsLoading(true);
       try {
-        await Axios.patch("/api/user/activate", formData);
+        await axios.patch("/api/user/activate", formData);
         console.log("DEACTIVATED ACCOUNT");
-        authContext.logout();
+        auth.logout();
       } catch (error: any) {
         let message;
         if (error.response) {
