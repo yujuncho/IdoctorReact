@@ -1,8 +1,8 @@
 import { useHistory } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
 import React, { useState } from "react";
-import Axios from "axios";
 
+import useAuthAxios from "../hooks/useAuthAxios";
 import FieldRenderer from "./common_components/field-renderer";
 import generateNewPatientFields from "./data/new-patient-fields";
 
@@ -38,10 +38,12 @@ export interface Patient extends ObjectKeyAccess {
   gender: string;
   job: string;
   maritalStatus: string;
+  profileImage?: string;
   history?: PatientHistory;
 }
 
 const NewPatient: React.FC = () => {
+  const axios = useAuthAxios();
   const history = useHistory();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formData, setFormData] = useState<Patient>({
@@ -100,7 +102,7 @@ const NewPatient: React.FC = () => {
           ...formData,
           phoneNumber: formData.phoneNumber.replace(/[^\d]/g, "")
         };
-        let response = await Axios.post("/api/patient", patientData);
+        let response = await axios.post("/api/patient", patientData);
         console.log("CREATED PATIENT", response.data.patient);
         toastr.success("New Patient", "Added Successfuly");
         history.push(`/main/search`);
@@ -124,10 +126,9 @@ const NewPatient: React.FC = () => {
   return (
     <div className="container">
       <h2>New Patient</h2>
-      <br />
-      <div className="row  justify-content-center">
+      <div className="row mt-4">
         <form
-          className="w-75   align-content-center"
+          className="col-12 col-md-10 col-lg-8 mx-auto"
           onSubmit={handleClick}
           noValidate
         >

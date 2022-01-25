@@ -13,54 +13,54 @@ import "./App.css";
 
 import Home from "./ehr_components/Home";
 import Main from "./ehr_components/Main";
-import Loader from "./ehr_components/ui/Loader";
 import Auth from "./components/Auth";
 
-import { AuthContextProvider } from "./store/auth-context";
-import { useAuth } from "./hooks/auth-hook";
+import { AuthProvider } from "./hooks/useAuth";
+import ProtectedRoutes from "./ehr_components/ProtectedRoutes";
+import UnprotectedRoutes from "./ehr_components/UnprotectedRoutes";
 
 const App: React.FC = () => {
-  const { userData, login, logout, checkedStorage } = useAuth();
-
   const reducers = combineReducers({
     toastr: toastrReducer
   });
   const store = createStore(reducers);
 
-  let routes;
-  if (userData.token) {
-    routes = (
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/main" component={Main} />
-        <Redirect to="/main" />
-      </Switch>
-    );
-  } else {
-    routes = (
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/login" component={Auth} />
-        <Route path="/signup" component={Auth} />
-        <Redirect to="/" />
-      </Switch>
-    );
-  }
-
-  if (!checkedStorage) {
-    return <Loader />;
-  }
-
   return (
-    <AuthContextProvider
-      value={{ isLoggedIn: !!userData.token, ...userData, login, logout }}
-    >
-      <ReduxProvider store={store}>
+    <ReduxProvider store={store}>
+      <AuthProvider>
         <div className="App">
-          <Router>{routes}</Router>
+          <Router>
+            <Switch>
+              <Route
+                path="/main"
+                render={() => {
+                  return (
+                    <ProtectedRoutes>
+                      <Main />
+                    </ProtectedRoutes>
+                  );
+                }}
+              />
+              <Route
+                path="/"
+                render={() => {
+                  return (
+                    <UnprotectedRoutes>
+                      <Switch>
+                        <Route path="/" exact component={Home} />
+                        <Route path="/login" component={Auth} />
+                        <Route path="/signup" component={Auth} />
+                      </Switch>
+                    </UnprotectedRoutes>
+                  );
+                }}
+              />
+              <Redirect to="/" />
+            </Switch>
+          </Router>
         </div>
-      </ReduxProvider>
-    </AuthContextProvider>
+      </AuthProvider>
+    </ReduxProvider>
   );
 };
 

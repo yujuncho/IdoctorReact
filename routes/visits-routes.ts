@@ -4,6 +4,8 @@ import { check } from "express-validator";
 
 const visitsRoutes = Router();
 
+visitsRoutes.get("/all", visitsController.getAllVisits);
+
 visitsRoutes.get("/patient/:patientId", visitsController.getVisitsByPatientId);
 
 visitsRoutes.post(

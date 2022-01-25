@@ -2,11 +2,11 @@ import { toastr } from "react-redux-toastr";
 import { useCallback, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 
-import Axios from "axios";
-
+import useAuthAxios from "../hooks/useAuthAxios";
 import FieldRenderer from "./common_components/field-renderer";
 import Field from "./ui/Field";
 import Input from "./ui/Input";
+import PatientImageUpload from "./PatientImageUpload";
 import { Patient } from "./NewPatient";
 import generateNewVisitFields, { PatientVisit } from "./data/new-visit-fields";
 
@@ -42,6 +42,7 @@ const initialVisitState: PatientVisit = {
 
 const NewVisit: React.FC<VisitProps> = () => {
   let history = useHistory();
+  let axios = useAuthAxios();
   let { state: patientState } = useLocation<Patient>();
 
   let [medicalVisit, setMedicalVisit] = useState<PatientVisit>({
@@ -99,7 +100,7 @@ const NewVisit: React.FC<VisitProps> = () => {
 
     if (invalidFields.length === 0) {
       try {
-        let response = await Axios.post("/api/visits", medicalVisit);
+        let response = await axios.post("/api/visits", medicalVisit);
         console.log("CREATED VISIT", response.data.visit);
         toastr.success("Patient Visit", "Added Successfully");
         history.push("/main/search");
@@ -132,13 +133,7 @@ const NewVisit: React.FC<VisitProps> = () => {
     // special handling for blood pressure as it has two different inputs
     if (name === "blood_pressure") {
       return (
-        <Field
-          name="bp_sys"
-          label="Blood Pressure"
-          gridSize="col-sm-4"
-          isFormRow={true}
-          key={name}
-        >
+        <Field name="bp_sys" label="Blood Pressure" isFormRow={true} key={name}>
           <>
             <Input
               name="bp_sys"
@@ -170,32 +165,18 @@ const NewVisit: React.FC<VisitProps> = () => {
   }
 
   return (
-    <div>
-      <h2 className=" main p-1 mt-4 mb-5">Visit</h2>
-
-      <div className="mx-auto" style={{ width: "90%" }}>
-        <div className="row">
-          <form className="col-9" onSubmit={handleClick}>
-            {fields}
-            <div className="form-group">
-              <button className="bttn-custom">Add Visit Details</button>
-            </div>
-          </form>
-
-          <div className="offset-1 col-2">
-            <div className="card mr-2">
-              <img
-                className="card-img-top"
-                src="./img/team/02.jpg"
-                alt="Patient"
-              />
-              <div className="card-body">
-                <h5 className="card-title">{patientState.fullName}</h5>
-                <button className="btn btn-primary">Update Image</button>
-              </div>
-            </div>
-          </div>
+    <div className="container">
+      <h2 className="main mb-4">Visit</h2>
+      <div className="row">
+        <div className="col-md-4 col-lg-3 mb-4 mb-md-0">
+          <PatientImageUpload />
         </div>
+        <form className="col-md-8 col-lg-9" onSubmit={handleClick}>
+          {fields}
+          <div className="form-group">
+            <button className="bttn-custom">Add Visit Details</button>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Axios from "axios";
 
-import { AuthContext } from "../store/auth-context";
+import useAuth from "../hooks/useAuth";
 import FieldRenderer from "../ehr_components/common_components/field-renderer";
 import generateAuthFields, { AuthType } from "./data/auth-fields";
 
@@ -14,7 +14,7 @@ const formDefaultState = {
 };
 
 export default function Auth() {
-  const authContext = useContext(AuthContext);
+  const auth = useAuth();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formData, setFormData] = useState(formDefaultState);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -81,9 +81,16 @@ export default function Auth() {
     if (formIsValid) {
       try {
         let {
-          data: { userId, token, email }
+          data: { userId, username, token, email, loginAt, isDeactivated }
         } = await Axios.post(`/api/user${pathname}`, formData);
-        authContext.login(userId, token, email);
+        auth.login(
+          userId,
+          username,
+          token,
+          email,
+          new Date(loginAt),
+          isDeactivated
+        );
       } catch (error: any) {
         if (error.response) {
           if (error.response.data.errors) {
@@ -120,7 +127,7 @@ export default function Auth() {
         <h2 className="mt-5 mb-3">{page}</h2>
         <div className="row justify-content-center">
           <form
-            className="align-content-center w-25"
+            className="align-content-center"
             onSubmit={authHandler}
             noValidate
           >

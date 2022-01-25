@@ -1,6 +1,7 @@
 import { Router } from "express";
-import patientController from "../controllers/patient-controller";
 import { check } from "express-validator";
+
+import patientController from "../controllers/patient-controller";
 
 const patientRoutes = Router();
 
@@ -30,7 +31,7 @@ patientRoutes.post(
 
 patientRoutes.patch(
   "/history",
-  [check("patient").not().isEmpty().withMessage("must not be empty")],
+  check("patient").not().isEmpty().withMessage("must not be empty"),
   patientController.updateHistory
 );
 

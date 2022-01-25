@@ -57,7 +57,7 @@ const createPatient: RequestHandler = async (req, res, next) => {
     return res.status(500).json({ message: error.message });
   }
 
-  res.json({ patient: createdPatient.toObject({ getters: true }) });
+  res.status(201).json({ patient: createdPatient.toObject({ getters: true }) });
 };
 
 const updateHistory: RequestHandler = async (req, res, next) => {
@@ -131,7 +131,7 @@ const updateHistory: RequestHandler = async (req, res, next) => {
     return res.status(500).json({ message: error.message });
   }
 
-  res.status(201).json({ patient: updatedPatient });
+  res.json({ patient: updatedPatient });
 };
 
 const patientController = {

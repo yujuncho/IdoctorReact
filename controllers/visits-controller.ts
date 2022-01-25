@@ -5,14 +5,33 @@ import PatientModel, { IPatient } from "../models/PatientModel";
 import PatientVisitModel from "../models/PatientVisitModel";
 import validationErrorHandler from "../utils/validation-error-handler";
 
+const getAllVisits: RequestHandler = async (req, res, next) => {
+  let visits;
+
+  try {
+    visits = await PatientVisitModel.find({});
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+
+  return res.json({
+    visits: visits.map(visit => {
+      return visit.toObject({ getters: true });
+    })
+  });
+};
+
 const getVisitsByPatientId: RequestHandler = async (req, res, next) => {
   let patientId = req.params.patientId;
 
   let patientWithVisits;
   try {
-    patientWithVisits = await PatientModel.findById(patientId).populate(
-      "visits"
-    );
+    patientWithVisits = await PatientModel.findById(patientId).populate({
+      path: "visits",
+      options: {
+        sort: { date: -1 }
+      }
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -116,6 +135,7 @@ const createVisit: RequestHandler = async (req, res, next) => {
 };
 
 const visitsController = {
+  getAllVisits,
   getVisitsByPatientId,
   createVisit
 };

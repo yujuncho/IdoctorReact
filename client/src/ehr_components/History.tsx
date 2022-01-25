@@ -1,12 +1,13 @@
 import { useLocation, useHistory } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
 import React, { useState } from "react";
-import Axios from "axios";
 
+import useAuthAxios from "../hooks/useAuthAxios";
 import Field from "./ui/Field";
 import AutoComplete from "./ui/AutoComplete";
 import { bloodGroups, diseases } from "./data/patient-history";
 import { Patient, PatientHistory } from "./NewPatient";
+import PatientImageUpload from "./PatientImageUpload";
 import FieldRenderer from "./common_components/field-renderer";
 import generatePatientHistoryFields from "./data/patient-history-fields";
 
@@ -38,6 +39,7 @@ const initialHistoryState: PatientHistoryRendered = {
 
 const History: React.FC = () => {
   let history = useHistory();
+  let axios = useAuthAxios();
   let { state: patientState } = useLocation<Patient>();
 
   const [changedField, setChangedField] = useState("");
@@ -110,7 +112,7 @@ const History: React.FC = () => {
       let chronic_diseases = medicalHistory.chronic_diseases.map(
         disease => disease.label
       );
-      let response = await Axios.patch("/api/patient/history", {
+      let response = await axios.patch("/api/patient/history", {
         ...medicalHistory,
         chronic_diseases
       });
@@ -181,32 +183,18 @@ const History: React.FC = () => {
   }
 
   return (
-    <div>
-      <h2 className=" main p-1 mt-4 mb-5">Patient Medical History</h2>
-
-      <div className="mx-auto" style={{ width: "90%" }}>
-        <div className="row">
-          <form className="col-9" onSubmit={handleClick}>
-            {fields}
-            <div className="form-group">
-              <button className="bttn-custom">Update</button>
-            </div>
-          </form>
-
-          <div className="offset-1 col-2">
-            <div className="card mr-2">
-              <img
-                className="card-img-top"
-                src="./img/team/02.jpg"
-                alt="Patient"
-              />
-              <div className="card-body">
-                <h5 className="card-title">{patientState.fullName}</h5>
-                <button className="btn btn-primary">Update Image</button>
-              </div>
-            </div>
-          </div>
+    <div className="container">
+      <h2 className="main mb-4">Patient Medical History</h2>
+      <div className="row">
+        <div className="col-md-4 col-lg-3 mb-4 mb-md-0">
+          <PatientImageUpload />
         </div>
+        <form className="col-md-8 col-lg-9" onSubmit={handleClick}>
+          {fields}
+          <div className="form-group">
+            <button className="bttn-custom">Update</button>
+          </div>
+        </form>
       </div>
     </div>
   );

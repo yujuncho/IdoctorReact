@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import Axios from "axios";
 
+import useAuthAxios from "../../hooks/useAuthAxios";
 import VisitsList from "./VisitsList";
 import VisitInfo from "./VisitInfo";
 import { Patient } from "../NewPatient";
@@ -11,6 +11,7 @@ export default function Visits() {
   const [isAnimating, setIsAnimating] = useState(0);
   const [visitsList, setVisitsList] = useState<PatientVisit[]>([]);
   const [selectedVisit, setSelectedVisit] = useState<PatientVisit>();
+  let axios = useAuthAxios();
   let history = useHistory();
   let { state: patientState } = useLocation<Patient>();
   let patientId = patientState && patientState.id ? patientState.id : "";
@@ -23,7 +24,7 @@ export default function Visits() {
     let getVisits = async () => {
       let {
         data: { visits }
-      } = await Axios.get(`/api/visits/patient/${patientId}`);
+      } = await axios.get(`/api/visits/patient/${patientId}`);
 
       console.log(
         new Date(Date.now()).toISOString(),
@@ -36,7 +37,7 @@ export default function Visits() {
     };
 
     getVisits();
-  }, [patientId]);
+  }, [patientId, axios]);
 
   let handleSelect = (id: string) => {
     let newSelectedVisit = visitsList.find(visit => visit.id === id);
@@ -51,7 +52,7 @@ export default function Visits() {
 
   return (
     <div className="container text-left mb-5">
-      <h3 className="mb-3">Past Visits</h3>
+      <h3 className="mb-4">Past Visits for {patientState.fullName}</h3>
       <div className="row">
         <VisitsList
           className="col-md-4 mb-4"
